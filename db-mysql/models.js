@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var config = require ('/config.js');
+var mysqlConfig = require ('./config.js');
 
 var connection = mysql.createConnection(mysqlConfig);
 
@@ -18,10 +18,16 @@ var queryName = function(cb) {
 	});
 }
 */
-var getAllFromTest = () => {
-  connection.
+var selectAllFromTest = (cb) => {
+  connection.query('SELECT * FROM test', (err, results) => {
+    if (err) {
+      cb(err, null);
+    } else {
+      cb(null, results)
+    }
+  })
 }
 
 // export functions below
 
-module.exports.getAllFromTest = getAllFromTest;
+module.exports.selectAllFromTest = selectAllFromTest;
