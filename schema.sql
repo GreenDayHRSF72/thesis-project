@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS whydontwe;
+DROP DATABASE IF EXISTS friendly;
 
-CREATE DATABASE whydontwe;
+CREATE DATABASE friendly;
 
-USE whydontwe;
+USE friendly;
 
 /*
 Column parameters

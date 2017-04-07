@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node server/index-web.js && node node_modules/react-native/local-cli/cli.js start",
-    "server-dev": "nodemon server/index-web.js",
+    "start": "node server/index.js && node node_modules/react-native/local-cli/cli.js start",
+    "server-dev": "nodemon server/index.js",
     "test": "jest"
   },
   "dependencies": {
