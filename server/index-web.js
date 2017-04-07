@@ -6,6 +6,10 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/test', (req, res) => {
+
+});
+
 app.listen(PORT, () => {
 	console.log('Listening to web server on port ${PORT}');
 });

@@ -3,6 +3,8 @@ var config = require ('/config.js');
 
 var connection = mysql.createConnection(mysqlConfig);
 
+// to run: mysql -u username -p database_name < file.sql
+
 // Create functions that query the databases
 /* exampele querry
 var queryName = function(cb) {
@@ -15,6 +17,11 @@ var queryName = function(cb) {
 	
 	});
 }
-/*
+*/
+var getAllFromTest = () => {
+  connection.
+}
 
 // export functions below
+
+module.exports.getAllFromTest = getAllFromTest;
