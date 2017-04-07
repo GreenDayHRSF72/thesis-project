@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS interests (
 	PRIMARY KEY (id)
 );
 
+ALTER TABLE interests ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
 CREATE TABLE IF NOT EXISTS events (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(100),
@@ -55,6 +57,8 @@ CREATE TABLE IF NOT EXISTS events (
 	*/
 	PRIMARY KEY (id)
 );
+
+ALTER TABLE events ADD FOREIGN KEY (creator_id) REFERENCES users(id);
 
 CREATE TABLE IF NOT EXISTS participants (
 	id int NOT NULL AUTO_INCREMENT,
@@ -74,6 +78,8 @@ CREATE TABLE IF NOT EXISTS activities (
 	PRIMARY KEY(id)
 );
 
+ALTER TABLE activities ADD FOREIGN KEY (event_id) REFERENCES events(id);
+
 
 CREATE TABLE IF NOT EXISTS votes (
 	id  int  NOT NULL  AUTO_INCREMENT,
@@ -83,6 +89,9 @@ CREATE TABLE IF NOT EXISTS votes (
 	PRIMARY KEY(id)
 );
 
+ALTER TABLE votes ADD FOREIGN KEY (activity_id) REFERENCES activities(id);
+ALTER TABLE votes ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
 CREATE TABLE IF NOT EXISTS comments (
 	id  int  NOT NULL  AUTO_INCREMENT,
 	event_id int NOT NULL,
@@ -91,6 +100,8 @@ CREATE TABLE IF NOT EXISTS comments (
 	PRIMARY KEY(id) 
 );
 
+ALTER TABLE comments ADD FOREIGN KEY (event_id) REFERENCES events(id);
+ALTER TABLE comments ADD FOREIGN KEY (user_id) REFERENCES users(id);
 /*
 Format for altering table 
 ALTER TABLE table ADD FOREIGN KEY (column)
