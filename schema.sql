@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
   email varchar(50),
   phone varchar(20),
   photourl varchar(250),
-  PRIMARY KEY(id)
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS interests (
@@ -68,6 +68,9 @@ CREATE TABLE IF NOT EXISTS participants (
 	PRIMARY KEY (id)
 );
 
+ALTER TABLE participants ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE participants ADD FOREIGN KEY (event_id) REFERENCES events(id);
+
 CREATE TABLE IF NOT EXISTS activities (
 	id  int  NOT NULL  AUTO_INCREMENT,
 	name varchar(50),
@@ -75,7 +78,7 @@ CREATE TABLE IF NOT EXISTS activities (
 	description varchar(250) NOT NULL DEFAULT 'none',
 	event_id int NOT NULL, 
 	mainActivity boolean DEFAULT 0, 
-	PRIMARY KEY(id)
+	PRIMARY KEY (id)
 );
 
 ALTER TABLE activities ADD FOREIGN KEY (event_id) REFERENCES events(id);
@@ -86,7 +89,7 @@ CREATE TABLE IF NOT EXISTS votes (
 	activity_id int NOT NULL,
 	user_id int NOT NULL,
 	vote int NOT NULL DEFAULT 0,
-	PRIMARY KEY(id)
+	PRIMARY KEY (id)
 );
 
 ALTER TABLE votes ADD FOREIGN KEY (activity_id) REFERENCES activities(id);
@@ -97,11 +100,22 @@ CREATE TABLE IF NOT EXISTS comments (
 	event_id int NOT NULL,
 	user_id int NOT NULL,
 	body varchar(250),
-	PRIMARY KEY(id) 
+	PRIMARY KEY (id) 
 );
 
 ALTER TABLE comments ADD FOREIGN KEY (event_id) REFERENCES events(id);
 ALTER TABLE comments ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+/* Not quite sure if were goining to need this table */
+
+CREATE TABLE IF NOT EXISTS reviews (
+	id int NOT NULL AUTO_INCREMENT,
+	event_id int NOT NULL,
+	user_id int NOT NULL,
+	review varchar(250) NOT NULL DEFAULT 'No comment',
+	doAgain boolean NOT NULL DEFAULT 0,
+	PRIMARY KEY (id)
+);
 /*
 Format for altering table 
 ALTER TABLE table ADD FOREIGN KEY (column)
