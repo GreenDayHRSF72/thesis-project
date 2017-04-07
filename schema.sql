@@ -13,7 +13,7 @@ CREATE TABLE if NOT EXISTS test (
 	id int NOT NULL AUTO_INCREMENT,
 	value varchar(100) NOT NULL 'im a variable number of characters',
 	PRIMARY KEY(id)
-)
+);
 
 /* fake information for test purposes */
 INSERT INTO test (value) VALUES ('Hello there');
@@ -23,11 +23,10 @@ INSERT INTO test (value) VALUES ('Hello there');
 INSERT INTO test (value) VALUES ('Hello there');
 
 CREATE TABLE IF NOT EXISTS users (
-  id  int  NOT NULL  AUTO_INCREMENT,
+  id int NOT NULL AUTO_INCREMENT,
   username varchar(100) NOT NULL DEFAULT 'Guest',
   email varchar(50),
   phone varchar(20),
-  token,
   /*
   friends?
   activeEvents
@@ -38,17 +37,20 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS interests (
-
-)
+	id  int  NOT NULL  AUTO_INCREMENT,
+	name varchar(50),
+	user_id  int NOT NULL,
+	PRIMARY KEY (id),
+);
 
 CREATE TABLE IF NOT EXISTS events (
 	id  int  NOT NULL  AUTO_INCREMENT,
 	name varchar(100),
 	creator_id int NOT NULL, /* id IN users*/
 	description varchar(250),
-	eventDate
-	location
-	active 
+	eventDate date,
+	location varchar(200),
+	active  /
 	private
 	startTime
 	endTime
@@ -65,10 +67,9 @@ CR
 CREATE TABLE IF NOT EXISTS activities (
 	id  int  NOT NULL  AUTO_INCREMENT,
 	name
-	categories 
+	category 
 	description
-	event
-	votes
+	event_id
 	PRIMARY KEY(id)
 );
 

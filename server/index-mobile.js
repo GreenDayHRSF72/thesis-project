@@ -4,7 +4,7 @@ var PORT = process.env.PORT || 6000;
 
 // add handlers below
 app.get('/', (req, res) => {
-	res.send('you got the server');
+	res.send('you got the mobile server');
 });
 
 app.listen(PORT, () => {
