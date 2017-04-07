@@ -11,19 +11,30 @@ var PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  db.selectAllFromTest(function(err, results){
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.send(results);
-    }
-  });
+  res.send('you have reached the home page');
 });
 
 // for testing out our database 
 app.get('/test', (req, res) => {
-
+    db.selectAllFromTest((err, results) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  })
+});
+app.post('/test', (req, res) =>{
+  var value = req.body.value;
+  db.insertValueIntoTest(value , (err, value) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      res.send('insert into test table successful');
+    }
+  });
 });
 
 

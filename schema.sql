@@ -28,12 +28,6 @@ CREATE TABLE IF NOT EXISTS users (
   email varchar(50),
   phone varchar(20),
   photourl varchar(250),
-  /*
-  friends?
-  activeEvents
-  pastEvents
-  interests
-  */
   PRIMARY KEY(id)
 );
 
@@ -41,7 +35,7 @@ CREATE TABLE IF NOT EXISTS interests (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(50),
 	user_id int NOT NULL,
-	PRIMARY KEY (id),
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS events (
@@ -51,8 +45,8 @@ CREATE TABLE IF NOT EXISTS events (
 	description varchar(250),
 	eventDate date,
 	location varchar(200),
-	active boolean NOT NULL DEFAULT 'true',
-	private boolean NOT NULL DEFAULT 'false',
+	active boolean NOT NULL DEFAULT 1,
+	private boolean NOT NULL DEFAULT 0,
 	startTime datetime,
 	endTime datetime, 
 	/*
@@ -76,7 +70,7 @@ CREATE TABLE IF NOT EXISTS activities (
 	category varchar(50),
 	description varchar(250) NOT NULL DEFAULT 'none',
 	event_id int NOT NULL, 
-	mainActivity boolean, 
+	mainActivity boolean DEFAULT 0, 
 	PRIMARY KEY(id)
 );
 
@@ -85,13 +79,13 @@ CREATE TABLE IF NOT EXISTS votes (
 	id  int  NOT NULL  AUTO_INCREMENT,
 	activity_id int NOT NULL,
 	user_id int NOT NULL,
-	vote int DEFAULT 0,
+	vote int NOT NULL DEFAULT 0,
 	PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS comments (
 	id  int  NOT NULL  AUTO_INCREMENT,
-	activity_id int NOT NULL,
+	event_id int NOT NULL,
 	user_id int NOT NULL,
 	body varchar(250),
 	PRIMARY KEY(id) 

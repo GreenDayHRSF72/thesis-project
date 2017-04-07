@@ -18,6 +18,8 @@ var queryName = function(cb) {
 	});
 }
 */
+
+// Test models 
 var selectAllFromTest = (cb) => {
   connection.query('SELECT * FROM test', (err, results) => {
     if (err) {
@@ -26,8 +28,22 @@ var selectAllFromTest = (cb) => {
       cb(null, results)
     }
   })
-}
+};
+
+var insertValueIntoTest = (val, cb) => {
+  connection.query('INSERT INTO test (value) VALUES \
+    (\'' + val + '\');', 
+    (err, results) => {
+      if (err) {
+        cb(err, null);
+      } else {
+        // do nothing since successful
+      }
+    });
+};
+
 
 // export functions below
 
 module.exports.selectAllFromTest = selectAllFromTest;
+module.exports.insertValueIntoTest = insertValueIntoTest;
