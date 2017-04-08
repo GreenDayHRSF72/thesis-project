@@ -23,6 +23,21 @@ var queryName = function(cb) {
 }
 */
 
+// Queries related to getting user data for suggestion algorithm
+
+var getUserInterests = (username, cb) => {
+  connection.query(`SELECT name FROM interests INNER JOIN  users WHERE users.username = ${username} `
+} 
+
+var getUserActivities = () => {
+
+
+} 
+
+// make join table  for interests/users and predefine choices for interests?
+
+var getUserVotes = (username, )
+
 // Test models
 var selectAllFromTest = (cb) => {
   connection.query('SELECT * FROM test', (err, results) => {
@@ -35,13 +50,10 @@ var selectAllFromTest = (cb) => {
 };
 
 var insertValueIntoTest = (val, cb) => {
-  connection.query('INSERT INTO test (value) VALUES \
-    (\'' + val + '\');', 
-    (err, results) => {
+  connection.query(`INSERT INTO test (value) VALUES ${val};`, (err, results) => {
       if (err) {
         cb(err, null);
       } else {
-        // call the callback
         cb();
       }
     });
