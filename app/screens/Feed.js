@@ -4,7 +4,7 @@ import {
   View,
   Text,
 } from 'react-native';
-import { SocialIcon } from 'react-native-elements';
+import Login from './Login';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,17 +23,10 @@ class Feed extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <Text>
-        Feed;
-      </Text>
-      <SocialIcon
-        title='Sign In With Facebook'
-        button
-        type='facebook'
-        iconSize={50}
-        onPress={() => this.moreInfo()}
-      />
-
+        <Text>
+          Friendly
+        </Text>
+        <Login />
       </View>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
+import Login from './Login';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
