@@ -26,13 +26,17 @@ var queryName = function(cb) {
 // Queries related to getting user data for suggestion algorithm
 
 var getUserInterests = (username, cb) => {
-  connection.query(`SELECT name FROM interests INNER JOIN  users WHERE users.username = ${username} `
+  connection.query(`SELECT name FROM interests INNER JOIN  users WHERE users.username = ${username};`, () => {
+
+  });
 } 
 
-var getUserActivities = () => {
-
+var getUserActivities = (username, cb) => {
+  connection.query(``)
 
 } 
+
+
 
 // make join table  for interests/users and predefine choices for interests?
 
