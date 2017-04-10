@@ -32,7 +32,8 @@ var getUserInterests = (username, cb) => {
 } 
 
 var getUserActivities = (username, cb) => {
-  connection.query(``)
+  connection.query(`SELECT name, category FROM activities INNER JOIN ___ INNER JOIN ___ WHERE users.username = ${username} \
+    asdfasdfasdf`)
 
 } 
 

@@ -1,3 +1,5 @@
+
+
 /*
 Recommendation Algorithm Planning
 
@@ -65,9 +67,10 @@ collect
 */
 
 // get all the information from db
-var myInterests = [{name: 'bars'}, {name: 'whiskey'}, {name: 'bacon'}, {name: 'pomeranians'}]
-var myVotes = [{name: Mikkeler}, ];
+var myInterests = [{name: 'bars'}, {name: 'whiskey'}, {name: 'bacon'}, {name: 'pomeranians'}];
+var myVotes = [{name: 'Mikkeler', category: 'bars'}, ];
 var myTrips = [];
+
 
 // clump together interests, and categories for any activity or event participated in and put it
 // in an array together
@@ -87,3 +90,8 @@ var howFar =
 // do a search with the terms you wanted to,
 
 // when it comes back filter it using the names of places that you've already been to
+
+/*
+>>>>>>>>>>> ALGORITHM PSEUDOCODE <<<<<<<<<<<<<<<<<
+
+*/
