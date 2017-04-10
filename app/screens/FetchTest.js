@@ -19,11 +19,12 @@ class FetchTest extends Component {
     this.state = {
       homeText: 'PLACEHOLDER',
       yelpCall: [],
-      geoCall: [],
+      geoCall: 'unknown',
       googCall: [],
     };
 
     this.getHome = this.getHome.bind(this);
+    this.getLocation = this.getLocation.bind(this);
   }
 
   getHome() {
@@ -36,6 +37,15 @@ class FetchTest extends Component {
     .catch((error) => {
       console.error(error);
     })
+  }
+
+  getLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var geoCall = JSON.stringify(position);
+        this.setState({geoCall});
+      }
+    )
   }
 
 
@@ -57,7 +67,7 @@ class FetchTest extends Component {
         </Text>
         <Button
           title='Click to get current location'
-          onPress={this.getHome}
+          onPress={this.getLocation}
         />
          <Text>
          Your current google query has yielded: {this.state.geoCall}
