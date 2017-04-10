@@ -42,8 +42,10 @@ class FetchTest extends Component {
   getLocation() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        var geoCall = JSON.stringify(position);
-        this.setState({geoCall});
+        Alert.alert('' + position.latitude)
+        this.setState({
+          geoCall: position.latitude
+        });
       }
     )
   }
@@ -70,7 +72,7 @@ class FetchTest extends Component {
           onPress={this.getLocation}
         />
          <Text>
-         Your current google query has yielded: {this.state.geoCall}
+         Your current google query has yielded: {this.state.yelpCall}
         </Text>
         <Button
           title='Click to get current location'
