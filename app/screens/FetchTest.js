@@ -27,9 +27,15 @@ class FetchTest extends Component {
   }
 
   getHome() {
-    fetch('https://hst-friend-ly.herokuapp.com/');
-
-
+    fetch('https://hst-friend-ly.herokuapp.com/test')
+    .then((response) => response.json())
+    .then((responseJson) => {
+      var random = Math.floor(Math.random() * responseJson.length);
+      Alert.alert(responseJson[random].value);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
   }
 
 
