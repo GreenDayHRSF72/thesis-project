@@ -9,7 +9,6 @@ if (process.env.NODE_ENV === 'production') {
   connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
 }
 
-
 // to run: mysql -u userName -p database_name < file.sql
 
 // Create functions that query the databases

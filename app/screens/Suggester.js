@@ -13,15 +13,23 @@ const {
   PickerIOS
 } = ReactNative;
 
-var o
+const locationOptions = [
+  {text: 'At my current location', value: 1},
+  {text: 'At another location', value: 2}
+]
+const distanceOptions = [
+  {text: '1 - I\'m too lazy to go anywher else', value: 500},
+  {text: '2 - I don\'t mind a bit of a stroll', value: 1000},
+  {text: '3 - Let\'s go on an adventure!' , value: 2400}
+]
 
 
 class Suggester extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      budget: 0,
-      distance: 0,
+      budget: 2,
+      distance: 500,
       location: 'Hack Reactor, San Francisco',
       dislikes: []
     };
@@ -37,16 +45,19 @@ class Suggester extends Component {
 
   render() {
     return <View>
+        <Text>
+          Welcome to the Suggester!{'\n'}
+        </Text>
         <Text style={{ marginTop: 20 }}>
-          Don\'t know what to do for your hangout? Just answer a few quick
-          questions and we\'ll help you figure it out! \n
+          Don't know what to do for your hangout?{'\n'}
+          Just answer a few quickquestions and we'll help you figure it out!{'\n'}
         </Text>
         <Text>
           Where do you want to go?
         </Text>
         <PickerIOS
 
-        >
+        >   
         </PickerIOS>
         <Text>
           How from the that place are you willing to go?
