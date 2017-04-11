@@ -9,7 +9,7 @@ const {
   Text,
   TouchableHighlight,
   Button, 
-
+  TextInput,
 } = ReactNative;
 
 
@@ -17,7 +17,10 @@ class Suggestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      places: 
+      budget: 0,
+      distance: 0,
+      location: 'Hack Reactor, San Francisco',
+      dislikes: []
     };
   }
 
@@ -26,9 +29,8 @@ class Suggestion extends Component {
         <Text style={{ marginTop: 20 }}>
           Don\'t know what to do for your hangout? Just answer a few quick
           questions and we\'ll help you figure it out! \n
-
-
         </Text>
+        
       </View>
   }
 }
