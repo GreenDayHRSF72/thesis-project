@@ -43,6 +43,12 @@ class FetchTest extends Component {
     })
   }
 
+  fetchFromYelp() {
+    fetch('https://api.yelp.com/v3/businesses/search',{
+      headers
+    })
+  }
+
   addToTest() {
     var screen = this;
     fetch('https://hst-friend-ly-staging.herokuapp.com/test', {

@@ -83,7 +83,6 @@ collect
 
 // get all the information from the questionaire
 var where = 'westfield mall, san francisco';
-var howFar = 
 
 // do a search with the terms you wanted to,
 
@@ -93,3 +92,16 @@ var howFar =
 >>>>>>>>>>> ALGORITHM PSEUDOCODE <<<<<<<<<<<<<<<<<
 
 */
+
+//yelp query
+var basicYelpQuery = 'https://api.yelp.com/v3/businesses/search';
+var location = 'location=' // mandatory if not latitute and Longitude
+var radius = 1000 // in meters optional
+var categories = 'bars, french' //separate by commas, also optional
+var limit = 24 //optional but useful
+var open_now = 24 // 
+var open_at = 8934 // unix time, propably to complicated
+var price = 1 // up to 4 
+var sort_by = 'distance', 'best_match' || 'ratings' // figure out thow this wil acotri n
+
+
