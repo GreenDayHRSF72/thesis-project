@@ -43,25 +43,40 @@ class Suggester extends Component {
       budget: 1,
       radius: 500,
       location: 1,
-      coords: {latitude: 'unknown', longitude: 'unknown'},
+      coords: {latitude: 0, longitude: 0},
       dislikes: [],
     };
 
     this.getCoords = this.getCoords.bind(this);
+    this.alertState = this.alertState.bind(this);
   }
 
   getCoords(value) {
+    var suggester = this;
   if (value === 1) {
       // use geolocation
+      navigator.geolocation.getCurrentPosition((position) => {
+
+        suggester.setState({coords: {latitude: position.coords.latitude, longitude: position.coords.longitude}})
+      })
     } else if (value === 2) {
       // input the adress into googles geocoding
-      
+
       Alert.alert('We\'re gonna use geocoding')
     }  
   }
 
+  geoCodeLocation() { 
+    
+  }
+
   getUserInfo() {
 
+  }
+
+  alertState() {
+    var suggester = this;
+    Alert.alert(JSON.stringify(suggester.state.coords.latitude))
   }
 
   queryYelp() {
@@ -131,7 +146,7 @@ class Suggester extends Component {
 
         <Button
           title='Get my suggestions!'
-          onPress={this.getLocation}
+          onPress={this.alertState}
         />
       </ScrollView>
   }
