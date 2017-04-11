@@ -8,7 +8,7 @@ import FetchTest from '../screens/FetchTest';
 
 export const Tabs = TabNavigator({
   Login: {
-    screen: LoginStack,
+    screen: Login,
     navigationOptions: {
       tabBar: {
         label: 'Login',

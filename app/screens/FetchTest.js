@@ -48,11 +48,17 @@ class FetchTest extends Component {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'.
+        'Content-Type': 'application/json',
       },
-      body: JSON.Stringify({
+      body: JSON.stringify({
         value: screen.state.messageText
       })
+    })
+    .then((res) => {
+      Alert.alert('Posted')
+    })
+    .catch((error) => {
+      console.log(err)
     })
   }
 
@@ -88,14 +94,18 @@ class FetchTest extends Component {
           onPress={this.getLocation}
         />
         <Text>
-          Enter some text in the input and click the button below to post a {\n} 
+          Enter some text in the input and click the button below to post a
           message to the test database!
         </Text>
 
       <TextInput
         placeholder="Type you message here"
         style={{height: 40}}
-        onChangeText{(text) => this.setState(messageText: text)}
+        onChangeText={(text) => this.setState({messageText: text})}
+      />
+      <Button
+        title='Press me to submit message'
+        onPress={this.addToTest}
       />
       </View>
   }
