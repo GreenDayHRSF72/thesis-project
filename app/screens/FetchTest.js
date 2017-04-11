@@ -31,8 +31,7 @@ class FetchTest extends Component {
     fetch('https://hst-friend-ly.herokuapp.com/test')
     .then((response) => response.json())
     .then((responseJson) => {
-      var random = Math.floor(Math.random() * responseJson.length);
-      Alert.alert(responseJson[random].value);
+      return responseJson;
     })
     .catch((error) => {
       console.error(error);
@@ -42,10 +41,7 @@ class FetchTest extends Component {
   getLocation() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        Alert.alert('' + position.latitude)
-        this.setState({
-          geoCall: position.latitude
-        });
+        this.props.getGeolocation(position.coords);
       }
     )
   }
@@ -55,33 +51,34 @@ class FetchTest extends Component {
   render() {
     return <View>
         <Text>
-          Click the buttons below to test out out connection \n \n
+          Click the buttons below to test out out connection
         </Text>
         <Text>
-          The text from the homepage is: {this.state.homeText}
+
         </Text>
         <Button
           title='Click to get text from homepage'
           onPress={this.getHome}
         />
          <Text>
-          Your current coords are: {this.state.geoCall}
+          Your current Latitude is: {this.props.locationResults.latitude}
+          Your current Longitude is: {this.props.locationResults.longitude}
         </Text>
         <Button
           title='Click to get current location'
           onPress={this.getLocation}
         />
-         <Text>
-         Your current google query has yielded: {this.state.yelpCall}
-        </Text>
-        <Button
-          title='Click to get current location'
-          onPress={this.getHome}
-        />
-
       </View>
   }
 }
 
+function mapStateToProps(state) { 
+  return {testResults: state.testResults, locationResults: state.locationResults};
+}
 
-export default FetchTest;
+function mapDispatchToProps(dispatch) { 
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (FetchTest);

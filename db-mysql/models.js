@@ -38,10 +38,12 @@ var getUserActivities = (username, cb) => {
 } 
 
 
-
 // make join table  for interests/users and predefine choices for interests?
 
-var getUserVotes = (username, )
+// Add a user to the database
+var addUserToDatabase = (user) => {
+  
+}
 
 // Test models
 var selectAllFromTest = (cb) => {

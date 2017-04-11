@@ -116,6 +116,18 @@ CREATE TABLE IF NOT EXISTS reviews (
 	doAgain boolean NOT NULL DEFAULT 0,
 	PRIMARY KEY (id)
 );
+
+/* Live feed items table
+	- author of the event
+	cont need to show the mess
+	- what the activity is?
+	- verb? Are they creating a new event, are they dending out activity
+	- correspondijg event id (from the id)
+	- if they are voting (
+		- activity that they voted for)
+	- what the target is? the target would vary (optional) (poss foriegb key)
+	-if they click on the activity it should take them somewhere?
+*/
 /*
 Format for altering table 
 ALTER TABLE table ADD FOREIGN KEY (column)
