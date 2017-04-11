@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
+import Prompt from 'react-native-prompt';
+import Geocoder from 'react-native-geocoding';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-
 
 const {
   View,
@@ -40,6 +41,7 @@ class Suggester extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      locationVisible: false,
       budget: 1,
       radius: 500,
       location: 1,
@@ -47,27 +49,34 @@ class Suggester extends Component {
       dislikes: [],
     };
 
+    // bind all the things
     this.getCoords = this.getCoords.bind(this);
     this.alertState = this.alertState.bind(this);
+    this.geocodeLocation = this.geocodeLocation.bind(this);
   }
 
   getCoords(value) {
-    var suggester = this;
+  var suggester = this;
   if (value === 1) {
-      // use geolocation
       navigator.geolocation.getCurrentPosition((position) => {
-
         suggester.setState({coords: {latitude: position.coords.latitude, longitude: position.coords.longitude}})
       })
     } else if (value === 2) {
-      // input the adress into googles geocoding
 
-      Alert.alert('We\'re gonna use geocoding')
+      suggester.setState({locationVisible: true});
+
     }  
   }
 
-  geoCodeLocation() { 
-    
+  geocodeLocation(submit) { 
+    var suggester = this;
+    Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
+    Geocoder.getFromLocation(submit).then((json) => {
+      var location = json.results[0].geometry.location;
+      // I'm assuming that coords are found here, so.... yeah...
+      //come back and refactor it to default to another set of coords if neccesary
+      suggester.setState({coords: {latitude: location.lat, longitude: location.lng}});
+    }).catch((err) => {Alert.alert('Something went Wrong');});
   }
 
   getUserInfo() {
@@ -76,7 +85,10 @@ class Suggester extends Component {
 
   alertState() {
     var suggester = this;
-    Alert.alert(JSON.stringify(suggester.state.coords.latitude))
+    var coords = JSON.stringify(suggester.state.coords.latitude) + ', ' + JSON.stringify(suggester.state.coords.longitude);
+    var radius = JSON.stringify(suggester.state.radius);
+    var price = JSON.stringify(suggester.state.budget);
+    Alert.alert(`You want to be within ${radius} meters of ${coords}\n You want to only spend ${price} out of 4`)
   }
 
   queryYelp() {
@@ -111,8 +123,22 @@ class Suggester extends Component {
             />
           ))}   
         </PickerIOS>
+        <Prompt
+          title='Please enter the address of where you want to be'
+          placeholder='ex. 944 Market Street (or) Halal Guys, San Francisco'
+          visible={this.state.locationVisible}
+          onCancel={() => {
+            this.setState({locationVisible: false});
+
+          }}
+          onSubmit={(value) => {
+            this.setState({locationVisible: false});
+            this.geocodeLocation(value);
+
+          }}
+        />
         <Text>
-          How from the that place are you willing to go?
+          How far from the that place are you willing to go?
         </Text>
         <PickerIOS
           selectedValue={this.state.radius}
@@ -129,11 +155,13 @@ class Suggester extends Component {
           ))}   
         </PickerIOS>
         <Text>
-          What are you and your friends willing to spend?
+          What are you willing to spend?
         </Text>
         <PickerIOS
           selectedValue={this.state.budget}
-          onValueChange={(value) => {this.setState({budget: value})}}
+          onValueChange={(value) => {
+            this.setState({budget: value})
+          }}
         >
           {priceOptions.map((option, index) => (
             <PickerIOS.Item
@@ -151,8 +179,5 @@ class Suggester extends Component {
       </ScrollView>
   }
 }
-
-
-
 
 export default Suggester;
