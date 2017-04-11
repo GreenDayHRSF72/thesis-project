@@ -35,6 +35,7 @@ class FetchTest extends Component {
     fetch('https://hst-friend-ly-staging.herokuapp.com/test')
     .then((response) => response.json())
     .then((responseJson) => {
+      Alert.alert('Got')
       this.props.getTestData(responseJson);
     })
     .catch((error) => {
@@ -55,7 +56,7 @@ class FetchTest extends Component {
       })
     })
     .then((res) => {
-      Alert.alert('Posted')
+      Alert.alert(screen.state.messageText)
     })
     .catch((error) => {
       console.log(err)

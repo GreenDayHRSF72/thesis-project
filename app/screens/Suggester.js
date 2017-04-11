@@ -10,10 +10,13 @@ const {
   TouchableHighlight,
   Button, 
   TextInput,
+  PickerIOS
 } = ReactNative;
 
+var o
 
-class Suggestion extends Component {
+
+class Suggester extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,6 +41,19 @@ class Suggestion extends Component {
           Don\'t know what to do for your hangout? Just answer a few quick
           questions and we\'ll help you figure it out! \n
         </Text>
+        <Text>
+          Where do you want to go?
+        </Text>
+        <PickerIOS
+
+        >
+        </PickerIOS>
+        <Text>
+          How from the that place are you willing to go?
+        </Text>
+        <Text>
+          What are you and your friends willing to spend?
+        </Text>
 
       </View>
   }
@@ -46,4 +62,4 @@ class Suggestion extends Component {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Me);
+export default Suggester;

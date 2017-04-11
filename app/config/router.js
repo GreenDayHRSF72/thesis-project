@@ -7,6 +7,7 @@ import Event from '../screens/Event';
 import FetchTest from '../screens/FetchTest';
 import ActivityStream from '../screens/ActivityStream';
 import AddFriends from '../screens/AddFriends';
+import Suggester from '../screens/Suggester';
 
 export const eventStack = StackNavigator({
   Event: {
@@ -23,7 +24,6 @@ export const eventStack = StackNavigator({
   },
 
 });
-
 
 export const Tabs = TabNavigator({
   Login: {
@@ -77,6 +77,15 @@ export const Tabs = TabNavigator({
       tabBar: {
         label: 'Feed',
         icon: ({ tintColor }) => <Icon name="list" size={35} color={tintColor} />
+      },
+    },
+  },
+  Suggester: {
+    screen: Suggester,
+    navigationOptions: {
+      tabBar: {
+        label: 'Suggester',
+        icon: ({ tintColor }) => <Icon name="account-circle" size={35} color={tintColor} />
       },
     },
   },

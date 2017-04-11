@@ -17,7 +17,12 @@ app.get('/', (req, res) => {
   res.send('you have reached the home page');
 });
 
-// for testing out our database 
+// for testing out our database
+
+app.get('/public/events', (req, res) => {
+  // get all public events here
+})
+
 app.get('/test', (req, res) => {
     db.selectAllFromTest((err, results) => {
     if (err) {

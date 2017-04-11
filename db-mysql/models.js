@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-// to run: mysql -u username -p database_name < file.sql
+// to run: mysql -u userName -p database_name < file.sql
 
 // Create functions that query the databases
 /* exampele querry
@@ -27,18 +27,37 @@ var queryName = function(cb) {
 
 // Queries related to getting user data for suggestion algorithm
 
-var getUserInterests = (username, cb) => {
-  connection.query(`SELECT name FROM interests INNER JOIN  users WHERE users.username = ${username};`, () => {
-
+var getUserInterests = (userName, cb) => {
+  connection.query(`SELECT name FROM interests INNER JOIN  users WHERE \ 
+    users.userName = ${userName};`, (err, results) => {
+      if (err) {
+        cb(err, null);
+      } else {
+        cb(null, results);
+      }
   });
 } 
 
-var getUserActivities = (username, cb) => {
-  connection.query(`SELECT name, category FROM activities INNER JOIN ___ INNER JOIN ___ WHERE users.username = ${username} \
-    asdfasdfasdf`)
+var getUserActivities = (userName, cb) => {
+  connection.query(`SELECT name, category FROM activities INNER JOIN ___ INNER JOIN ___ \ 
+    WHERE users.userName = ${userName} \ && `)
 
 } 
 
+var getAllUserVotes = (userName, cb) => {
+  connection.query(`SELECT  name, category FROM activites`)
+}
+
+var getAllEventComments = (eventName, cb) => {
+  connection.query(`SELECT * FROM comments __ JOIN WHERE event.name =\"${eventName}\" && \
+    event.id = comment.event_id`, (err, results) => {
+    if (err) {
+      cb(err, null);
+    } else {
+      cb(null, err);
+    }
+  });
+}
 
 // make join table  for interests/users and predefine choices for interests?
 
@@ -47,6 +66,25 @@ const addUserToDatabase = (user) => {
   const queryStr = 'INSERT INTO users SET ?';
   return db.queryAsync(queryStr, user);
 };
+
+var addUserToDatabaseFromLogin = (user) => {
+  var name = user.name;
+  var pic = user.pic;
+  var email = user. email;
+
+  connection.query('')
+}
+
+var getPublicEvents = (cb) => {
+  connection.query('SELECT * FROM events WHERE private = 0;', (err, results) => {
+    if (err) {
+      cb(err, null);
+    } else {
+      cb(null, results);
+    }
+  });
+}
+
 
 // Test models
 var selectAllFromTest = (cb) => {
@@ -64,7 +102,7 @@ var insertValueIntoTest = (val, cb) => {
       if (err) {
         cb(err, null);
       } else {
-        cb();
+        cb(null, results);
       }
     });
 };
