@@ -6,6 +6,7 @@ import Login from '../screens/Login';
 import Event from '../screens/Event';
 import FetchTest from '../screens/FetchTest';
 
+
 export const Tabs = TabNavigator({
   Login: {
     screen: Login,
