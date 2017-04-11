@@ -3,6 +3,7 @@ import ReactNative from 'react-native';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
+import 
 
 const {
   View,
@@ -19,7 +20,6 @@ class FetchTest extends Component {
     this.state = {
       homeText: 'PLACEHOLDER',
       yelpCall: [],
-      geoCall: 'unknown',
       googCall: [],
     };
 
@@ -28,15 +28,18 @@ class FetchTest extends Component {
   }
 
   getHome() {
-    fetch('https://hst-friend-ly.herokuapp.com/test')
+    fetch('https://hst-friend-ly-staging.herokuapp.com/test')
     .then((response) => response.json())
     .then((responseJson) => {
-      return responseJson;
+      this.props.getTestData(responseJson);
     })
     .catch((error) => {
       console.error(error);
     })
   }
+
+  add 
+
 
   getLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -54,7 +57,7 @@ class FetchTest extends Component {
           Click the buttons below to test out out connection
         </Text>
         <Text>
-
+          The first value in the database is: {this.props.testResults[this.props.testResults.length - 1].value}
         </Text>
         <Button
           title='Click to get text from homepage'

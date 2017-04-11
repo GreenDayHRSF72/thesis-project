@@ -1,6 +1,5 @@
 import * as types from '../actions/testData';
 
-
 export const testResults = function(state = [{id: 0, value: 'WUT IS THIS VALUE'}], action) {
 	switch (action.type) {
 		case 'GET_TEST_DATA':
