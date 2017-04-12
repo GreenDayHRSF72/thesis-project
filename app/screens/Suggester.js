@@ -39,8 +39,10 @@ const locationOptions = [
 
 const distanceOptions = [
   {text: 'I\'m too lazy to go anywhere else', value: 500},
-  {text: 'I don\'t mind a bit of a stroll', value: 1000},
-  {text: 'Let\'s go on an adventure!' , value: 2400}
+  {text: 'I don\'t mind a bit of a stroll', value: 2400},
+  {text: 'Let\'s go on an adventure!' , value: 8000},
+  {text: 'Better call an Uber!', value: 16000},
+  {text: 'Might as well run a marathon', value: 40000}
 ];
 
 const priceOptions = [
@@ -69,6 +71,7 @@ class Suggester extends Component {
       openNow: '',
       dislikes: [],
       findNew: false,
+      yelpLoading: false,
     };
 
     // bind all the things
@@ -78,9 +81,7 @@ class Suggester extends Component {
     this.queryYelp = this.queryYelp.bind(this);
     this.geocodeCoords = this.geocodeCoords.bind(this);
   }
-  componentDidMount() {
-    this.getCoords();
-  }
+
   getCoords(value) {
   var suggester = this;
   if (value === 1) {
@@ -149,11 +150,18 @@ class Suggester extends Component {
     Alert.alert(`You want to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`)
   }
 
+  // the below function is essentially the basis for the rest of the algorithm. What happens is the 
   queryYelp() {
+    var sug = this;
+    this.setState({
+      yelpLoading: true
+    });
     var address = this.state.address;
+    var radius = this.state.radius;
+    var price = this.state.budget;
     
-    var query = `term=restaurants&location=${address}`;
-
+    var query = `term=restaurants&location=${address}&radius=${radius}&price=${price}`;
+    
     fetch(`${baseURL}/suggestion`, {
       method: 'POST',
       headers: {
@@ -166,6 +174,7 @@ class Suggester extends Component {
     })
     .then((res) => res.json())
     .then((resJson) => {
+      sug.setState({yelpLoading: false});
       console.log(resJson);
       if (resJson.businesses.length === 0) {
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
@@ -174,11 +183,14 @@ class Suggester extends Component {
       }
     })
     .catch((error) => {
+      sug.setState({yelpLoading: false});
+      Alert.alert('There seems to be an error');
       console.log(error)
     })
   }
 
   render() {
+    if (this.state.yelpLoading === false) {
     return <ScrollView>
         <Text>
           {'\n'}
@@ -282,6 +294,16 @@ class Suggester extends Component {
           Powered by Google Maps, Yelp, and You!
         </Text>
       </ScrollView>
+    } else {
+      return <View>
+      <Text 
+        style={{textAlign: 'center', marginTop: 150}}
+      >
+        MY DUMB ALGORITHM IS CONNECTING TO THE YELP API AND YOUR DB-STORED INFORMATION
+        PLEASE WAIT; NOW YOU KNOW THE SECRET NOT SO IMPRESSIVE NOW IS IT?
+      </Text>
+      </View>
+    }
   }
 }
 
