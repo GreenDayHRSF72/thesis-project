@@ -52,6 +52,7 @@ app.post('/users', (req, res) => {
     console.log('hello err======>');
     res.send(err);
   });
+});
   // db.addUserToDatabase('', (err, results) => {
   //    if (err) {
   //     console.log(err);
