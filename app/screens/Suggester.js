@@ -23,13 +23,13 @@ const locationOptions = [
   {text: 'Please select an option below', value: 0},
   {text: 'Close to my current location', value: 1},
   {text: 'At another location', value: 2}
-]
+];
 
 const distanceOptions = [
   {text: 'I\'m too lazy to go anywhere else', value: 500},
   {text: 'I don\'t mind a bit of a stroll', value: 1000},
   {text: 'Let\'s go on an adventure!' , value: 2400}
-]
+];
 
 const priceOptions = [
   {text: 'I don\'t have much of a preference', value: '1,2,3,4'},
@@ -37,7 +37,12 @@ const priceOptions = [
   {text: 'Something reasonable would be nice', value: '1,2'},
   {text: 'I think I can splurge a little bit I suppose', value: '2,3'},
   {text: 'Let\'s make it rain! Treat Yo\'self!', value: '4'}
-]
+];
+
+const freshOptions = [
+  {text: 'I really don\'t care', value: false},
+  {text: 'I would prefer to try something new', value: true}
+];
 
 class Suggester extends Component {
   constructor(props) {
@@ -50,6 +55,7 @@ class Suggester extends Component {
       coords: {latitude: 0, longitude: 0},
       openNow: '',
       dislikes: [],
+      findNew: false,
     };
 
     // bind all the things
@@ -107,7 +113,7 @@ class Suggester extends Component {
         </Text>
         <Text>
           Don't know what to do for your hangout?
-          Just answer a few quick questions and we'll help you figure it out!{'\n'}
+          Just answer a few quick questions and we'll find something for you!{'\n'}
         </Text>
         <Text>
           Where do you want to go?
@@ -179,12 +185,12 @@ class Suggester extends Component {
           Are you looking to spice things up a bit?
         </Text>
         <PickerIOS
-          selectedValue={this.state.budget}
+          selectedValue={this.state.findNew}
           onValueChange={(value) => {
-            this.setState({budget: value})
+            this.setState({findNew: value})
           }}
         >
-          {priceOptions.map((option, index) => (
+          {freshOptions.map((option, index) => (
             <PickerIOS.Item
               key={index}
               value={option.value}
