@@ -101,7 +101,21 @@ class Suggester extends Component {
   }
 
   queryYelp() {
-    fetch('')
+
+    fetch('https://api.yelp.com/v3/businesses/search', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'x3QcdEQMOwKXj-1XI_KUrpaVHvGw6PFKtrCA7lt3RPAnPdDnpEuzfcGZoaWNLERaxivB4uA09qnMGoTi2HWFweXymIABaMFXKbN-01E5dEsoCG3quOnQTVdILqXtWHYx'
+      },
+    })
+    .then((res) => {
+      Alert.alert(res);
+    })
+    .catch((error) => {
+      Alert.alert('Error', JSON.stringify(error));
+    })
   }
 
   render() {
@@ -201,7 +215,7 @@ class Suggester extends Component {
 
         <Button
           title='Get my suggestions!'
-          onPress={this.alertState}
+          onPress={this.queryYelp}
         />
         <Text 
           style={{textAlign: 'center'}}
