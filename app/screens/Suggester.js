@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import Prompt from 'react-native-prompt';
 import Geocoder from 'react-native-geocoding';
+import Geocode from 'react-native-geocoder';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
@@ -31,6 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const locationOptions = [
+  {text: 'Guantanamo Bay, because you clearly dont want to have fun', value: 0},
   {text: 'Close to my current location', value: 1},
   {text: 'At another location', value: 2}
 ];
@@ -61,8 +63,9 @@ class Suggester extends Component {
       locationVisible: false,
       budget: '1,2,3,4',
       radius: 500,
-      location: 1,
-      coords: {latitude: 35.122, longitude: -122.4213},
+      location: 0,
+      coords: {latitude: 37.7876, longitude: -122.4001},
+      address:'Guantanamo bay',
       openNow: '',
       dislikes: [],
       findNew: false,
@@ -73,62 +76,83 @@ class Suggester extends Component {
     this.alertState = this.alertState.bind(this);
     this.geocodeLocation = this.geocodeLocation.bind(this);
     this.queryYelp = this.queryYelp.bind(this);
+    this.geocodeCoords = this.geocodeCoords.bind(this);
   }
-
+  componentDidMount() {
+    this.getCoords();
+  }
   getCoords(value) {
   var suggester = this;
   if (value === 1) {
       navigator.geolocation.getCurrentPosition((position) => {
-        suggester.setState({coords: {latitude: position.coords.latitude, longitude: position.coords.longitude}})
+        suggester.geocodeCoords(position.coords);
       })
+
     } else if (value === 2) {
 
       suggester.setState({locationVisible: true});
       // this will open up the address asker, which will then get your coords
-    }  
+    } else if (value === 0) {
+      suggerster.state.address = 'Guantanamo Bay';
+    }
   }
 
   geocodeLocation(submit) { 
     var suggester = this;
     Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
     Geocoder.getFromLocation(submit).then((json) => {
-      Alert.alert(JSON.stringify(json.results[0]))
       var location = json.results[0].geometry.location;
+      var address = json.results[0].formatted_address;
       // I'm assuming that coords are found here, so.... yeah...
       //come back and refactor it to default to another set of coords if neccesary
       suggester.setState({coords: {latitude: location.lat, longitude: location.lng}});
+      suggester.setState({address: address});
     }).catch((err) => {Alert.alert('Something went Wrong');});
   }
 
-  geocodeCoords() {
-    var suggester = this;
-    Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
-    Geocoder.getFrom(submit).then((json) => {
-      var location = json.results[0].geometry.location;
-      // I'm assuming that coords are found here, so.... yeah...
-      //come back and refactor it to default to another set of coords if neccesary
-      suggester.setState({coords: {latitude: location.lat, longitude: location.lng}});
-    }).catch((err) => {Alert.alert('Something went Wrong');});
+  // this function is designed to mitigate my major fuck up with getting the coordinates and thinking the yelp
+  //API would find them usefuio
+  geocodeCoords(coords) {
+    var sug = this;
+    var latlngString = `latlng=${coords.latitude},${coords.longitude}`;
+    var key = 'AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo';
+    console.log(`https://maps.googleapis.com/maps/api/geocode/json?${latlngString}&key=${key}`);
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?${latlngString}&key=${key}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => res.json())
+    .then((resJson) => {
+      console.log(resJson);
+      sug.setState({
+        address:resJson.results[0].formatted_address
+      })
+
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   getUserInfo() {
-
+    // do some shit if i finally get the fucking yelp API to let me use it
   }
 
   alertState() {
     var suggester = this;
-    var coords = JSON.stringify(suggester.state.coords.latitude) + ', ' + JSON.stringify(suggester.state.coords.longitude);
+    var address = JSON.stringify(suggester.state.address);
     var radius = JSON.stringify(suggester.state.radius);
     var price = JSON.stringify(suggester.state.budget);
-    Alert.alert(`You want to be within ${radius} meters of ${coords}\n You want to only spend ${price} out of 4`)
+    Alert.alert(`You want to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`)
   }
 
   queryYelp() {
-    var lat = this.state.coords.latitude.toString();
-    var lng = this.state.coords.longitude.toString();
-
-    var query = `term=restaurants&latitude=${lat}&longitude=${lng}`;
-    Alert.alert(query);
+    var address = this.state.address;
+    
+    var query = `term=restaurants&location=${address}`;
 
     fetch(`${baseURL}/suggestion`, {
       method: 'POST',
@@ -143,6 +167,11 @@ class Suggester extends Component {
     .then((res) => res.json())
     .then((resJson) => {
       console.log(resJson);
+      if (resJson.businesses.length === 0) {
+        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
+      } else {
+        Alert.alert(resJson.businesses[0].name + ' is where you should go')
+      }
     })
     .catch((error) => {
       console.log(error)
