@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../db-mysql/models.js');
-// const yelp = require('yelp-fusion-v3')
+const Yelp = require('node-yelp-fusion');
 const creds = require('../apis/config.js');
 
 const app = express();
@@ -38,8 +38,17 @@ app.get('/', (req, res) => {
 //   // get all public events here
 // })
 
-app.get('/suggestion', (req, res) => {
-  res.send('Hi there');
+app.post('/suggestion', (req, res) => {
+
+  const yelp = new Yelp({
+    id: 'bcAq_PONnTWUskQ8XgDMOw',
+    secret:'P1zj7M7burWhkMsOExoXT7jwe7d2S8FrhCR2bsFqKciBsnFfuHlsfWKDuLjQO19O'
+  })
+  yelp.search("term=Biriyani&location=New York")
+  .then((result) => {
+    console.log(result);
+    res.json(result);
+  })
 });
 
 

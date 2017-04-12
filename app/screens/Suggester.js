@@ -19,6 +19,8 @@ const {
 
 var PickerItemIOS = PickerIOS.Item;
 
+var baseURL;
+
 // allows for multiuse url
 if (process.env.NODE_ENV === 'production') {
   baseURL = 'https://hst-friend-ly.herokuapp.com';
@@ -113,14 +115,15 @@ class Suggester extends Component {
   queryYelp() {
     var coords = this.state.coords
     fetch(`${baseURL}/suggestion`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
     })
-    .then((res) => {
-      console.log(res);
+    .then((res) => res.json())
+    .then((resJson) => {
+      console.log(resJson);
     })
     .catch((error) => {
       console.log(error)
