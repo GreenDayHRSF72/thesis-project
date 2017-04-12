@@ -94,7 +94,7 @@ class Suggester extends Component {
       suggester.setState({locationVisible: true});
       // this will open up the address asker, which will then get your coords
     } else if (value === 0) {
-      suggerster.state.address = 'Guantanamo Bay';
+      suggester.state.address = 'Guantanamo Bay';
     }
   }
 
@@ -161,7 +161,7 @@ class Suggester extends Component {
     var price = this.state.budget;
     
     var query = `term=restaurants&location=${address}&radius=${radius}&price=${price}`;
-    
+    Alert.alert(query)
     fetch(`${baseURL}/suggestion`, {
       method: 'POST',
       headers: {
@@ -287,6 +287,13 @@ class Suggester extends Component {
         <Button
           title='Get my suggestions!'
           onPress={this.queryYelp}
+        />
+        <Button
+          title='Press me to view page state'
+          onPress={() => {
+            var sug = this;
+            Alert.alert(JSON.stringify(sug.state));
+          }}
         />
         <Text 
           style={{textAlign: 'center'}}
