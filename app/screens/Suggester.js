@@ -31,7 +31,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const locationOptions = [
-  {text: 'Please select an option below', value: 0},
   {text: 'Close to my current location', value: 1},
   {text: 'At another location', value: 2}
 ];
@@ -62,8 +61,8 @@ class Suggester extends Component {
       locationVisible: false,
       budget: '1,2,3,4',
       radius: 500,
-      location: 0,
-      coords: {latitude: 0, longitude: 0},
+      location: 1,
+      coords: {latitude: 35.122, longitude: -122.4213},
       openNow: '',
       dislikes: [],
       findNew: false,
@@ -93,6 +92,18 @@ class Suggester extends Component {
     var suggester = this;
     Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
     Geocoder.getFromLocation(submit).then((json) => {
+      Alert.alert(JSON.stringify(json.results[0]))
+      var location = json.results[0].geometry.location;
+      // I'm assuming that coords are found here, so.... yeah...
+      //come back and refactor it to default to another set of coords if neccesary
+      suggester.setState({coords: {latitude: location.lat, longitude: location.lng}});
+    }).catch((err) => {Alert.alert('Something went Wrong');});
+  }
+
+  geocodeCoords() {
+    var suggester = this;
+    Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
+    Geocoder.getFrom(submit).then((json) => {
       var location = json.results[0].geometry.location;
       // I'm assuming that coords are found here, so.... yeah...
       //come back and refactor it to default to another set of coords if neccesary
@@ -113,13 +124,21 @@ class Suggester extends Component {
   }
 
   queryYelp() {
-    var coords = this.state.coords
+    var lat = this.state.coords.latitude.toString();
+    var lng = this.state.coords.longitude.toString();
+
+    var query = `term=restaurants&latitude=${lat}&longitude=${lng}`;
+    Alert.alert(query);
+
     fetch(`${baseURL}/suggestion`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({
+        queryString: query
+      })
     })
     .then((res) => res.json())
     .then((resJson) => {
@@ -224,7 +243,6 @@ class Suggester extends Component {
             />
           ))}   
         </PickerIOS>
-
         <Button
           title='Get my suggestions!'
           onPress={this.queryYelp}

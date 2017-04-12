@@ -40,14 +40,21 @@ app.get('/', (req, res) => {
 
 app.post('/suggestion', (req, res) => {
 
+  var queryString = req.body.queryString;
+
+
   const yelp = new Yelp({
     id: 'bcAq_PONnTWUskQ8XgDMOw',
     secret:'P1zj7M7burWhkMsOExoXT7jwe7d2S8FrhCR2bsFqKciBsnFfuHlsfWKDuLjQO19O'
   })
-  yelp.search("term=Biriyani&location=New York")
-  .then((result) => {
-    console.log(result);
-    res.json(result);
+
+  yelp.search(queryString)
+  .then((results) => {
+    console.log(results);
+    res.json(results);
+  })
+  .catch((err) => {
+    res.sendStatus(500)
   })
 });
 
