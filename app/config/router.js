@@ -85,7 +85,7 @@ export const Tabs = TabNavigator({
     navigationOptions: {
       tabBar: {
         label: 'Suggester',
-        icon: ({ tintColor }) => <Icon name="account-circle" size={35} color={tintColor} />
+        icon: ({ tintColor }) => <Icon name="new-releases" size={35} color={tintColor} />
       },
     },
   },

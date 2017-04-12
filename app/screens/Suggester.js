@@ -20,21 +20,23 @@ const {
 var PickerItemIOS = PickerIOS.Item;
 
 const locationOptions = [
-  {text: '1 - Close to my current location', value: 1},
-  {text: '2 - At another location', value: 2}
+  {text: 'Please select an option below', value: 0},
+  {text: 'Close to my current location', value: 1},
+  {text: 'At another location', value: 2}
 ]
 
 const distanceOptions = [
-  {text: '1 - I\'m too lazy to go anywhere else', value: 500},
-  {text: '2 - I don\'t mind a bit of a stroll', value: 1000},
-  {text: '3 - Let\'s go on an adventure!' , value: 2400}
+  {text: 'I\'m too lazy to go anywhere else', value: 500},
+  {text: 'I don\'t mind a bit of a stroll', value: 1000},
+  {text: 'Let\'s go on an adventure!' , value: 2400}
 ]
 
 const priceOptions = [
-  {text: '1 - I\'m super broke right now!', value: 1},
-  {text: '2 - Something reasoble would be nice', value: 2},
-  {text: '3 - I think I can splurge a little bit I suppose', value: 3},
-  {text: '4 - Let\'s make it rain! Treat Yo\'self!', value: 4}
+  {text: 'I don\'t have much of a preference', value: '1,2,3,4'},
+  {text: 'I\'m super broke right now!', value: '1'},
+  {text: 'Something reasonable would be nice', value: '1,2'},
+  {text: 'I think I can splurge a little bit I suppose', value: '2,3'},
+  {text: 'Let\'s make it rain! Treat Yo\'self!', value: '4'}
 ]
 
 class Suggester extends Component {
@@ -42,10 +44,11 @@ class Suggester extends Component {
     super(props);
     this.state = {
       locationVisible: false,
-      budget: 1,
+      budget: '1,2,3,4',
       radius: 500,
-      location: 1,
+      location: 0,
       coords: {latitude: 0, longitude: 0},
+      openNow: '',
       dislikes: [],
     };
 
@@ -64,7 +67,7 @@ class Suggester extends Component {
     } else if (value === 2) {
 
       suggester.setState({locationVisible: true});
-
+      // this will open up the address asker, which will then get your coords
     }  
   }
 
@@ -100,6 +103,7 @@ class Suggester extends Component {
         <Text>
           {'\n'}
           Welcome to the Suggester!{'\n'}
+          INSERT AN IMAGE HERE AND MAKE SURE ITS FUN{'\n'}
         </Text>
         <Text>
           Don't know what to do for your hangout?
@@ -171,11 +175,33 @@ class Suggester extends Component {
             />
           ))}   
         </PickerIOS>
+         <Text>
+          Are you looking to spice things up a bit?
+        </Text>
+        <PickerIOS
+          selectedValue={this.state.budget}
+          onValueChange={(value) => {
+            this.setState({budget: value})
+          }}
+        >
+          {priceOptions.map((option, index) => (
+            <PickerIOS.Item
+              key={index}
+              value={option.value}
+              label={option.text}
+            />
+          ))}   
+        </PickerIOS>
 
         <Button
           title='Get my suggestions!'
           onPress={this.alertState}
         />
+        <Text 
+          style={{textAlign: 'center'}}
+        >
+          Powered by Google Maps, Yelp, and You!
+        </Text>
       </ScrollView>
   }
 }

@@ -112,18 +112,34 @@ CREATE TABLE IF NOT EXISTS activities (
 
 ALTER TABLE activities ADD FOREIGN KEY (event_id) REFERENCES events(id);
 
+INSERT INTO activities (name, category, description, event_id, mainActivity) 
+VALUES ('Mikkeler Bar', 'Bars', 'Get beers and eat sausage', 1, 1);
+INSERT INTO activities (name, category, description, event_id, mainActivity) 
+VALUES ('Sushiritto', 'Japanese', 'Get burritos before movie', 2, 1);
+INSERT INTO activities (name, category, description, event_id, mainActivity) 
+VALUES ('Gamestop', 'Electronics', 'Pick up video games for home', 3, 1);
+INSERT INTO activities (name, category, description, event_id, mainActivity) 
+VALUES ('Golden Gate Park Archery Field', 'Archery', 'Get beers and eat sausage maybe do some shooting', 4, 1);
+
 
 
 CREATE TABLE IF NOT EXISTS votes (
 	id  int  NOT NULL  AUTO_INCREMENT,
 	activity_id int NOT NULL,
 	user_id int NOT NULL,
-	vote int NOT NULL DEFAULT 0,
+	vote int NOT NULL DEFAULT 1,
 	PRIMARY KEY (id)
 );
 
 ALTER TABLE votes ADD FOREIGN KEY (activity_id) REFERENCES activities(id);
 ALTER TABLE votes ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+INSERT INTO votes (activity_id, user_id) VALUES (1, 1);
+INSERT INTO votes (activity_id, user_id) VALUES (2, 1);
+INSERT INTO votes (activity_id, user_id) VALUES (3, 2);
+INSERT INTO votes (activity_id, user_id) VALUES (4, 1);
+INSERT INTO votes (activity_id, user_id) VALUES (1, 2);
+
 
 CREATE TABLE IF NOT EXISTS comments (
 	id  int  NOT NULL  AUTO_INCREMENT,
