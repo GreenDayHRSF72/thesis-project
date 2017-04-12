@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import SocketIOClient from 'socket.io-client';
+// import SocketIOClient from 'socket.io-client';
 import {
   StyleSheet,
   View,
@@ -53,10 +53,10 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.responseInfoCallback = this.responseInfoCallback.bind(this);
-    this.socket = SocketIOClient(baseURL, { jsonp: false });
-    this.socket.on('news', (data) => {
-      console.log(data);
-    });
+    // this.socket = SocketIOClient(baseURL, { jsonp: false });
+    // this.socket.on('news', (data) => {
+    //   console.log(data);
+    // });
   }
 
   componentWillMount() {
@@ -112,7 +112,6 @@ class Login extends Component {
         console.error(err);
       });
 
-      this.socket.emit('user logged in', { username: this.props.user });
       //this.setState({ name: result.name, pic: result.picture.data.url });
     }
   }

@@ -5,6 +5,7 @@ const db = require('../db-mysql/models.js');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+let cSocket;
 
 const PORT = process.env.PORT || 5000;
 
@@ -13,25 +14,32 @@ const PORT = process.env.PORT || 5000;
 // deploy separate server for mobile
 app.use(bodyParser.json());
 
+io.on('connection', (socket) => {
+  cSocket = socket;
+  console.log('A client just joined on', socket.id);
+  cSocket.emit('news', { hi: 'there' });
+  // socket.emit('refresh feed', { activity: 'trying to send an activity to activity feed' });
+  // socket.on('user logged in', (data) => {
+  //   console.log(data);
+  // });
+});
+
+
 app.get('/', (req, res) => {
   res.send('you have reached the home page');
 });
 
 // for testing out our database
 
-app.get('/public/events', (req, res) => {
-  // get all public events here
-})
-
 app.get('/test', (req, res) => {
-    db.selectAllFromTest((err, results) => {
+  db.selectAllFromTest((err, results) => {
     if (err) {
       console.log(err);
       res.send(err);
     } else {
       res.json(results);
     }
-  })
+  });
 });
 
 app.post('/test', (req, res) =>{
@@ -52,6 +60,7 @@ app.post('/users', (req, res) => {
   .then((results) => {
     console.log(results);
     res.send('insert into users table successful');
+    cSocket.emit('refresh feed', { activity: `${req.body.username}  is logged in`, authorImage: req.body.photourl });
   })
   .catch((err) => {
     console.log('hello err======>');
@@ -72,16 +81,6 @@ app.get('/users/:email', (req, res) => {
     res.send(err);
   });
 });
-
-io.on('connection', (socket) => {
-  console.log('A client just joined on', socket.id);
-  socket.emit('news', { hi: 'there' });
-  socket.emit('refresh feed', { activity: 'trying to send an activity to activity feed' });
-  socket.on('user logged in', (data) => {
-    console.log(data);
-  });
-});
-
 
 
 http.listen(PORT, () => {

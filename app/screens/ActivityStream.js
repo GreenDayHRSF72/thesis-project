@@ -18,20 +18,18 @@ if (process.env.NODE_ENV === 'production') {
 const {
   View,
   Text,
-  TouchableHighlight,
+  Image,
 } = ReactNative;
 
 
 class ActivityStream extends Component {
   constructor(props) {
     super(props);
-    this.state = { activities: [], current: '' };
+    this.state = { activities: [], current: '', currentImg: '' };
     this.socket = SocketIOClient(baseURL, { jsonp: false });
     this.socket.on('refresh feed', (data) => {
-      console.log('data received', data);
       this.state.activities.push(data);
-      this.setState({ current: this.state.activities[0].activity });
-      console.log('state of activities after push', this.state);
+      this.setState({ current: this.state.activities[this.state.activities.length - 1].activity, currentImg: this.state.activities[this.state.activities.length - 1].authorImage });
     });
   }
 
@@ -39,6 +37,10 @@ class ActivityStream extends Component {
     return this.state.activities.map((item, i) => {
       return (
         <View key={i} style={{ borderWidth: 1, borderRadius: 5, padding: 20 }}>
+          <Image
+            style={{ width: 40, height: 40, borderRadius: 20 }}
+            source={{ uri: item.authorImage }}
+          />
           <Text>{item.activity}</Text>
         </View>
       );
@@ -46,12 +48,14 @@ class ActivityStream extends Component {
   }
 
   render() {
-    return <View>
-      <Text style={{ marginTop: 20, textAlign: 'center' }}>
-        this is the live feed for testing!
-      </Text>
-      {this.createFeed()}
-    </View>;
+    return (
+      <View>
+        <Text style={{ marginTop: 20, textAlign: 'center' }}>
+          this is the live feed for testing!
+        </Text>
+        {this.createFeed()}
+      </View>
+    );
   }
 }
 
