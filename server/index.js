@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../db-mysql/models.js');
+const Yelp = require('node-yelp-fusion');
+const creds = require('../apis/config.js');
 
 const app = express();
 const http = require('http').Server(app);
@@ -26,10 +28,36 @@ io.on('connection', (socket) => {
 
 
 app.get('/', (req, res) => {
-  res.send('you have reached the home page');
+  res.json('you have reached the home page');
 });
 
 // for testing out our database
+
+
+// app.get('/public/events', (req, res) => {
+//   // get all public events here
+// })
+
+app.post('/suggestion', (req, res) => {
+
+  var queryString = req.body.queryString;
+
+
+  const yelp = new Yelp({
+    id: 'bcAq_PONnTWUskQ8XgDMOw',
+    secret:'P1zj7M7burWhkMsOExoXT7jwe7d2S8FrhCR2bsFqKciBsnFfuHlsfWKDuLjQO19O'
+  })
+
+  yelp.search(queryString)
+  .then((results) => {
+    console.log(results);
+    res.json(results);
+  })
+  .catch((err) => {
+    res.sendStatus(500)
+  })
+});
+
 
 app.get('/test', (req, res) => {
   db.selectAllFromTest((err, results) => {

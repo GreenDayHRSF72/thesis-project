@@ -165,7 +165,6 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 
-
 /* Live feed items table
 	- author of the event
 	cont need to show the mess

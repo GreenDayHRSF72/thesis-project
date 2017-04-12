@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import Prompt from 'react-native-prompt';
 import Geocoder from 'react-native-geocoding';
+import Geocode from 'react-native-geocoder';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
@@ -19,17 +20,30 @@ const {
 
 var PickerItemIOS = PickerIOS.Item;
 
+var baseURL;
+
+// allows for multiuse url
+if (process.env.NODE_ENV === 'production') {
+  baseURL = 'https://hst-friend-ly.herokuapp.com';
+} else if (process.env.NODE_ENV === 'staging') {
+  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
+} else {
+  baseURL = 'http://127.0.0.1:5000';
+}
+
 const locationOptions = [
-  {text: 'Please select an option below', value: 0},
+  {text: 'Guantanamo Bay, because you clearly dont want to have fun', value: 0},
   {text: 'Close to my current location', value: 1},
   {text: 'At another location', value: 2}
-]
+];
 
 const distanceOptions = [
   {text: 'I\'m too lazy to go anywhere else', value: 500},
-  {text: 'I don\'t mind a bit of a stroll', value: 1000},
-  {text: 'Let\'s go on an adventure!' , value: 2400}
-]
+  {text: 'I don\'t mind a bit of a stroll', value: 2400},
+  {text: 'Let\'s go on an adventure!' , value: 8000},
+  {text: 'Better call an Uber!', value: 16000},
+  {text: 'Might as well run a marathon', value: 40000}
+];
 
 const priceOptions = [
   {text: 'I don\'t have much of a preference', value: '1,2,3,4'},
@@ -37,7 +51,12 @@ const priceOptions = [
   {text: 'Something reasonable would be nice', value: '1,2'},
   {text: 'I think I can splurge a little bit I suppose', value: '2,3'},
   {text: 'Let\'s make it rain! Treat Yo\'self!', value: '4'}
-]
+];
+
+const freshOptions = [
+  {text: 'I really don\'t care', value: false},
+  {text: 'I would prefer to try something new', value: true}
+];
 
 class Suggester extends Component {
   constructor(props) {
@@ -47,28 +66,36 @@ class Suggester extends Component {
       budget: '1,2,3,4',
       radius: 500,
       location: 0,
-      coords: {latitude: 0, longitude: 0},
+      coords: {latitude: 37.7876, longitude: -122.4001},
+      address:'Guantanamo bay',
       openNow: '',
       dislikes: [],
+      findNew: false,
+      yelpLoading: false,
     };
 
     // bind all the things
     this.getCoords = this.getCoords.bind(this);
     this.alertState = this.alertState.bind(this);
     this.geocodeLocation = this.geocodeLocation.bind(this);
+    this.queryYelp = this.queryYelp.bind(this);
+    this.geocodeCoords = this.geocodeCoords.bind(this);
   }
 
   getCoords(value) {
   var suggester = this;
   if (value === 1) {
       navigator.geolocation.getCurrentPosition((position) => {
-        suggester.setState({coords: {latitude: position.coords.latitude, longitude: position.coords.longitude}})
+        suggester.geocodeCoords(position.coords);
       })
+
     } else if (value === 2) {
 
       suggester.setState({locationVisible: true});
       // this will open up the address asker, which will then get your coords
-    }  
+    } else if (value === 0) {
+      suggester.state.address = 'Guantanamo Bay';
+    }
   }
 
   geocodeLocation(submit) { 
@@ -76,29 +103,94 @@ class Suggester extends Component {
     Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
     Geocoder.getFromLocation(submit).then((json) => {
       var location = json.results[0].geometry.location;
+      var address = json.results[0].formatted_address;
       // I'm assuming that coords are found here, so.... yeah...
       //come back and refactor it to default to another set of coords if neccesary
       suggester.setState({coords: {latitude: location.lat, longitude: location.lng}});
+      suggester.setState({address: address});
     }).catch((err) => {Alert.alert('Something went Wrong');});
   }
 
-  getUserInfo() {
+  // this function is designed to mitigate my major fuck up with getting the coordinates and thinking the yelp
+  //API would find them usefuio
+  geocodeCoords(coords) {
+    var sug = this;
+    var latlngString = `latlng=${coords.latitude},${coords.longitude}`;
+    var key = 'AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo';
+    console.log(`https://maps.googleapis.com/maps/api/geocode/json?${latlngString}&key=${key}`);
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?${latlngString}&key=${key}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => res.json())
+    .then((resJson) => {
+      console.log(resJson);
+      sug.setState({
+        address:resJson.results[0].formatted_address
+      })
 
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  getUserInfo() {
+    // do some shit if i finally get the fucking yelp API to let me use it
   }
 
   alertState() {
     var suggester = this;
-    var coords = JSON.stringify(suggester.state.coords.latitude) + ', ' + JSON.stringify(suggester.state.coords.longitude);
+    var address = JSON.stringify(suggester.state.address);
     var radius = JSON.stringify(suggester.state.radius);
     var price = JSON.stringify(suggester.state.budget);
-    Alert.alert(`You want to be within ${radius} meters of ${coords}\n You want to only spend ${price} out of 4`)
+    Alert.alert(`You want to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`)
   }
 
+  // the below function is essentially the basis for the rest of the algorithm. What happens is the 
   queryYelp() {
-    fetch('')
+    var sug = this;
+    this.setState({
+      yelpLoading: true
+    });
+    var address = this.state.address;
+    var radius = this.state.radius;
+    var price = this.state.budget;
+    
+    var query = `term=restaurants&location=${address}&radius=${radius}&price=${price}`;
+    Alert.alert(query)
+    fetch(`${baseURL}/suggestion`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        queryString: query
+      })
+    })
+    .then((res) => res.json())
+    .then((resJson) => {
+      sug.setState({yelpLoading: false});
+      console.log(resJson);
+      if (resJson.businesses.length === 0) {
+        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
+      } else {
+        Alert.alert(resJson.businesses[0].name + ' is where you should go')
+      }
+    })
+    .catch((error) => {
+      sug.setState({yelpLoading: false});
+      Alert.alert('There seems to be an error');
+      console.log(error)
+    })
   }
 
   render() {
+    if (this.state.yelpLoading === false) {
     return <ScrollView>
         <Text>
           {'\n'}
@@ -107,7 +199,7 @@ class Suggester extends Component {
         </Text>
         <Text>
           Don't know what to do for your hangout?
-          Just answer a few quick questions and we'll help you figure it out!{'\n'}
+          Just answer a few quick questions and we'll find something for you!{'\n'}
         </Text>
         <Text>
           Where do you want to go?
@@ -179,12 +271,12 @@ class Suggester extends Component {
           Are you looking to spice things up a bit?
         </Text>
         <PickerIOS
-          selectedValue={this.state.budget}
+          selectedValue={this.state.findNew}
           onValueChange={(value) => {
-            this.setState({budget: value})
+            this.setState({findNew: value})
           }}
         >
-          {priceOptions.map((option, index) => (
+          {freshOptions.map((option, index) => (
             <PickerIOS.Item
               key={index}
               value={option.value}
@@ -192,10 +284,16 @@ class Suggester extends Component {
             />
           ))}   
         </PickerIOS>
-
         <Button
           title='Get my suggestions!'
-          onPress={this.alertState}
+          onPress={this.queryYelp}
+        />
+        <Button
+          title='Press me to view page state'
+          onPress={() => {
+            var sug = this;
+            Alert.alert(JSON.stringify(sug.state));
+          }}
         />
         <Text 
           style={{textAlign: 'center'}}
@@ -203,6 +301,16 @@ class Suggester extends Component {
           Powered by Google Maps, Yelp, and You!
         </Text>
       </ScrollView>
+    } else {
+      return <View>
+      <Text 
+        style={{textAlign: 'center', marginTop: 150}}
+      >
+        MY DUMB ALGORITHM IS CONNECTING TO THE YELP API AND YOUR DB-STORED INFORMATION
+        PLEASE WAIT; NOW YOU KNOW THE SECRET NOT SO IMPRESSIVE NOW IS IT?
+      </Text>
+      </View>
+    }
   }
 }
 

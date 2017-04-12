@@ -13,6 +13,7 @@
     "express": "^4.15.2",
     "jquery": "^3.2.1",
     "mysql": "^2.13.0",
+    "node-yelp-fusion": "^1.0.4",
     "nodemon": "^1.11.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.2",
@@ -30,7 +31,9 @@
     "redux-thunk": "^2.2.0",
     "sequelize": "^3.30.4",
     "socket.io": "^1.7.3",
-    "socket.io-client": "^1.7.3"
+    "socket.io-client": "^1.7.3",
+    "yelp-fusion": "^1.0.3",
+    "yelp-fusion-v3": "0.0.8"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",
