@@ -30,7 +30,9 @@
     "redux-thunk": "^2.2.0",
     "sequelize": "^3.30.4",
     "socket.io": "^1.7.3",
-    "socket.io-client": "^1.7.3"
+    "socket.io-client": "^1.7.3",
+    "yelp-fusion": "^1.0.3",
+    "yelp-fusion-v3": "0.0.8"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",

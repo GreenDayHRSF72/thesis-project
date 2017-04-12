@@ -19,6 +19,15 @@ const {
 
 var PickerItemIOS = PickerIOS.Item;
 
+// allows for multiuse url
+if (process.env.NODE_ENV === 'production') {
+  baseURL = 'https://hst-friend-ly.herokuapp.com';
+} else if (process.env.NODE_ENV === 'staging') {
+  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
+} else {
+  baseURL = 'http://127.0.0.1:5000';
+}
+
 const locationOptions = [
   {text: 'Please select an option below', value: 0},
   {text: 'Close to my current location', value: 1},
@@ -62,6 +71,7 @@ class Suggester extends Component {
     this.getCoords = this.getCoords.bind(this);
     this.alertState = this.alertState.bind(this);
     this.geocodeLocation = this.geocodeLocation.bind(this);
+    this.queryYelp = this.queryYelp.bind(this);
   }
 
   getCoords(value) {
@@ -101,20 +111,19 @@ class Suggester extends Component {
   }
 
   queryYelp() {
-
-    fetch('https://api.yelp.com/v3/businesses/search', {
+    var coords = this.state.coords
+    fetch(`${baseURL}/suggestion`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'x3QcdEQMOwKXj-1XI_KUrpaVHvGw6PFKtrCA7lt3RPAnPdDnpEuzfcGZoaWNLERaxivB4uA09qnMGoTi2HWFweXymIABaMFXKbN-01E5dEsoCG3quOnQTVdILqXtWHYx'
+        'Content-Type': 'application/json'
       },
     })
     .then((res) => {
-      Alert.alert(res);
+      console.log(res);
     })
     .catch((error) => {
-      Alert.alert('Error', JSON.stringify(error));
+      console.log(error)
     })
   }
 

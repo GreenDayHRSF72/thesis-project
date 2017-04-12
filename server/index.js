@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../db-mysql/models.js');
+// const yelp = require('yelp-fusion-v3')
+const creds = require('../apis/config.js');
 
 const app = express();
 const http = require('http').Server(app);
@@ -26,10 +28,20 @@ io.on('connection', (socket) => {
 
 
 app.get('/', (req, res) => {
-  res.send('you have reached the home page');
+  res.json('you have reached the home page');
 });
 
 // for testing out our database
+
+
+// app.get('/public/events', (req, res) => {
+//   // get all public events here
+// })
+
+app.get('/suggestion', (req, res) => {
+  res.send('Hi there');
+});
+
 
 app.get('/test', (req, res) => {
   db.selectAllFromTest((err, results) => {
