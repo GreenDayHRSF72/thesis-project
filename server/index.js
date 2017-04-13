@@ -55,34 +55,7 @@ app.post('/suggestion/yelp', (req, res) => {
     res.json(results);
   })
   .catch((err) => {
-    res.sendStatus(500)
-  })
-});
-
-
-
-app.get('/test', (req, res) => {
-  db.selectAllFromTest((err, results) => {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-app.post('/test', (req, res) =>{
-  var value = req.body.value;
-  db.insertValueIntoTest(value , (err, value) => {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.send('insert into test table successful');
-    }
-  .catch(() => {
-    res.sendStatus(500);
+    res.sendStatus(500, JSON.stringify(err));
   });
 });
 
