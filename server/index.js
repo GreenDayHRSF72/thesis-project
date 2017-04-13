@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 //   // get all public events here
 // })
 
-app.post('/suggestion', (req, res) => {
+app.post('/suggestion/yelp', (req, res) => {
   const queryString = req.body.queryString;
   const yelp = new Yelp({
     id: 'bcAq_PONnTWUskQ8XgDMOw',
@@ -84,6 +84,12 @@ app.post('/test', (req, res) =>{
   .catch(() => {
     res.sendStatus(500);
   });
+});
+
+app.post('suggestion/pastactivities', (req, res) => {
+  const userEmail = req.body.email;
+
+  res.json('you successfully got to the endpoint')
 });
 
 app.post('/users', (req, res) => {

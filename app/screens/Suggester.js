@@ -145,13 +145,13 @@ class Suggester extends Component {
     const address = this.state.address;
     const radius = this.state.radius;
     const price = this.state.budget;
-    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50`;
+    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50$sortby=distance`;
 
     this.setState({
       yelpLoading: true,
     });
 
-    fetch(`${baseURL}/suggestion`, {
+    fetch(`${baseURL}/suggestion/yelp`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -167,8 +167,7 @@ class Suggester extends Component {
       // console.log(resJson);
       if (resJson.businesses.length === 0) {
         sug.props.getYelp(resJson.businesses);
-
-        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!ß');
+        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
       } else {
         this.props.getYelp(resJson.businesses);
         Alert.alert(`we have ${sug.props.yelpResults.length}`);
