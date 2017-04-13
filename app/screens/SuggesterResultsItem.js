@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import Prompt from 'react-native-prompt';
+import Geocoder from 'react-native-geocoding';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
@@ -9,13 +10,10 @@ const {
   View,
   Text,
   Button,
-  PickerIOS,
-  ScrollView,
   Alert,
-  ListView,
 } = ReactNative;
 
-const PickerItemIOS = PickerIOS.Item;
+
 let baseURL;
 
 // allows for multiuse url
@@ -27,25 +25,24 @@ if (process.env.NODE_ENV === 'production') {
   baseURL = 'http://127.0.0.1:5000';
 }
 
-class SuggesterResults extends Component {
+class SuggesterResultsItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: this.props.yelpResults
+
     };
   }
 
   render() {
-      return (<ScrollView>
+      return (<View>
         <Text>
+        {'\n'}
         Here are our top suggestions for you!
+        {this.props.yelpResults.map((result) => {
+          result.name
+        })}
         </Text>
-        <ListView
-            enableEmptySections={true}
-            dataSource={this.props.yelpResults}
-            renderRow={rowData => <Text>{rowData.name}</Text>}
-          />
-      </ScrollView>)
+      </View>)
   }
 }
 
@@ -57,4 +54,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuggesterResults);
+export default SuggesterResultsItem;
