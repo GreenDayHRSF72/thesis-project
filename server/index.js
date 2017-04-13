@@ -1,12 +1,17 @@
 const express = require('express');
+
 const bodyParser = require('body-parser');
+
 const db = require('../db-mysql/models.js');
+
 const Yelp = require('node-yelp-fusion');
-const creds = require('../apis/config.js');
 
 const app = express();
+
 const http = require('http').Server(app);
+
 const io = require('socket.io')(http);
+
 let cSocket;
 
 const PORT = process.env.PORT || 5000;
@@ -39,18 +44,14 @@ app.get('/', (req, res) => {
 // })
 
 app.post('/suggestion', (req, res) => {
-
-  var queryString = req.body.queryString;
-
-
+  const queryString = req.body.queryString;
   const yelp = new Yelp({
     id: 'bcAq_PONnTWUskQ8XgDMOw',
-    secret:'P1zj7M7burWhkMsOExoXT7jwe7d2S8FrhCR2bsFqKciBsnFfuHlsfWKDuLjQO19O'
-  })
+    secret: 'P1zj7M7burWhkMsOExoXT7jwe7d2S8FrhCR2bsFqKciBsnFfuHlsfWKDuLjQO19O',
+  });
 
   yelp.search(queryString)
   .then((results) => {
-    console.log(results);
     res.json(results);
   })
   .catch((err) => {
@@ -80,6 +81,8 @@ app.post('/test', (req, res) =>{
     } else {
       res.send('insert into test table successful');
     }
+  .catch(() => {
+    res.sendStatus(500);
   });
 });
 
@@ -143,5 +146,5 @@ io.on('connection', (socket) => {
 
 
 http.listen(PORT, () => {
-	console.log(`Listening to web server on port ${PORT}`);
+  console.log(`Listening to web server on port ${PORT}`);
 });
