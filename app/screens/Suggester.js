@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import Prompt from 'react-native-prompt';
 import Geocoder from 'react-native-geocoding';
-import Geocode from 'react-native-geocoder';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
-import { bindActionCreators } from 'redux';
+
 
 const {
   View,
   Text,
-  TouchableHighlight,
-  Button, 
-  TextInput,
+  Button,
   PickerIOS,
   ScrollView,
   Alert,
@@ -143,24 +141,24 @@ class Suggester extends Component {
   }
 
   alertState() {
-    var suggester = this;
-    var address = JSON.stringify(suggester.state.address);
-    var radius = JSON.stringify(suggester.state.radius);
-    var price = JSON.stringify(suggester.state.budget);
+    const suggester = this;
+    const address = JSON.stringify(suggester.state.address);
+    const radius = JSON.stringify(suggester.state.radius);
+    const price = JSON.stringify(suggester.state.budget);
     Alert.alert(`You want to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`)
   }
 
   // the below function is essentially the basis for the rest of the algorithm. What happens is the 
   queryYelp() {
-    var sug = this;
+    const sug = this;
     this.setState({
       yelpLoading: true
     });
-    var address = this.state.address;
-    var radius = this.state.radius;
-    var price = this.state.budget;
+    const address = this.state.address;
+    const radius = this.state.radius;
+    const price = this.state.budget;
     
-    var query = `term=restaurants&location=${address}&radius=${radius}&price=${price}`;
+    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50`;
     Alert.alert(query)
     fetch(`${baseURL}/suggestion`, {
       method: 'POST',
@@ -182,7 +180,7 @@ class Suggester extends Component {
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again!ß');
       } else {
         this.props.getYelp(resJson.businesses);
-        Alert.alert(`we have ${sug.props}`)
+        Alert.alert(`we have ${sug.props.yelpResults.length}`)
       }
     })
     .catch((error) => {

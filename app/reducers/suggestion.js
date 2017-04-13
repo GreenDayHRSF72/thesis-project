@@ -1,10 +1,10 @@
-inport * as types from '../actions/types';
+import * as types from '../actions/types';
 
 export const yelpResults = function (state = [], action) {
-	switch (action.type) {
-		case 'GET_YELP':
-			return action.payload;
+  switch (action.type) {
+    case 'GET_YELP':
+      return action.payload;
     default:
-      return state; 
-	}
-}
+      return state;
+  }
+};

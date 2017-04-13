@@ -33,14 +33,14 @@ class FetchTest extends Component {
 
   getHome() {
     fetch('https://hst-friend-ly-staging.herokuapp.com/test')
-    .then((response) => response.json())
+    .then(response => response.json())
     .then((responseJson) => {
-      Alert.alert('Got')
+      Alert.alert('Got');
       this.props.getTestData(responseJson);
     })
     .catch((error) => {
-      console.error(error);
-    })
+      Alert.alert(error);
+    });
   }
 
   // fetchFromYelp() {
@@ -49,12 +49,19 @@ class FetchTest extends Component {
   //   })
   // }
 
+  getLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.props.getGeolocation(position.coords);
+      },
+    );
+  }
   addToTest() {
-    var screen = this;
+    const screen = this;
     fetch('https://hst-friend-ly-staging.herokuapp.com/test', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -68,16 +75,6 @@ class FetchTest extends Component {
       console.log(err)
     })
   }
-
-
-  getLocation() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.props.getGeolocation(position.coords);
-      }
-    )
-  }
-
 
 
   render() {

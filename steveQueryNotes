@@ -1,0 +1,4 @@
+select events.name, events.description from events inner join users where users.email= && users.id=events.creator_id && events.active=0;
+
+// should get all the names and descriptions of events that have been attended 
+	- application if you want to be able to check descriptions and names for event types to get suggestions 
