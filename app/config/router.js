@@ -9,6 +9,7 @@ import AddFriends from '../screens/AddFriends';
 import Suggester from '../screens/Suggester';
 import EventsItem from '../screens/EventsItem';
 import EventsList from '../screens/EventsList';
+import SuggesterResults from '../screens/SuggesterResults';
 
 export const eventStack = StackNavigator({
   Event: {
@@ -37,6 +38,21 @@ export const currentEvents = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: navigation.state.params.name.toUpperCase(),
     }),
+  },
+});
+
+export const SuggesterStack = StackNavigator({
+  Suggester: {
+    screen: Suggester,
+    navigationOptions: {
+      title: 'Suggester',
+    },
+  },
+  SuggesterResults: {
+    screen: SuggesterResults,
+    navigatorOptions: {
+      title: 'Suggester Results',
+    },
   },
 });
 
@@ -71,7 +87,7 @@ export const Tabs = TabNavigator({
     },
   },
   Suggester: {
-    screen: Suggester,
+    screen: SuggesterStack,
     navigationOptions: {
       tabBarLabel: 'Suggester',
       tabBarIcon: ({ tintColor }) => <Icon name="new-releases" size={35} color={tintColor} />

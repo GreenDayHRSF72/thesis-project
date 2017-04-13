@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
   baseURL = 'http://127.0.0.1:5000';
 }
 
-class Suggester extends Component {
+class SuggesterResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,11 +36,11 @@ class Suggester extends Component {
   }
 
   render() {
-    if (this.state.yelpLoading === false) {
       return (<ScrollView>
-        
-      </ScrollView>);
-    }
+        <Text>
+        {this.props.yelpResults.length}
+        </Text>
+      </ScrollView>)
   }
 }
 

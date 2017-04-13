@@ -145,7 +145,7 @@ class Suggester extends Component {
     const address = this.state.address;
     const radius = this.state.radius;
     const price = this.state.budget;
-    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50$sortby=distance`;
+    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50&sortby=distance`;
 
     this.setState({
       yelpLoading: true,
@@ -169,12 +169,13 @@ class Suggester extends Component {
         sug.props.getYelp(resJson.businesses);
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
       } else {
-        this.props.getYelp(resJson.businesses);
-        Alert.alert(`we have ${sug.props.yelpResults.length}`);
+        sug.props.getYelp(resJson.businesses);
+        sug.props.navigation.navigate('SuggesterResults');
       }
     })
     .catch((error) => {
       sug.setState({ yelpLoading: false });
+      console.log(error);
       Alert.alert('There seems to be an error', JSON.stringify(error));
       // console.log(error);
     });

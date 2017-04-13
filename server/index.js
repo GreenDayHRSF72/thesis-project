@@ -55,7 +55,7 @@ app.post('/suggestion/yelp', (req, res) => {
     res.json(results);
   })
   .catch((err) => {
-    res.sendStatus(500, JSON.stringify(err));
+    res.sendStatus(500);
   });
 });
 
