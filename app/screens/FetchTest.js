@@ -43,11 +43,11 @@ class FetchTest extends Component {
     })
   }
 
-  fetchFromYelp() {
-    fetch('https://api.yelp.com/v3/businesses/search',{
-      headers
-    })
-  }
+  // fetchFromYelp() {
+  //   fetch('https://api.yelp.com/v3/businesses/search',{
+  //     headers
+  //   })
+  // }
 
   addToTest() {
     var screen = this;

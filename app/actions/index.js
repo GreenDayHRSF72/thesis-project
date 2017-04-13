@@ -4,4 +4,4 @@ import * as EventActions from './event';
 import * as TestActions from './testData';
 import * as SuggestionActions from './suggestion';
 
-export const ActionCreators = Object.assign({}, CounterActions, UserActions, EventActions, TestActions, Suggestion Actions);
+export const ActionCreators = Object.assign({}, CounterActions, UserActions, EventActions, TestActions, SuggestionActions);

@@ -177,9 +177,12 @@ class Suggester extends Component {
       sug.setState({yelpLoading: false});
       console.log(resJson);
       if (resJson.businesses.length === 0) {
-        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
+        sug.props.getYelp(resJson.businesses)
+
+        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!ß');
       } else {
-        Alert.alert(resJson.businesses[0].name + ' is where you should go')
+        this.props.getYelp(resJson.businesses);
+        Alert.alert(`we have ${sug.props}`)
       }
     })
     .catch((error) => {
@@ -298,7 +301,7 @@ class Suggester extends Component {
         <Text 
           style={{textAlign: 'center'}}
         >
-          Powered by Google Maps, Yelp, and You!
+
         </Text>
       </ScrollView>
     } else {
@@ -314,4 +317,12 @@ class Suggester extends Component {
   }
 }
 
-export default Suggester;
+function mapStateToProps(state) {
+  return {yelpResults: state.yelpResults};
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (Suggester);
