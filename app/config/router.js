@@ -4,7 +4,6 @@ import { Icon } from 'react-native-elements';
 import Me from '../screens/Me';
 import Login from '../screens/Login';
 import Event from '../screens/Event';
-import FetchTest from '../screens/FetchTest';
 import ActivityStream from '../screens/ActivityStream';
 import AddFriends from '../screens/AddFriends';
 import Suggester from '../screens/Suggester';
@@ -63,22 +62,7 @@ export const Tabs = TabNavigator({
       tabBarIcon: ({ tintColor }) => <Icon type="font-awesome" name="group" size={25} color={tintColor} />
     },
   },
-  FetchTest: {
-    screen: FetchTest,
-    navigationOptions: {
-      tabBarLabel: 'Test',
-      tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={35} color={tintColor} />
-    },
-  },
-  // AddFriends: {
-  //   screen: AddFriends,
-  //   navigationOptions: {
-  //     tabBar: {
-  //       visible: false,
-  //       showIcon: false,
-  //     },
-  //   },
-  // },
+
   Feed: {
     screen: ActivityStream,
     navigationOptions: {
