@@ -102,7 +102,7 @@ var insertValueIntoTest = (val, cb) => {
       } else {
         cb(null, results);
       }
-    });
+  });
 };
 
 
@@ -112,4 +112,5 @@ module.exports = {
   addUserToDatabase,
   getUserByEmail,
   addEvent,
+  getPublicEvents,
 };

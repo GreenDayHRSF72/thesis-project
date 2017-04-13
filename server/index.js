@@ -120,6 +120,17 @@ app.get('/users/:email', (req, res) => {
   });
 });
 
+app.get('/events', (req, res) => {
+  db.getPublicEvents((err, results) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
 
 io.on('connection', (socket) => {
   console.log('A client just joined on', socket.id);

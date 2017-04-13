@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ReactNative from 'react-native';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import EventsList from './EventsList';
 
 const {
   View,
@@ -26,7 +27,8 @@ class Me extends Component {
         <TouchableHighlight onPress={() => {this.props.addCount() }}>
           <Text>click to add</Text>
         </TouchableHighlight>
-      </View>
+      <EventsList />
+    </View>;
   }
 }
 
