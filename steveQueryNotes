@@ -1,4 +1,12 @@
-select events.name, events.description from events inner join users where users.email= && users.id=events.creator_id && events.active=0;
+select events.name, events.description from events inner join users where users.email="emaill submitted" && users.id=events.creator_id && events.active=0;
 
-// should get all the names and descriptions of events that have been attended 
+// should get all the names and descriptions of events that have been attended in the past
 	- application if you want to be able to check descriptions and names for event types to get suggestions 
+
+select activites.name, activities.category from activities inner join users inner join participants inner join events where users.email={current users email} && users.id = participants.user_id;
+
+// note: this results in having multiple entries of the same row? FIX ME TOMORROW?
+// application get this inforamtatiom 
+
+
+ 
