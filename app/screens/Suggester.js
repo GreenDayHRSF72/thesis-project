@@ -86,6 +86,8 @@ class Suggester extends Component {
     this.queryYelp = this.queryYelp.bind(this);
     this.geocodeCoords = this.geocodeCoords.bind(this);
     this.getAllUserInfo = this.getAllUserInfo.bind(this);
+    this.getDislike = this.getDislike.bind(this);
+    this.parseDislike = this.parseDislike.bind(this);
   }
 
   getCoords(value) {
@@ -163,8 +165,28 @@ class Suggester extends Component {
       })
     })
   }
-  setDislikes() {
+  getDislike(value) {
+    const suggester = this;
+    if (value === 1) {
+      suggester.setState({dislikes: []});
+      Alert.alert('You dislikes have been reset!');
+    } else if (value === 2) {
+      suggester.setState({ dislikeVisible: true });
+      // this will open up the address asker, which will then get your coords
+    }
+  }
 
+  parseDislike(value) {
+    if (value === '') {
+      this.setState({
+        dislikes: []
+      });
+      return;
+    }
+    const dislikeArr = value.split(',');
+    this.setState({
+      dislikes: dislikeArr
+    })
   }
   // the below function is essentially the basis for the rest of the algorithm. What happens is the
   queryYelp() {
@@ -310,6 +332,7 @@ class Suggester extends Component {
           selectedValue={this.state.dislike}
           onValueChange={(value) => {
             this.setState({ dislike: value });
+            this.getDislike(value);
           }}
         >
           {dislikeOptions.map(option => (
@@ -328,6 +351,7 @@ class Suggester extends Component {
             this.setState({ dislikeVisible: false });
           }}
           onSubmit={(value) => {
+            this.parseDislike(value);
             this.setState({ dislikeVisible: false });
           }}
         />
