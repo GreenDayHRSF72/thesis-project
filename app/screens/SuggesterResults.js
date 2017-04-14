@@ -13,6 +13,7 @@ const {
   ScrollView,
   Alert,
   ListView,
+  Image,
 } = ReactNative;
 
 const PickerItemIOS = PickerIOS.Item;
@@ -33,6 +34,12 @@ class SuggesterResults extends Component {
     this.state = {
       dataSource: this.props.yelpResults
     };
+
+    this.linkOfficialPage = this.linkOfficialPage.bind(this);
+  }
+
+  linkOfficialPage(link) {
+    this.props.navigation.navigate('SuggestionResultsItem', link);
   }
 
   render() {
@@ -40,12 +47,24 @@ class SuggesterResults extends Component {
         <Text>
         Here are our top suggestions for you!
         </Text>
+        <Image
+          source={require('../img/ppp2.gif')}
+        />
+        <Text>
+        Click on any of the options to see more information about them!
+        </Text>
         <List>
         {
           this.props.yelpResults.map((result, i) => (
             <ListItem
+              roundAvatar
               key={result.name}
-              title={result.name}ß
+              title={result.name}
+              avatar={{uri: result.image_url}}
+              subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title}`}
+              onPress={()=> {
+                this.linkOfficialPage(result.url);
+              }}
             />
           ))
         }

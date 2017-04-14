@@ -1,7 +1,6 @@
 import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
-import Me from '../screens/Me';
 import Login from '../screens/Login';
 import Event from '../screens/Event';
 import ActivityStream from '../screens/ActivityStream';
@@ -10,6 +9,7 @@ import Suggester from '../screens/Suggester';
 import EventsItem from '../screens/EventsItem';
 import EventsList from '../screens/EventsList';
 import SuggesterResults from '../screens/SuggesterResults';
+import SuggesterResultsItem from '../screens/SuggesterResultsItem';
 
 export const eventStack = StackNavigator({
   Event: {
@@ -58,6 +58,12 @@ export const SuggesterStack = StackNavigator({
     screen: SuggesterResults,
     navigatorOptions: {
       title: 'Suggester Results',
+    },
+  },
+  SuggesterResultsItem: {
+    screen: SuggesterResultsItem,
+    navigatorOptions: {
+      title: 'More Info',
     },
   },
 });

@@ -36,18 +36,10 @@ class SuggesterResultsItem extends Component {
   render() {
       return (<View>
         <Text>
-          {this.props.suggestion.name}
+          You have reached the page
         </Text>
       </View>)
   }
-}
-
-function mapStateToProps(state) {
-  return { yelpResults: state.yelpResults };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
 }
 
 export default SuggesterResultsItem;

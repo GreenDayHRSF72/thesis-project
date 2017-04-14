@@ -55,14 +55,21 @@ const freshOptions = [
   { text: 'I would prefer to try something new', value: true },
 ];
 
+const dislikeOptions = [
+  {text: 'I\'m open to anything', value: 1},
+  {text: 'Let\'s drink some Hater-ade!', value: 2}
+];
+
 class Suggester extends Component {
   constructor(props) {
     super(props);
     this.state = {
       locationVisible: false,
+      dislikeVisible: false,
       budget: '1,2,3,4',
       radius: 500,
       location: 0,
+      dislike: 1,
       coords: { latitude: 37.7876, longitude: -122.4001 },
       address: 'Guantanamo bay',
       openNow: '',
@@ -155,6 +162,9 @@ class Suggester extends Component {
         email: sug.state.testEma
       })
     })
+  }
+  setDislikes() {
+
   }
   // the below function is essentially the basis for the rest of the algorithm. What happens is the
   queryYelp() {
@@ -277,7 +287,7 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Text>
-          Are you looking to spice things up a bit?
+          
         </Text>
         <PickerIOS
           selectedValue={this.state.findNew}
@@ -293,6 +303,34 @@ class Suggester extends Component {
             />
           ))}
         </PickerIOS>
+        <Text>
+          Is there anything you dont want to do? Don't worry, we wont force you :)
+        </Text>
+        <PickerIOS
+          selectedValue={this.state.dislike}
+          onValueChange={(value) => {
+            this.setState({ dislike: value });
+          }}
+        >
+          {dislikeOptions.map(option => (
+            <PickerIOS.Item
+              key={option.value}
+              value={option.value}
+              label={option.text}
+            />
+          ))}
+        </PickerIOS>
+        <Prompt
+          title="Please list the things you don\'t want to do! Please separate with commas, and no spaces!(that is very important)"
+          placeholder="ex. bars,clubs,etc."
+          visible={this.state.dislikeVisible}
+          onCancel={() => {
+            this.setState({ dislikeVisible: false });
+          }}
+          onSubmit={(value) => {
+            this.setState({ dislikeVisible: false });
+          }}
+        />
         <Button
           title="Get my suggestions!"
           onPress={this.queryYelp}
@@ -308,6 +346,9 @@ class Suggester extends Component {
       </ScrollView>);
     } else if (this.state.yelpLoading === true) {
       return (<View>
+        <Image
+          source={require('../img/gdt1.gif')}
+        />
         <Text
           style={{ textAlign: 'center', marginTop: 150 }}
         >
