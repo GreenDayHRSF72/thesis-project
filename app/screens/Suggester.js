@@ -144,7 +144,7 @@ class Suggester extends Component {
       // come back and refactor it to default to another set of coords if neccesary
       suggester.setState({ coords: { latitude: location.lat, longitude: location.lng } });
       suggester.setState({ address });
-    }).catch(err => Alert.alert('Something went Wrong', JSON.stringify(err)));
+    }).catch(err => Alert.alert('Something went wrong', JSON.stringify(err)));
   }
 
   alertState() {
@@ -189,12 +189,25 @@ class Suggester extends Component {
     }
     const dislikeArr = value.split(',').map(term => term.trim().split('').map(letter =>
         ('.?:"{}|\\][-/_=+!@#$%^&*()').indexOf(letter) > -1 ? '' : letter).join(''),
-    );
+    ).map(term => term.toUpperCase());
     this.setState({
       dislikes: dislikeArr,
     });
   }
-  // the below function is essentially the basis for the rest of the algorithm. What happens is the
+
+  filterDislike(yelp) {
+    // iterate through the results
+    var dislikes = this.state.dislikes;
+    for (var i = 0; i < yelp.length; i++) {
+      // got hrough the categories [it through j]
+
+      // if categorie[j]. alias 
+    }
+    // if all caps category alias is contained in call caps hate, delete the result
+    return yelp;
+  }
+
+ // the below function is essentially the basis for the rest of the algorithm. What happens is the
   queryYelp() {
     const sug = this;
     const address = this.state.address;
