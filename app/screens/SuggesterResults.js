@@ -45,7 +45,7 @@ class SuggesterResults extends Component {
           this.props.yelpResults.map((result, i) => (
             <ListItem
               key={result.name}
-              title={result.name}
+              title={result.name}ß
             />
           ))
         }
