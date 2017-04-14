@@ -42,8 +42,9 @@ class SuggesterResults extends Component {
         </Text>
         <List>
         {
-          this.props.yelpResults((result, i) => (
+          this.props.yelpResults.map((result, i) => (
             <ListItem
+              key={result.name}
               title={result.name}
             />
           ))

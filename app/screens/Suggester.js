@@ -189,7 +189,8 @@ class Suggester extends Component {
         sug.props.getYelp(resJson.businesses);
         sug.props.navigation.navigate('SuggesterResults');
       }
-    })d
+    })
+    .catch((error) => {
       sug.setState({ yelpLoading: false });
       console.log(error);
       Alert.alert('There seems to be an error', JSON.stringify(error));
