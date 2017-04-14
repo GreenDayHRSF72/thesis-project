@@ -13,6 +13,7 @@ const {
   PickerIOS,
   ScrollView,
   Alert,
+  Image,
 } = ReactNative;
 
 const PickerItemIOS = PickerIOS.Item;
@@ -68,6 +69,7 @@ class Suggester extends Component {
       dislikes: [],
       findNew: false,
       yelpLoading: false,
+      testEmail: 'smmakowski@yahoo.com',
     };
 
     // bind all the things
@@ -76,6 +78,7 @@ class Suggester extends Component {
     this.geocodeLocation = this.geocodeLocation.bind(this);
     this.queryYelp = this.queryYelp.bind(this);
     this.geocodeCoords = this.geocodeCoords.bind(this);
+    this.getAllUserInfo = this.getAllUserInfo.bind(this);
   }
 
   getCoords(value) {
@@ -136,16 +139,30 @@ class Suggester extends Component {
     const address = JSON.stringify(suggester.state.address);
     const radius = JSON.stringify(suggester.state.radius);
     const price = JSON.stringify(suggester.state.budget);
-    Alert.alert(`You want to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`);
+    const userEmail = JSON.stringify(suggester.props.user.name);
+    Alert.alert(`${userEmail} wants to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`);
   }
-
+  getAllUserInfo() {
+    const sug = this;
+    // It's gonna do something sick even though the linter says it's not going to be used
+    (fetch(`${baseURL}/suggestion/yelp`), {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: sug.state.testEma
+      })
+    })
+  }
   // the below function is essentially the basis for the rest of the algorithm. What happens is the
   queryYelp() {
     const sug = this;
     const address = this.state.address;
     const radius = this.state.radius;
     const price = this.state.budget;
-    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50&sortby=distance`;
+    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=distance`;
 
     this.setState({
       yelpLoading: true,
@@ -172,8 +189,7 @@ class Suggester extends Component {
         sug.props.getYelp(resJson.businesses);
         sug.props.navigation.navigate('SuggesterResults');
       }
-    })
-    .catch((error) => {
+    })d
       sug.setState({ yelpLoading: false });
       console.log(error);
       Alert.alert('There seems to be an error', JSON.stringify(error));
@@ -186,9 +202,11 @@ class Suggester extends Component {
       return (<ScrollView>
         <Text>
           {'\n'}
-          Welcome to the Suggester!{'\n'}
-          INSERT AN IMAGE HERE AND MAKE SURE ITS FUN{'\n'}
+          Welcome to the Suggester, {this.props.user.name}!{'\n'}
         </Text>
+        <Image
+          source={require('../img/ppp1.jpg')}
+        />
         <Text>
           Don{'\''}t know what to do for your hangout?
           Just answer a few quick questions and we{'\''}ll find something for you!{'\n'}
@@ -283,6 +301,7 @@ class Suggester extends Component {
           onPress={() => {
             const sug = this;
             Alert.alert(JSON.stringify(sug.state));
+            Alert.alert(JSON.stringify(sug.props.user));
           }}
         />
       </ScrollView>);
@@ -300,7 +319,7 @@ class Suggester extends Component {
 }
 
 function mapStateToProps(state) {
-  return { yelpResults: state.yelpResults };
+  return { yelpResults: state.yelpResults, user: state.user };
 }
 
 function mapDispatchToProps(dispatch) {

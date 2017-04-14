@@ -36,11 +36,7 @@ class SuggesterResultsItem extends Component {
   render() {
       return (<View>
         <Text>
-        {'\n'}
-        Here are our top suggestions for you!
-        {this.props.yelpResults.map((result) => {
-          result.name
-        })}
+          {this.props.suggestion.name}
         </Text>
       </View>)
   }

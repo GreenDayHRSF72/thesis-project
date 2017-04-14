@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
-import Prompt from 'react-native-prompt';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { List, ListItem } from 'react-native-elements';
 import { ActionCreators } from '../actions';
 
 const {
@@ -40,11 +40,15 @@ class SuggesterResults extends Component {
         <Text>
         Here are our top suggestions for you!
         </Text>
-        <ListView
-            enableEmptySections={true}
-            dataSource={this.props.yelpResults}
-            renderRow={rowData => <Text>{rowData.name}</Text>}
-          />
+        <List>
+        {
+          this.props.yelpResults((result, i) => (
+            <ListItem
+              title={result.name}
+            />
+          ))
+        }
+        </List>
       </ScrollView>)
   }
 }
