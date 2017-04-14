@@ -77,6 +77,7 @@ class Suggester extends Component {
       findNew: false,
       yelpLoading: false,
       testEmail: 'smmakowski@yahoo.com',
+      interests: ['bacon', 'sushi', 'archery', 'dispensary', 'barbeque', 'video games'];
     };
 
     // bind all the things
@@ -88,6 +89,7 @@ class Suggester extends Component {
     this.getAllUserInfo = this.getAllUserInfo.bind(this);
     this.getDislike = this.getDislike.bind(this);
     this.parseDislike = this.parseDislike.bind(this);
+    this.filterDislike = this.filterDislike.bind(this);
   }
 
   getCoords(value) {
@@ -197,11 +199,32 @@ class Suggester extends Component {
 
   filterDislike(yelp) {
     // iterate through the results
-    var dislikes = this.state.dislikes;
-    for (var i = 0; i < yelp.length; i++) {
-      // got hrough the categories [it through j]
-
-      // if categorie[j]. alias 
+    console.log('original Length: ',yelp.length);
+    const dislikes = this.state.dislikes;
+    for (let i = 0; i < yelp.length; i += 1) {
+      const result = yelp[i];
+      const categories = result.categories;
+      const name = result.name.toUpperCase();
+      // iterate through categories first and scheckto see if they match
+      // note for improvement, It may be better to check for dislikes in a manner similar to the way it 
+      // is done in the iteration through the names of the people.
+      for (let j = 0; j < categories.length; j += 1) {
+        var category = categories[j].alias.toUpperCase();
+        if (dislikes.indexOf(category) > -1 || dislikes.indexOf(category + 'S') > -1) {
+          yelp.splice(i, 1);
+          i--;
+          console.log(`removed ${result.name} on the basis of having ${category}`)
+        }
+      }
+      // iterate through dislikes to see if any of the key words are in the name of the location
+      for (let k = 0; k < dislikes.length; k++) { 
+        if (name.indexOf(dislikes[k]) > -1) {
+          console.log(`removed ${result.name} on the basis of having ${dislikes[k]} in name`)
+          yelp.splice(i, 1);
+          i--;
+        }
+      }
+    
     }
     // if all caps category alias is contained in call caps hate, delete the result
     return yelp;
@@ -213,6 +236,15 @@ class Suggester extends Component {
     const address = this.state.address;
     const radius = this.state.radius;
     const price = this.state.budget;
+    let interests = this.state.interests;
+    let sortedInterests;
+    // if (interests.length  > 3) {
+
+    // } else if (interests.length > 0) {
+
+    // }
+
+
     const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=distance`;
 
     this.setState({
@@ -233,11 +265,13 @@ class Suggester extends Component {
     .then((resJson) => {
       sug.setState({ yelpLoading: false });
       // console.log(resJson);
-      if (resJson.businesses.length === 0) {
-        sug.props.getYelp(resJson.businesses);
+      let businesses = resJson.businesses;
+      if (businesses.length === 0) {
+        sug.props.getYelp(businesses);
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
       } else {
-        sug.props.getYelp(resJson.businesses);
+        businesses = sug.filterDislike(businesses);
+        sug.props.getYelp(businesses);
         sug.props.navigation.navigate('SuggesterResults');
       }
     })

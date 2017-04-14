@@ -45,7 +45,7 @@ class SuggesterResults extends Component {
   render() {
       return (<ScrollView>
         <Text>
-        Here are our top suggestions for you!
+        We found {this.props.yelpResults.length} things that you may be interested in doing!
         </Text>
         <Image
           source={require('../img/ppp2.gif')}
