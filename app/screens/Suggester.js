@@ -104,6 +104,10 @@ class Suggester extends Component {
     }
   }
 
+  filterYelp(results) {
+
+  }
+
   // this function is designed to mitigate my major fuck up with getting the coordinates and
   // thinking the yelp
   // API would find them usefuio
@@ -179,14 +183,16 @@ class Suggester extends Component {
   parseDislike(value) {
     if (value === '') {
       this.setState({
-        dislikes: []
+        dislikes: [],
       });
       return;
     }
-    const dislikeArr = value.split(',');
+    const dislikeArr = value.split(',').map(term => term.trim().split('').map(letter =>
+        ('.?:"{}|\\][-/_=+!@#$%^&*()').indexOf(letter) > -1 ? '' : letter).join(''),
+    );
     this.setState({
-      dislikes: dislikeArr
-    })
+      dislikes: dislikeArr,
+    });
   }
   // the below function is essentially the basis for the rest of the algorithm. What happens is the
   queryYelp() {
