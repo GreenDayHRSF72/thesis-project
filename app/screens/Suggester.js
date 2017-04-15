@@ -93,6 +93,7 @@ class Suggester extends Component {
     this.filterDislike = this.filterDislike.bind(this);
     this.getAllUserInfo = this.getAllUserInfo.bind(this);
     this.resetState = this.resetState.bind(this);
+    this.filterPast = this.filterPast.bind(this);
   }
 
   getCoords(value) {
@@ -152,7 +153,7 @@ class Suggester extends Component {
       // below are some sample data to test out the filtering algorithm
       testEmail: 'smmakowski@yahoo.com',
       interests: [],
-      pastEvents: [{name: 'Mikkeler Bar', category: 'Bars'}, {name: 'Halal Guys'}]
+      pastEvents: [{ name: 'Mikkeler Bar' }, { name: 'Halal Guys' }, { name: 'Hack Reactor' }, { name: 'Sarku Japan' }, { name: 'Chipotle Mexican Grill' }, { name: 'Tempest' }],
     });
   }
 
@@ -210,8 +211,8 @@ class Suggester extends Component {
   selectInterests(ints) {
     let interests = ints.slice();
     interests = interests.map(term => term.toLowerCase());
-    var preDes = ['beer', 'sushi', 'breweries', 'dispensaries', 'ethiopian', 'burgers', 
-    'raw bar', 'halal', 'chicken wings', 'burritos', 'archery'];
+    const preDes = ['beer', 'sushi', 'breweries', 'dispensaries', 'ethiopian', 'pants', 'french', 'burgers', 
+    'raw bar', 'halal', 'chicken wings', 'burritos', 'archery', 'pudding', 'ice cream'];
 
     if (interests.length < 3)  {
       while (interests.length < 3) {
@@ -232,7 +233,7 @@ class Suggester extends Component {
 
   filterDislike(yelp) {
     // iterate through the results
-    console.log('original Length: ',yelp.length);
+    console.log('filtering dislikeoriginal Length: ', yelp.length);
     const dislikes = this.state.dislikes;
     for (let i = 0; i < yelp.length; i += 1) {
       const result = yelp[i];
@@ -259,6 +260,26 @@ class Suggester extends Component {
       }
     }
     // if all caps category alias is contained in call caps hate, delete the result
+    return yelp;
+  }
+
+  filterPast(yelp) {
+    console.log('filetering past events');
+
+    if (this.state.pastEvents.length === 0) {
+      return yelp;
+    }
+    const past = this.state.pastEvents.slice().map((item) => { return {name: item.name.toUpperCase()}});
+    for (var i = 0; i < yelp.length; i += 1) {
+      const venueName = yelp[i].name.toUpperCase();
+      console.log('examining ' + venueName)
+      if (past.indexOf(venueName) > -1 ) {
+        console.log('removing ' + venueName)
+        yelp.splice(i, 1);
+        i -= 1;
+      }
+    }
+
     return yelp;
   }
 
@@ -318,15 +339,19 @@ class Suggester extends Component {
     .then((resJson) => {
       sug.setState({ yelpLoading: false });
       // console.log(resJson);
-      sug.resetState();
       let businesses = resJson.businesses;
       if (businesses.length === 0) {
         sug.props.getYelp(businesses);
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again! \
           The questions have been reset!');
+        sug.resetState();
       } else {
         businesses = sug.filterDislike(businesses);
+        if (sug.state.findNew === true) {
+          businesses = sug.filterPast(businesses);
+        }
         sug.props.getYelp(businesses);
+        sug.resetState();
         sug.props.navigation.navigate('SuggesterResults');
       }
     })
@@ -490,8 +515,8 @@ class Suggester extends Component {
           style={{ textAlign: 'center', marginTop: 150 }}
         >
           Pom Pom Pudding is working hard to figure out what you should do!{'\n'}
-          Isn{'\''}t great that someone can make these hard decisions?{'\n'}
-          You better invite him or he{'\''}ll be sad.{'\n'}{'\n'}
+          Isn{'\''}t great that someone can make these hard decisions for you?{'\n'}
+          You should invite him or he{'\''}ll be sad.{'\n'}{'\n'}
           *Note* Your answers will be reset when results will come in *End Note*
       </Text>
       </View>);
