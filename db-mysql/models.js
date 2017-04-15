@@ -25,26 +25,20 @@ var queryName = function(cb) {
 */
 
 // Queries related to getting user data for suggestion algorithm
+// FIGURE THIS OUT BY EOD
+const getUserInterests = (email) => {
+  const qs = 'SELECT * FROM interests;'
+  const queryStr = `SELECT name FROM interests INNER JOIN users WHERE users.email = "${email}" && users.id = interest.user_id;`;
+  return db.queryAsync(qs, email);
+}
 
-var getUserInterests = (userName, cb) => {
-  connection.query(`SELECT name FROM interests INNER JOIN  users WHERE \ 
-    users.userName = ${userName};`, (err, results) => {
-      if (err) {
-        cb(err, null);
-      } else {
-        cb(null, results);
-      }
-  });
-} 
+const getActivitiesByEmail = (email) => {
+  const queryStr = 'SELECT * FROM users WHERE email = ? LIMIT 1';
+  return db.queryAsync(queryStr, [email]);
+};
 
-var getUserActivities = (userName, cb) => {
-  connection.query(`SELECT name, category FROM activities INNER JOIN ___ INNER JOIN ___ \ 
-    WHERE users.userName = ${userName} \ && `)
-
-} 
-
-var getAllUserVotes = (userName, cb) => {
-  connection.query(`SELECT  name, category FROM activites`)
+var getAllUserActivities = (email, cb) => {
+  db.queryAsync(`SELECT  name, category FROM activites`)
 }
 
 var getAllEventComments = (eventName, cb) => {

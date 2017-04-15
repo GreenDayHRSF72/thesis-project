@@ -9,4 +9,3 @@ select activites.name, activities.category from activities inner join users inne
 
 // application get this inforamtatiom 
 
-select iner 

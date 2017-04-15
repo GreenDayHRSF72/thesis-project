@@ -55,11 +55,31 @@ app.post('/suggestion/yelp', (req, res) => {
   });
 });
 
-app.post('suggestion/pastactivities', (req, res) => {
-  const userEmail = req.body.email;
+app.post('suggestion/userinfo', (req, res) => {
+  console.log('the email is', req.body.email)
+  db.getUserInterests(req.body.email, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      res.json(results)
+    }
+  })
+  
+}); 
 
-  res.json('you successfully got to the endpoint')
-});
+// app.get('/events', (req, res) => {
+//   db.getPublicEvents((err, results) => {
+//     if (err) {
+//       console.log(err);
+//       res.send(err);
+//     } else {
+//       console.log(results);
+//       res.json(results);
+//     }
+//   });
+// });
+
 
 app.post('/users', (req, res) => {
   db.addUserToDatabase(req.body)
