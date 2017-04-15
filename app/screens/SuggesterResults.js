@@ -39,7 +39,7 @@ class SuggesterResults extends Component {
   }
 
   linkOfficialPage(link) {
-    this.props.navigation.navigate('SuggestionResultsItem', link);
+    this.props.navigation.navigate('SuggesterResultsItem', link);
   }
 
   highRecommend(i) {
