@@ -42,6 +42,14 @@ class SuggesterResults extends Component {
     this.props.navigation.navigate('SuggestionResultsItem', link);
   }
 
+  highRecommend(i) {
+    if (i <= 4) {
+      return '\nHIGHLY RECOMMENDED!';
+    } else {
+      return '';
+    }
+  }
+
   render() {
       return (<ScrollView>
         <Text>
@@ -61,7 +69,7 @@ class SuggesterResults extends Component {
               key={result.name}
               title={result.name}
               avatar={{uri: result.image_url}}
-              subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title}`}
+              subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title}${this.highRecommend(i)}`}
               onPress={()=> {
                 this.linkOfficialPage(result.url);
               }}

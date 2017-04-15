@@ -77,7 +77,7 @@ class Suggester extends Component {
       findNew: false,
       yelpLoading: false,
       testEmail: 'smmakowski@yahoo.com',
-      interests: ['bacon', 'sushi', 'archery', 'dispensary', 'barbeque', 'video games'];
+      interests: ['bacon', 'sushi', 'archery', 'dispensary', 'barbeque', 'video games']
     };
 
     // bind all the things

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
-import Prompt from 'react-native-prompt';
-import Geocoder from 'react-native-geocoding';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
