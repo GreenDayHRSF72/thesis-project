@@ -106,10 +106,6 @@ class Suggester extends Component {
     }
   }
 
-  filterYelp(results) {
-
-  }
-
   // this function is designed to mitigate my major fuck up with getting the coordinates and
   // thinking the yelp
   // API would find them usefuio
@@ -157,24 +153,31 @@ class Suggester extends Component {
     const userEmail = JSON.stringify(suggester.props.user.name);
     Alert.alert(`${userEmail} wants to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`);
   }
+
+  // WORK ON ME NAO!!!!!!
   getAllUserInfo() {
     const sug = this;
     // It's gonna do something sick even though the linter says it's not going to be used
-    (fetch(`${baseURL}/suggestion/yelp`), {
+    fetch(`${baseURL}/suggestion/userinfo`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: sug.state.testEma
-      })
+        email: sug.state.testEmail,
+      }),
     })
+    .then((results) => {
+      console.log(results)
+    })
+    .catch(err => console.log(err));
   }
+
   getDislike(value) {
     const suggester = this;
     if (value === 1) {
-      suggester.setState({dislikes: []});
+      suggester.setState({ dislikes: [] });
       Alert.alert('You dislikes have been reset!');
     } else if (value === 2) {
       suggester.setState({ dislikeVisible: true });
@@ -206,25 +209,24 @@ class Suggester extends Component {
       const categories = result.categories;
       const name = result.name.toUpperCase();
       // iterate through categories first and scheckto see if they match
-      // note for improvement, It may be better to check for dislikes in a manner similar to the way it 
-      // is done in the iteration through the names of the people.
+      // note for improvement, It may be better to check for dislikes in a manner
+      // similar to the way it is done in the iteration through the names of the people.
       for (let j = 0; j < categories.length; j += 1) {
-        var category = categories[j].alias.toUpperCase();
+        const category = categories[j].alias.toUpperCase();
         if (dislikes.indexOf(category) > -1 || dislikes.indexOf(category + 'S') > -1) {
           yelp.splice(i, 1);
-          i--;
+          i -= 1;
           console.log(`removed ${result.name} on the basis of having ${category}`)
         }
       }
       // iterate through dislikes to see if any of the key words are in the name of the location
-      for (let k = 0; k < dislikes.length; k++) { 
+      for (let k = 0; k < dislikes.length; k += 1) {
         if (name.indexOf(dislikes[k]) > -1) {
           console.log(`removed ${result.name} on the basis of having ${dislikes[k]} in name`)
           yelp.splice(i, 1);
-          i--;
+          i += 1;
         }
       }
-    
     }
     // if all caps category alias is contained in call caps hate, delete the result
     return yelp;
@@ -236,8 +238,8 @@ class Suggester extends Component {
     const address = this.state.address;
     const radius = this.state.radius;
     const price = this.state.budget;
-    let interests = this.state.interests;
-    let sortedInterests;
+    // let interests = this.state.interests;
+    // let sortedInterests;
     // if (interests.length  > 3) {
 
     // } else if (interests.length > 0) {
@@ -362,7 +364,7 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Text>
-          
+          Are you looking to spice things up?
         </Text>
         <PickerIOS
           selectedValue={this.state.findNew}
@@ -379,7 +381,7 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Text>
-          Is there anything you dont want to do? Don't worry, we wont force you :)
+          Is there anything you dont want to do? Don{'\''}t worry, we wont force you :)
         </Text>
         <PickerIOS
           selectedValue={this.state.dislike}

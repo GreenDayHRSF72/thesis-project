@@ -6,78 +6,62 @@ import { List, ListItem } from 'react-native-elements';
 import { ActionCreators } from '../actions';
 
 const {
-  View,
   Text,
-  Button,
   PickerIOS,
   ScrollView,
-  Alert,
-  ListView,
   Image,
 } = ReactNative;
-
-const PickerItemIOS = PickerIOS.Item;
-let baseURL;
-
-// allows for multiuse url
-if (process.env.NODE_ENV === 'production') {
-  baseURL = 'https://hst-friend-ly.herokuapp.com';
-} else if (process.env.NODE_ENV === 'staging') {
-  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
-} else {
-  baseURL = 'http://127.0.0.1:5000';
-}
 
 class SuggesterResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: this.props.yelpResults
+      dataSource: this.props.yelpResults,
     };
 
     this.linkOfficialPage = this.linkOfficialPage.bind(this);
   }
 
   linkOfficialPage(link) {
-    this.props.navigation.navigate('SuggesterResultsItem', link);
+    this.props.navigation.navigate('SuggesterResultsItem', { link: link });
   }
 
   highRecommend(i) {
     if (i <= 4) {
       return '\nHIGHLY RECOMMENDED!';
-    } else {
-      return '';
     }
+    
+    return '';
   }
 
   render() {
-      return (<ScrollView>
-        <Text>
+    return (<ScrollView>
+      <Text>
         We found {this.props.yelpResults.length} things that you may be interested in doing!
-        </Text>
-        <Image
-          source={require('../img/ppp2.gif')}
-        />
-        <Text>
+      </Text>
+      <Image
+        source={require('../img/ppp2.gif')}
+      />
+      <Text>
         Click on any of the options to see more information about them!
-        </Text>
-        <List>
+      </Text>
+      <List>
         {
-          this.props.yelpResults.map((result, i) => (
-            <ListItem
-              roundAvatar
-              key={result.name}
-              title={result.name}
-              avatar={{uri: result.image_url}}
-              subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title}${this.highRecommend(i)}`}
-              onPress={()=> {
-                this.linkOfficialPage(result.url);
-              }}
-            />
-          ))
-        }
-        </List>
-      </ScrollView>)
+        this.props.yelpResults.map((result, i) => (
+          <ListItem
+            roundAvatar
+            key={result.name}
+            title={result.name}
+            avatar={{ uri: result.image_url }}
+            subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title}${this.highRecommend(i)}`}
+            onPress={() => {
+              this.linkOfficialPage(result.url);
+            }}
+          />
+        ))
+      }
+      </List>
+    </ScrollView>);
   }
 }
 
