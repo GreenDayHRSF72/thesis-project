@@ -207,6 +207,29 @@ class Suggester extends Component {
     });
   }
 
+  selectInterests(ints) {
+    let interests = ints.slice();
+    interests = interests.map(term => term.toLowerCase());
+    var preDes = ['beer', 'sushi', 'breweries', 'dispensaries', 'ethiopian', 'burgers', 
+    'raw bar', 'halal', 'chicken wings', 'burritos', 'archery'];
+
+    if (interests.length < 3)  {
+      while (interests.length < 3) {
+        let ranIdx = Math.floor(Math.random() * preDes.length);
+        let idea = preDes[ranIdx].toLowerCase();
+        if (interests.indexOf(idea) === -1) {
+          interests.push(idea);
+        }
+      }
+    } else {
+      while (interests.length > 3) {
+        let ranIdx = Math.floor(Math.random() * interests.length);
+        interests.splice(ranIdx, 1);
+      }
+    }
+    return interests;
+  }
+
   filterDislike(yelp) {
     // iterate through the results
     console.log('original Length: ',yelp.length);
@@ -254,7 +277,7 @@ class Suggester extends Component {
     })
     .then(res => res.json())
     .then((resJson) => {
-      console.log(resJson)
+      console.log(resJson);
     })
     .catch((error) => {
       console.log(error);
@@ -268,15 +291,14 @@ class Suggester extends Component {
     const address = this.state.address;
     const radius = this.state.radius;
     const price = this.state.budget;
-    // let interests = this.state.interests;
-    // let sortedInterests;
-    // if (interests.length  > 3) {
+    let interests = this.state.interests;
 
-    // } else if (interests.length > 0) {
+    interests = this.selectInterests(interests);
+    const intStr = interests.join(',');
+    intStr[0] = '';
+    Alert.alert(intStr)
 
-    // }
-
-    const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=distance`;
+    const query = `term=${intStr}&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=rating`;
 
     this.setState({
       yelpLoading: true,
@@ -300,7 +322,6 @@ class Suggester extends Component {
       let businesses = resJson.businesses;
       if (businesses.length === 0) {
         sug.props.getYelp(businesses);
-
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again! \
           The questions have been reset!');
       } else {
