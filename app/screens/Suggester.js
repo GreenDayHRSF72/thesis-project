@@ -16,7 +16,6 @@ const {
   Image,
 } = ReactNative;
 
-const PickerItemIOS = PickerIOS.Item;
 let baseURL;
 
 // allows for multiuse url
@@ -56,8 +55,8 @@ const freshOptions = [
 ];
 
 const dislikeOptions = [
-  {text: 'I\'m open to anything', value: 1},
-  {text: 'Let\'s drink some Hater-ade!', value: 2}
+  { text: 'I\'m open to anything', value: 1 },
+  { text: 'Let\'s drink some Hater-ade!', value: 2 }
 ];
 
 class Suggester extends Component {
@@ -76,8 +75,10 @@ class Suggester extends Component {
       dislikes: [],
       findNew: false,
       yelpLoading: false,
+      // below are some sample data to test out the filtering algorithm
       testEmail: 'smmakowski@yahoo.com',
-      interests: ['bacon', 'sushi', 'archery', 'dispensary', 'barbeque', 'video games']
+      interests: [],
+      pastEvents: [{name: 'Mikkeler Bar', category: 'Bars'}, {name: 'Halal Guys'}]
     };
 
     // bind all the things
@@ -90,6 +91,8 @@ class Suggester extends Component {
     this.getDislike = this.getDislike.bind(this);
     this.parseDislike = this.parseDislike.bind(this);
     this.filterDislike = this.filterDislike.bind(this);
+    this.getAllUserInfo = this.getAllUserInfo.bind(this);
+    this.resetState = this.resetState.bind(this);
   }
 
   getCoords(value) {
@@ -132,6 +135,27 @@ class Suggester extends Component {
     .catch(err => Alert.alert('error encountered', JSON.stringify(err)));
   }
 
+  resetState() {
+    this.setState({
+      locationVisible: false,
+      dislikeVisible: false,
+      budget: '1,2,3,4',
+      radius: 500,
+      location: 0,
+      dislike: 1,
+      coords: { latitude: 37.7876, longitude: -122.4001 },
+      address: 'Guantanamo bay',
+      openNow: '',
+      dislikes: [],
+      findNew: false,
+      yelpLoading: false,
+      // below are some sample data to test out the filtering algorithm
+      testEmail: 'smmakowski@yahoo.com',
+      interests: [],
+      pastEvents: [{name: 'Mikkeler Bar', category: 'Bars'}, {name: 'Halal Guys'}]
+    });
+  }
+
   geocodeLocation(submit) {
     const suggester = this;
     Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
@@ -155,24 +179,7 @@ class Suggester extends Component {
   }
 
   // WORK ON ME NAO!!!!!!
-  getAllUserInfo() {
-    const sug = this;
-    // It's gonna do something sick even though the linter says it's not going to be used
-    fetch(`${baseURL}/suggestion/userinfo`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: sug.state.testEmail,
-      }),
-    })
-    .then((results) => {
-      console.log(results)
-    })
-    .catch(err => console.log(err));
-  }
+
 
   getDislike(value) {
     const suggester = this;
@@ -232,6 +239,29 @@ class Suggester extends Component {
     return yelp;
   }
 
+  getAllUserInfo() {
+    const sug = this;
+    const email = sug.state.email;
+    fetch(`${baseURL}/suggestion/userinfo`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    })
+    .then(res => res.json())
+    .then((resJson) => {
+      console.log(resJson)
+    })
+    .catch((error) => {
+      console.log(error);
+      Alert.alert('There seems to be an error', JSON.stringify(error));
+      // console.log(error);
+    });
+  }
  // the below function is essentially the basis for the rest of the algorithm. What happens is the
   queryYelp() {
     const sug = this;
@@ -245,7 +275,6 @@ class Suggester extends Component {
     // } else if (interests.length > 0) {
 
     // }
-
 
     const query = `term=restaurants&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=distance`;
 
@@ -267,10 +296,13 @@ class Suggester extends Component {
     .then((resJson) => {
       sug.setState({ yelpLoading: false });
       // console.log(resJson);
+      sug.resetState();
       let businesses = resJson.businesses;
       if (businesses.length === 0) {
         sug.props.getYelp(businesses);
-        Alert.alert('Sorry there is nothing fun do at the location specified, please try again!');
+
+        Alert.alert('Sorry there is nothing fun do at the location specified, please try again! \
+          The questions have been reset!');
       } else {
         businesses = sug.filterDislike(businesses);
         sug.props.getYelp(businesses);
@@ -280,7 +312,8 @@ class Suggester extends Component {
     .catch((error) => {
       sug.setState({ yelpLoading: false });
       console.log(error);
-      Alert.alert('There seems to be an error', JSON.stringify(error));
+      sug.resetState();
+      Alert.alert('There seems to be an error, and you answers have been reset. Please try again!', JSON.stringify(error));
       // console.log(error);
     });
   }
@@ -422,6 +455,10 @@ class Suggester extends Component {
             Alert.alert(JSON.stringify(sug.props.user));
           }}
         />
+        <Button
+          title="Test get user Info"
+          onPress={this.getAllUserInfo}
+        />
       </ScrollView>);
     } else if (this.state.yelpLoading === true) {
       return (<View>
@@ -431,8 +468,10 @@ class Suggester extends Component {
         <Text
           style={{ textAlign: 'center', marginTop: 150 }}
         >
-          MY DUMB ALGORITHM IS CONNECTING TO THE YELP API AND YOUR DB-STORED INFORMATION
-          PLEASE WAIT; NOW YOU KNOW THE SECRET NOT SO IMPRESSIVE NOW IS IT?
+          Pom Pom Pudding is working hard to figure out what you should do!{'\n'}
+          Isn{'\''}t great that someone can make these hard decisions?{'\n'}
+          You better invite him or he{'\''}ll be sad.{'\n'}{'\n'}
+          *Note* Your answers will be reset when results will come in *End Note*
       </Text>
       </View>);
     }
