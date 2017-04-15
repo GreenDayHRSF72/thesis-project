@@ -106,7 +106,9 @@ class Suggester extends Component {
       suggester.setState({ locationVisible: true });
       // this will open up the address asker, which will then get your coords
     } else if (value === 0) {
-      suggester.state.address = 'Guantanamo Bay';
+      suggester.setState({
+        address: 'guantanamo bay',
+      })
     }
   }
 
@@ -214,8 +216,8 @@ class Suggester extends Component {
     const preDes = ['beer', 'sushi', 'breweries', 'dispensaries', 'ethiopian', 'pants', 'french', 'burgers', 
     'raw bar', 'halal', 'chicken wings', 'burritos', 'archery', 'pudding', 'ice cream'];
 
-    if (interests.length < 3)  {
-      while (interests.length < 3) {
+    if (interests.length < 2)  {
+      while (interests.length < 2) {
         let ranIdx = Math.floor(Math.random() * preDes.length);
         let idea = preDes[ranIdx].toLowerCase();
         if (interests.indexOf(idea) === -1) {
@@ -223,7 +225,7 @@ class Suggester extends Component {
         }
       }
     } else {
-      while (interests.length > 3) {
+      while (interests.length > 2) {
         let ranIdx = Math.floor(Math.random() * interests.length);
         interests.splice(ranIdx, 1);
       }
@@ -233,21 +235,22 @@ class Suggester extends Component {
 
   filterDislike(yelp) {
     // iterate through the results
-    console.log('filtering dislikeoriginal Length: ', yelp.length);
+    console.log('filtering dislike original Length: ', yelp.length);
     const dislikes = this.state.dislikes;
+
     for (let i = 0; i < yelp.length; i += 1) {
-      const result = yelp[i];
+      let result = yelp[i];
       const categories = result.categories;
       const name = result.name.toUpperCase();
       // iterate through categories first and scheckto see if they match
       // note for improvement, It may be better to check for dislikes in a manner
       // similar to the way it is done in the iteration through the names of the people.
       for (let j = 0; j < categories.length; j += 1) {
-        const category = categories[j].alias.toUpperCase();
-        if (dislikes.indexOf(category) > -1 || dislikes.indexOf(category + 'S') > -1) {
+        let category = categories[j].alias.toUpperCase();
+        if (dislikes.indexOf(category) !== -1 || dislikes.indexOf(category + 'S') !== -1) {
           yelp.splice(i, 1);
-          i -= 1;
-          console.log(`removed ${result.name} on the basis of having ${category}`)
+
+          console.log(`removed ${name} on the basis of having ${category}`)
         }
       }
       // iterate through dislikes to see if any of the key words are in the name of the location
@@ -255,7 +258,6 @@ class Suggester extends Component {
         if (name.indexOf(dislikes[k]) > -1) {
           console.log(`removed ${result.name} on the basis of having ${dislikes[k]} in name`)
           yelp.splice(i, 1);
-          i += 1;
         }
       }
     }
@@ -314,12 +316,12 @@ class Suggester extends Component {
     const price = this.state.budget;
     let interests = this.state.interests;
 
-    interests = this.selectInterests(interests);
-    const intStr = interests.join(',');
+    interests = this.selectInterests(interests)
+    interests = interests.map(term => term.toLowerCase());
+    const intStr = interests.join('+');
     intStr[0] = '';
-    Alert.alert(intStr)
-
-    const query = `term=${intStr}&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=rating`;
+    
+    const query = `term=${intStr}&location=${address}&radius=${radius}&price=${price}&limit=50&sort_by=best_match`;
 
     this.setState({
       yelpLoading: true,
@@ -341,15 +343,15 @@ class Suggester extends Component {
       // console.log(resJson);
       let businesses = resJson.businesses;
       if (businesses.length === 0) {
-        sug.props.getYelp(businesses);
         Alert.alert('Sorry there is nothing fun do at the location specified, please try again! \
           The questions have been reset!');
         sug.resetState();
       } else {
+        console.log(businesses);
         businesses = sug.filterDislike(businesses);
-        if (sug.state.findNew === true) {
-          businesses = sug.filterPast(businesses);
-        }
+        // if (sug.state.findNew === true) {
+        //   businesses = sug.filterPast(businesses);
+        // }
         sug.props.getYelp(businesses);
         sug.resetState();
         sug.props.navigation.navigate('SuggesterResults');
@@ -364,6 +366,10 @@ class Suggester extends Component {
     });
   }
 
+  componentDidMount(){
+
+  }
+
   render() {
     if (this.state.yelpLoading === false) {
       return (<ScrollView>
@@ -375,7 +381,7 @@ class Suggester extends Component {
           source={require('../img/ppp1.jpg')}
         />
         <Text>
-          Don{'\''}t know what to do for your hangout?
+          Don{'\''}t know what to do for your hangout? Pom Pom Pudding is here to help!
           Just answer a few quick questions and we{'\''}ll find something for you!{'\n'}
         </Text>
         <Text>
@@ -460,7 +466,7 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Text>
-          Is there anything you dont want to do? Don{'\''}t worry, we wont force you :)
+          Is there anything you don{'\''}t want to do?
         </Text>
         <PickerIOS
           selectedValue={this.state.dislike}
@@ -514,8 +520,8 @@ class Suggester extends Component {
         <Text
           style={{ textAlign: 'center', marginTop: 150 }}
         >
-          Pom Pom Pudding is working hard to figure out what you should do!{'\n'}
-          Isn{'\''}t great that someone can make these hard decisions for you?{'\n'}
+          Pom Pom Pudding is working hard to come up some recommendations for you!{'\n'}
+          Isn{'\''}t great that someone can make these hard decisions?{'\n'}
           You should invite him or he{'\''}ll be sad.{'\n'}{'\n'}
           *Note* Your answers will be reset when results will come in *End Note*
       </Text>
