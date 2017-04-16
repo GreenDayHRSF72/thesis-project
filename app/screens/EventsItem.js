@@ -32,6 +32,10 @@ class EventsItem extends Component {
 
 
   componentWillMount() {
+    this.getParticipantsAndStatus();
+  }
+
+  getParticipantsAndStatus() {
     const { id } = this.props.navigation.state.params;
 
     // request all events from db
@@ -82,7 +86,10 @@ class EventsItem extends Component {
         participantStatus: value,
       }),
     })
-    .then(data => console.log(data))
+    .then((data) => {
+      console.log(data);
+      this.getParticipantsAndStatus();
+    })
     .catch(err => console.log(err));
   }
 
