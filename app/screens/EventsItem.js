@@ -35,7 +35,7 @@ class EventsItem extends Component {
     const { id } = this.props.navigation.state.params;
 
     // request all events from db
-    fetch(baseURL + '/events/:' + id)
+    fetch(baseURL + '/events/participants/list/:' + id)
     .then(response => response.json())
     .then((responseJSON) => {
       this.setState({ participants: responseJSON });
@@ -44,6 +44,7 @@ class EventsItem extends Component {
 
   createParticipants() {
     const { id } = this.props.navigation.state.params;
+    console.log('participants id', id, this.props.navigation.state.params);
     return this.state.participants.map((participant, i) => {
       return (
         <View>

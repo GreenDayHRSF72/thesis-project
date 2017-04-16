@@ -186,8 +186,9 @@ app.get('/events', (req, res) => {
   });
 });
 
-app.get('/events/:*', (req, res) => {
+app.get('/events/participants/list/:*', (req, res) => {
   let id = req.params[0];
+  console.log('get participants for events ----->==>', id);
   db.getEventParticipants(id, (err, results) => {
     if (err) {
       console.log(err);

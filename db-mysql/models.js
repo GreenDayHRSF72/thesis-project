@@ -64,7 +64,7 @@ const addEvent = (event) => {
 
 // select distinct events.name  from events inner join users on (events.creator_id = users.id) where users.email = ?;
 const getEventByCreatorEmail = (email) => {
-  const queryStr = 'SELECT DISTINCT * FROM events INNER JOIN users ON (events.creator_id = users.id) WHERE users.email = ?';
+  const queryStr = 'SELECT events.id, events.*, users.username, users.photourl FROM events INNER JOIN users ON (events.creator_id = users.id) WHERE users.email = ?';
   return db.queryAsync(queryStr, email);
 };
 
