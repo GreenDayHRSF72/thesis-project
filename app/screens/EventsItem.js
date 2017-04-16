@@ -47,16 +47,18 @@ class EventsItem extends Component {
     return this.state.participants.map((participant, i) => {
       return (
         <View>
-          <Text key={i}>{participant.username}</Text>
-          <ModalDropdown
-            style={{ borderWidth: 0.5, borderRadius: 4, height: 20, width:60, backgroundColor: 'grey', flex: 1, alignItems: 'center'}}
-            textStyle={{color: '#fff' }}
-            adjustFrame={style => this.adjustFrame(style)}
-            options={['yes', 'no', 'maybe']}
-            defaultValue={participant.status}
-            defaultIndex={['yes', 'no', 'maybe'].indexOf(participant.status)}
-            onSelect={(idx, value) => this.changeResponse(idx, value, participant, id)}
+          { this.props.user.id === participant.user_id && 
+            <ModalDropdown
+              style={{ borderWidth: 0.5, borderRadius: 4, height: 20, width:60, backgroundColor: 'grey', flex: 1, alignItems: 'center'}}
+              textStyle={{color: '#fff' }}
+              adjustFrame={style => this.adjustFrame(style)}
+              options={['yes', 'no', 'maybe']}
+              defaultValue={participant.status}
+              defaultIndex={['yes', 'no', 'maybe'].indexOf(participant.status)}
+              onSelect={(idx, value) => this.changeResponse(idx, value, participant, id)}
           />
+          }
+          <Text key={i}>{participant.username}: {participant.status}</Text>
         </View>
       );
     });
@@ -67,7 +69,6 @@ class EventsItem extends Component {
     return style;
   }
   changeResponse(idx, value, participant, eventID) {
-    console.log('changeResponse --->x', idx, value, participant, eventID);
     fetch( baseURL + '/events/participants/rsvp', {
       method: 'POST',
       headers: {
@@ -100,7 +101,7 @@ class EventsItem extends Component {
           source={{ uri: photourl }}
         />
         <ScrollView>
-          <Text>Participants</Text>
+          <Text>Invitees:</Text>
           {this.createParticipants()}
         </ScrollView>
       </ScrollView>
@@ -109,9 +110,8 @@ class EventsItem extends Component {
 }
 
 
-
 function mapStateToProps(state) {
-  return { simpleCounter: state.simpleCounter };
+  return { simpleCounter: state.simpleCounter, user: state.user };
 }
 
 function mapDispatchToProps(dispatch) {
