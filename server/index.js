@@ -62,7 +62,7 @@ app.post('suggestion/userinfo', (req, res) => {
       console.log(err);
       res.send(err);
     } else {
-      res.json(results)
+      res.json(results);
     }
   })
   
@@ -152,6 +152,7 @@ app.post('/participants', (req, res) => {
   })
   .then(result => {
     res.send('participant saved to db');
+    cSocket.emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
   })
   .catch(err => {
     res.send('err saving participant to db');
@@ -215,9 +216,8 @@ app.post('/events/participants/rsvp', (req, res) => {
 io.on('connection', (socket) => {
   console.log('A client just joined on', socket.id);
   socket.emit('news', { hi: 'there' });
-  socket.emit('refresh feed', { activity: 'trying to send an activity to activity feed' });
   socket.on('user logged in', (data) => {
-    console.log(data);
+    console.log('socket user logged in data', data);
   });
 });
 

@@ -103,7 +103,7 @@ class AddFriends extends React.Component {
         //   startTime: this.props.event.startTime,
         //   endTime: this.props.event.endTime,
         // }
-        util.addParticipantsToDB(eventId, this.state.friendList);
+        util.addParticipantsToDB(eventId, this.state.friendList, this.props.user);
         this.props.addCount();
         this.props.navigation.navigate('EventDetails', { ...this.props.event });
       })

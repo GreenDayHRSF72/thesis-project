@@ -53,16 +53,20 @@ class EventsItem extends Component {
       return (
         <View>
           { this.props.user.id === participant.user_id && 
-            <ModalDropdown
-              style={{ borderWidth: 0.5, borderRadius: 4, height: 20, width:60, backgroundColor: 'grey', flex: 1, alignItems: 'center'}}
-              textStyle={{color: '#fff' }}
-              adjustFrame={style => this.adjustFrame(style)}
-              options={['yes', 'no', 'maybe']}
-              defaultValue={participant.status}
-              defaultIndex={['yes', 'no', 'maybe'].indexOf(participant.status)}
-              onSelect={(idx, value) => this.changeResponse(idx, value, participant, id)}
-          />
+            <View>
+              <Text key={i}>RSVP Here:</Text>
+              <ModalDropdown
+                style={{ borderWidth: 0.5, borderRadius: 4, height: 20, width: 60, backgroundColor: 'grey', flex: 1, alignItems: 'center' }}
+                textStyle={{ color: '#fff' }}
+                adjustFrame={style => this.adjustFrame(style)}
+                options={['yes', 'no', 'maybe']}
+                defaultValue={participant.status}
+                defaultIndex={['yes', 'no', 'maybe'].indexOf(participant.status)}
+                onSelect={(idx, value) => this.changeResponse(idx, value, participant, id)}
+              />
+            </View>
           }
+          <Text>Invitees:</Text>
           <Text key={i}>{participant.username}: {participant.status}</Text>
         </View>
       );
@@ -109,7 +113,6 @@ class EventsItem extends Component {
           source={{ uri: photourl }}
         />
         <ScrollView>
-          <Text>Invitees:</Text>
           {this.createParticipants()}
         </ScrollView>
       </ScrollView>

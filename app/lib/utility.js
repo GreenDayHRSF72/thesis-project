@@ -3,7 +3,7 @@ const formatTime = (time) => {
   return `${sliced}:00`;
 };
 
-const addParticipantsToDB = (eventId, friendList) => {
+const addParticipantsToDB = (eventId, friendList, host) => {
   return fetch('http:127.0.0.1:5000/participants', {
     method: 'POST',
     headers: {
@@ -13,6 +13,7 @@ const addParticipantsToDB = (eventId, friendList) => {
     body: JSON.stringify({
       eventId,
       friendList,
+      host,
     }),
   })
   .then(data => console.log('successfully save participant data to DB'))
