@@ -74,6 +74,7 @@ class AddFriends extends React.Component {
   onPressDoneButton() {
     console.log('Done button is pressed', this.props.user);
     // event will be saved to DB in here
+    let eventId = null;
     if (this.props.user.id) {
       fetch('http:127.0.0.1:5000/events', {
         method: 'POST',
@@ -93,19 +94,24 @@ class AddFriends extends React.Component {
       })
       .then(response => response.json())
       .then((responseJson) => {
-        const eventId = responseJson;
-        console.log(this.state.friendList);
-        // const event = {
-        //   name: this.props.event.location,
-        //   description: this.props.event.description,
-        //   eventDate: this.props.event.description,
-        //   location: this.props.event.location,
-        //   startTime: this.props.event.startTime,
-        //   endTime: this.props.event.endTime,
-        // }
-        util.addParticipantsToDB(eventId, this.state.friendList, this.props.user);
+        eventId = responseJson;
+        return util.addParticipantsToDB(eventId, this.state.friendList, this.props.user);
+      })
+      .then(() => {
         this.props.addCount();
-        this.props.navigation.navigate('EventDetails', { ...this.props.event });
+        //name, description, eventDate, location, startTime, endTime, username, photourl
+        let event = {
+          name: this.props.event.name,
+          eventDate: this.props.event.eventDate,
+          location: this.props.event.location,
+          startTime: util.formatTime(this.props.event.startTime),
+          endTime: util.formatTime(this.props.event.endTime),
+          username: this.props.user.name,
+          photourl: this.props.user.pic,
+          id: eventId,
+        };
+        console.log('++++++++++++++', event);
+        this.props.navigation.navigate('EventDetails', { ...event });
       })
       .catch(err => console.log(err));
     } else {

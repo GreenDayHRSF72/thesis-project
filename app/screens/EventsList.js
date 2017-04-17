@@ -55,7 +55,7 @@ class EventsList extends Component {
     fetch('http:127.0.0.1:5000/events/createdBy/' + this.props.user.email)
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log('active events are =========>', responseJson);
+      //console.log('active events are =========>', responseJson);
       this.setState({ activeEventsByCreator: responseJson });
     })
     .then(() => {
@@ -63,7 +63,7 @@ class EventsList extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log('invited events are ========>', responseJson);
+      //console.log('invited events are ========>', responseJson);
       this.setState({ invitedEventsByParticipantId: responseJson });
     })
     .catch((error) => {
@@ -78,7 +78,7 @@ class EventsList extends Component {
 
   createFeed(events) {
     return events.map((item, i) => {
-      console.log(item);
+      //console.log(item);
       return (
         <ListItem
           key={i}

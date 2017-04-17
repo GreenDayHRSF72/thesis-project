@@ -56,7 +56,7 @@ app.post('/suggestion/yelp', (req, res) => {
 });
 
 app.post('suggestion/userinfo', (req, res) => {
-  console.log('the email is', req.body.email)
+  //console.log('the email is', req.body.email)
   db.getUserInterests(req.body.email, (err, results) => {
     if (err) {
       console.log(err);
@@ -95,7 +95,7 @@ app.post('/users', (req, res) => {
 app.post('/events', (req, res) => {
   db.addEvent(req.body)
   .then((results) => {
-    console.log('saving event to DB', results.insertId);
+    //console.log('saving event to DB', results.insertId);
     res.json(results.insertId);
   })
   .catch((err) => {
@@ -109,7 +109,6 @@ app.get('/events/createdBy/:creatorEmail', (req, res) => {
   console.log('retrieving events created by ' + email);
   db.getEventByCreatorEmail(email)
   .then((result) => {
-    console.log(result);
     res.json(result);
   })
   .catch((err) => {
@@ -123,7 +122,6 @@ app.get('/events/:participantId', (req, res) => {
   console.log('retrieving events I get invited to ' + id);
   db.getEventByParticipantId(id)
   .then((result) => {
-    console.log(result);
     res.json(result);
   })
   .catch((err) => {
@@ -140,7 +138,7 @@ app.post('/participants', (req, res) => {
   const eventId = req.body.eventId;
   // console.log(participants);
   Promise.map(participants, function(participant) {
-    console.log(participant);
+    //console.log(participant);
     return db.addUserToDatabase(participant)
       .then(result => {
         console.log('saving user to db');
@@ -200,6 +198,7 @@ app.get('/events/participants/list/:*', (req, res) => {
     }
   });
 });
+
 app.post('/events/participants/rsvp', (req, res) => {
   console.log('request for participant status update --->', req.body);
   db.updateParticipantResponse(req.body, (err, results) => {

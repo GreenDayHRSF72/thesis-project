@@ -37,6 +37,7 @@ class EventsItem extends Component {
 
   getParticipantsAndStatus() {
     const { id } = this.props.navigation.state.params;
+    console.log('event id in eventlistItEM IS ***************', typeof id);
 
     // request all events from db
     fetch(baseURL + '/events/participants/list/:' + id)
