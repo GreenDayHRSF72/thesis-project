@@ -52,10 +52,10 @@ class EventsItem extends Component {
       const { id } = this.props.navigation.state.params;
       console.log('participants id', id, this.props.navigation.state.params);
       return (
-        <View>
+        <View key={i}>
           { this.props.user.id === participant.user_id && 
             <View>
-              <Text key={i}>RSVP Here:</Text>
+              <Text>RSVP Here:</Text>
               <ModalDropdown
                 style={{ borderWidth: 0.5, borderRadius: 4, height: 20, width: 60, backgroundColor: 'grey', flex: 1, alignItems: 'center' }}
                 textStyle={{ color: '#fff' }}
@@ -76,8 +76,8 @@ class EventsItem extends Component {
   createParticipants() {
     return this.state.participants.map((participant, i) => {
       return (
-        <View>
-          <Text key={i}>{participant.username}: {participant.status}</Text>
+        <View key={i}>
+          <Text>{participant.username}: {participant.status}</Text>
         </View>
       );
     });
