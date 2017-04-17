@@ -46,10 +46,10 @@ class EventsItem extends Component {
     });
   }
 
-  createParticipants() {
-    const { id } = this.props.navigation.state.params;
-    console.log('participants id', id, this.props.navigation.state.params);
+  rsvp() {
     return this.state.participants.map((participant, i) => {
+      const { id } = this.props.navigation.state.params;
+      console.log('participants id', id, this.props.navigation.state.params);
       return (
         <View>
           { this.props.user.id === participant.user_id && 
@@ -66,7 +66,16 @@ class EventsItem extends Component {
               />
             </View>
           }
-          <Text>Invitees:</Text>
+        </View>
+      );
+    });
+  }
+
+
+  createParticipants() {
+    return this.state.participants.map((participant, i) => {
+      return (
+        <View>
           <Text key={i}>{participant.username}: {participant.status}</Text>
         </View>
       );
@@ -113,6 +122,8 @@ class EventsItem extends Component {
           source={{ uri: photourl }}
         />
         <ScrollView>
+          {this.rsvp()}
+          <Text>Invitees:</Text>
           {this.createParticipants()}
         </ScrollView>
       </ScrollView>
