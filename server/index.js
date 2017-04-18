@@ -137,9 +137,10 @@ app.get('/events/:participantId', (req, res) => {
 
 
 app.post('/participants', (req, res) => {
-  console.log('entering participants route');
   const participants = req.body.friendList;
   const eventId = req.body.eventId;
+  const room = req.body.eventName + eventId;
+  console.log('entering participants route with room ----->', room);
   // console.log(participants);
   Promise.map(participants, function(participant) {
     //console.log(participant);
@@ -154,7 +155,8 @@ app.post('/participants', (req, res) => {
   })
   .then(result => {
     res.send('participant saved to db');
-    cSocket.emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
+    cSocket.join(room);
+    io.to(room).emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
   })
   .catch(err => {
     res.send('err saving participant to db');
@@ -191,7 +193,7 @@ app.get('/events', (req, res) => {
 
 app.get('/events/participants/list/:*', (req, res) => {
   let id = req.params[0];
-  console.log('get participants for events ----->==>', id);
+  console.log('get participants for events ----->', id);
   db.getEventParticipants(id, (err, results) => {
     if (err) {
       console.log(err);
@@ -205,6 +207,7 @@ app.get('/events/participants/list/:*', (req, res) => {
 
 app.post('/events/participants/rsvp', (req, res) => {
   console.log('request for participant status update --->', req.body);
+  const room = req.body.eventName + req.body.eventId;
   db.updateParticipantResponse(req.body, (err, results) => {
     if (err) {
       console.log(err);
@@ -212,6 +215,8 @@ app.post('/events/participants/rsvp', (req, res) => {
     } else {
       console.log(results);
       res.send('');
+      cSocket.join(room);
+      io.to(room).emit('refresh feed', { activity: `${req.body.eventName}: ${req.body.participantName} has RSVP'ed ${req.body.participantStatus}` });
     }
   });
 });

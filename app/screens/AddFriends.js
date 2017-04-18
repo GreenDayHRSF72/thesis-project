@@ -97,7 +97,7 @@ class AddFriends extends React.Component {
       .then((responseJson) => {
         eventId = responseJson;
         this.props.saveEventId(eventId);
-        return util.addParticipantsToDB(eventId, this.state.friendList, this.props.user);
+        return util.addParticipantsToDB(eventId, this.state.friendList, this.props.user, this.props.event.name);
       })
       .then(() => {
         this.props.addCount();
