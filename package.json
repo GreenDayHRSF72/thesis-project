@@ -12,6 +12,7 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "jquery": "^3.2.1",
+    "moment": "^2.18.1",
     "mysql": "^2.13.0",
     "node-yelp-fusion": "^1.0.4",
     "nodemon": "^1.11.0",
