@@ -10,7 +10,19 @@ const {
   PickerIOS,
   ScrollView,
   Image,
+  Button,
+  View,
+  ActionSheetIOS,
+  Alert,
 } = ReactNative;
+
+const BUTTONS = [
+  'Get more Info',
+  'Setup event',
+  'Cancel'
+];
+
+const CANCEL_INDEX = 2;
 
 class SuggesterResults extends Component {
   constructor(props) {
@@ -20,6 +32,7 @@ class SuggesterResults extends Component {
     };
 
     this.linkOfficialPage = this.linkOfficialPage.bind(this);
+    this.showActionSheet = this.showActionSheet.bind(this);
   }
 
   linkOfficialPage(link) {
@@ -32,6 +45,31 @@ class SuggesterResults extends Component {
     }
     
     return '';
+  }
+
+  showActionSheet(item) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+    },
+    (buttonIndex) => {
+      if (buttonIndex === 0) {
+        this.linkOfficialPage(item.url)
+      } else if (buttonIndex == 1) {
+
+      }
+    });
+  }
+
+  addButtons() {
+    return (<View><Button
+        title="Learn More"
+        onPress={() => {console.log('hello there')}}
+      />
+      <Button
+        title="Set Up Event"
+        onPress={() => { console.log('hi')}}
+      /></View>)
   }
 
   render() {
@@ -53,10 +91,8 @@ class SuggesterResults extends Component {
             key={result.name}
             title={result.name}
             avatar={{ uri: result.image_url }}
-            subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title}${this.highRecommend(i)}`}
-            onPress={() => {
-              this.linkOfficialPage(result.url);
-            }}
+            subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title} ${this.highRecommend(i)}`}
+            onPress={() => { this.showActionSheet(result)}} 
           />
         ))
       }
