@@ -33,6 +33,7 @@ class SuggesterResults extends Component {
 
     this.linkOfficialPage = this.linkOfficialPage.bind(this);
     this.showActionSheet = this.showActionSheet.bind(this);
+    this.redirectToEvents = this.redirectToEvents.bind(this);
   }
 
   linkOfficialPage(link) {
@@ -47,6 +48,10 @@ class SuggesterResults extends Component {
     return '';
   }
 
+  redirectToEvents() {
+    this.props.navigation.navigate('Event');
+  }
+
   showActionSheet(item) {
     ActionSheetIOS.showActionSheetWithOptions({
       options: BUTTONS,
@@ -55,8 +60,8 @@ class SuggesterResults extends Component {
     (buttonIndex) => {
       if (buttonIndex === 0) {
         this.linkOfficialPage(item.url)
-      } else if (buttonIndex == 1) {
-
+      } else if (buttonIndex === 1) {
+        this.redirectToEvents()
       }
     });
   }
@@ -102,7 +107,7 @@ class SuggesterResults extends Component {
 }
 
 function mapStateToProps(state) {
-  return { yelpResults: state.yelpResults };
+  return { yelpResults: state.yelpResults, event: state.event };
 }
 
 function mapDispatchToProps(dispatch) {

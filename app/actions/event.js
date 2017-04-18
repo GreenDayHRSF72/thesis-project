@@ -27,3 +27,10 @@ export function saveEndTime(time) {
     time,
   };
 }
+
+export function suggestEvent (payload) {
+  return {
+    type: types.SUG_EVENT,
+    payload,
+  }
+}
