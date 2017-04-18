@@ -24,7 +24,7 @@ export const event = function (state = initalState, action) {
         date: action.date,
       });
     case 'SUG_EVENT':
-      return Object.Assign({}, state, {
+      return Object.assign({}, state, {
         location: action.payload.location,
       })
     default:

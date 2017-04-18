@@ -48,8 +48,14 @@ class SuggesterResults extends Component {
     return '';
   }
 
-  redirectToEvents() {
+  redirectToEvents(yelp) {
+    var address = yelp.location;
+    var addStr = `${address.address1}, ${address.city}`;
+
+
+    this.props.suggestEvent({location: addStr})
     this.props.navigation.navigate('Event');
+    Alert.alert(JSON.stringify(this.props.event.location))
   }
 
   showActionSheet(item) {
@@ -61,7 +67,7 @@ class SuggesterResults extends Component {
       if (buttonIndex === 0) {
         this.linkOfficialPage(item.url)
       } else if (buttonIndex === 1) {
-        this.redirectToEvents()
+        this.redirectToEvents(item)
       }
     });
   }

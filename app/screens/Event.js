@@ -116,6 +116,7 @@ class Event extends Component {
             onChangeText={location => this.setState({ location })}
             style={styles.place}
             autoCorrect={false}
+            value={this.props.event.location}
             placeholder="enter a location"
           />
           <TextInput
