@@ -53,7 +53,7 @@ class SuggesterResults extends Component {
 
     this.props.suggestEvent({
       location: addStr,
-      name,
+      name: name,
       description: `Let's go to ${name}!`,
     });
     this.props.navigation.navigate('Event');
