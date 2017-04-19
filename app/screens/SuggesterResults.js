@@ -89,7 +89,7 @@ class SuggesterResults extends Component {
         this.props.yelpResults.map((result, i) => (
           <ListItem
             roundAvatar
-            key={result.name}
+            key={i}
             title={result.name}
             avatar={{ uri: result.image_url }}
             subtitle={`Address: ${result.location.address1}${'\n'}Category: ${result.categories[0].title} ${this.highRecommend(i)}`}
