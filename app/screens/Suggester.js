@@ -428,7 +428,7 @@ class Suggester extends Component {
       return (<ScrollView style={styles.container}>
         <Image
           style={styles.image}
-          source={require('../img/ppp3.jpg')}
+          source={require('../img/ppp3.png')}
         />
         <Text
         style={styles.subtitle}
@@ -472,7 +472,7 @@ class Suggester extends Component {
         <Text
           style={styles.questionText}
         >
-          Q2: How far from the that place are you willing to go?
+          Q2: How far from the that place are you willing to go from the location you selected?
         </Text>
         <PickerIOS
           style={styles.picker}
