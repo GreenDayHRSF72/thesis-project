@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     paddingTop: 10,
     color: 'white',
-    fontWight: 700,
+    fontWeight: '700',
   }
 
 });
@@ -402,8 +402,7 @@ class Suggester extends Component {
       // console.log(resJson);
       let businesses = resJson.businesses;
       if (businesses.length === 0) {
-        Alert.alert('Sorry there is nothing fun do at the location specified, please try again! \
-          The questions have been reset!');
+        Alert.alert(`Sorry there is nothing fun do at the location specified, please try again!${'\n'}The questions have been reset!`);
         sug.resetState();
       } else {
         console.log(businesses);
@@ -420,7 +419,7 @@ class Suggester extends Component {
       sug.setState({ yelpLoading: false });
       console.log(error);
       sug.resetState();
-      Alert.alert('There seems to be an error, and you answers have been reset. Please try again!', JSON.stringify(error));
+      Alert.alert('There seems to be an error, and you answers have been reset. Please try again!');
       // console.log(error);
     });
   }
