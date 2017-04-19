@@ -112,9 +112,9 @@ class EventsItem extends Component {
     console.log('this.state.participants', this.state.participants);
     return (
       <ScrollView>
-        <Text>{description}</Text>
+        <Text>{description === null || description === undefined ? 'NO DESCRIPTION' : description}</Text>
         <Text>{eventDate}</Text>
-        <Text>{location}</Text>
+        <Text>{location === null || location === undefined ? 'NO LOCATION' : location}</Text>
         <Text>Starts: {startTime}</Text>
         <Text>Ends: {endTime}</Text>
         <Text>Hosted by: {username}</Text>

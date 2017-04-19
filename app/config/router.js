@@ -42,7 +42,7 @@ export const currentEvents = StackNavigator({
   EventDetails: {
     screen: EventsItem,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.name.toUpperCase(),
+      title: navigation.state.params.name === null || navigation.state.params.name === undefined ? 'UNKNOWN EVENT' : navigation.state.params.name.toUpperCase(),
     }),
   },
 });

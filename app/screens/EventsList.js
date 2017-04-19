@@ -82,8 +82,8 @@ class EventsList extends Component {
       return (
         <ListItem
           key={i}
-          title={item.name === null || undefined ? `EVENT ${i}` : `${item.name.toUpperCase()}`}
-          subtitle={item.description === null || undefined ? 'No description' : `${item.description.substring(0, 40)}`}
+          title={item.name === null || item.name === undefined ? `EVENT ${i}` : `${item.name.toUpperCase()}`}
+          subtitle={item.description === null || item.description === undefined ? 'No description' : `${item.description.substring(0, 40)}`}
           onPress={() => this.onLearnMore(item)}
           containerStyle={{ height: 50 }}
           avatar={{ uri: item.photourl }}
