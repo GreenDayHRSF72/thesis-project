@@ -52,9 +52,7 @@ class Event extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: '',
-      description: '',
-      name: '',
+      // see state in redux
     };
     this.onPressButton = this.onPressButton.bind(this);
   }
@@ -62,17 +60,19 @@ class Event extends Component {
   onPressButton() {
     if (this.props.event.date === null) {
       alert('date is empty, please pick a date');
-    } else if (this.state.location === '') {
-      alert('event name/location is empty, please enter event name or location');
+    } else if (this.props.event.location === '' || this.props.event.name === '') {
+      alert('event name/location is empty, please enter event name and/or location');
+    } else if (this.props.event.description === '') {
+      alert('please enter an event description');
     } else if (this.props.event.startTime === null) {
       alert('please pick event start time');
     } else if (this.props.event.endTime === null) {
       alert('please pick event end time');
     } else {
       const event = {
-        name: this.state.name,
-        location: this.state.location,
-        description: this.state.description,
+        name: this.props.name,
+        location: this.props.location,
+        description: this.props.description,
         // date and time are retrieved from Redux store
         eventDate: this.props.event.date,
         startTime: this.props.event.startTime,
@@ -87,10 +87,6 @@ class Event extends Component {
       // navigate to AddFriends page after saving event to Redux
       this.props.navigation.navigate('AddFriends');
     }
-  }
-
-  componentWillMount() {
-    Alert.alert('asfasfd')
   }
 
   render() {
@@ -109,25 +105,25 @@ class Event extends Component {
           <TextInput
             ref={(input) => { this.eventNameInput = input; }}
             clearTextOnFocus={true}
-            onChangeText={name => this.setState({ name })}
+            onChangeText={name => this.props.changeEventNam(name)}
             style={styles.place}
             autoCorrect={false}
-            value={this.state.name}
+            value={this.props.event.name}
             placeholder="enter an event name"
           />
           <TextInput
             ref={(input) => { this.eventLocationInput = input; }}
             clearTextOnFocus={true}
-            onChangeText={location => this.setState({ location })}
+            onChangeText={location => this.props.changeEventLoc(location)}
             style={styles.place}
             autoCorrect={false}
-            value={this.state.location}
+            value={this.props.event.location}
             placeholder="enter a location"
           />
           <TextInput
             ref={(input) => { this.eventDescriptionInput = input; }}
             clearTextOnFocus={true}
-            onChangeText={description => this.setState({ description })}
+            onChangeText={description => this.props.changeEventDes(description)}
             style={styles.place}
             autoCorrect={false}
             value={this.state.description}

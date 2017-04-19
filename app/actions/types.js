@@ -9,3 +9,6 @@ export const GET_LOCATION = 'GET_LOCATION';
 export const SAVE_USER_ID = 'SAVE_USER_ID';
 export const GET_YELP = 'GET_YELP';
 export const SUG_EVENT = 'SUG_EVENT';
+export const CHANGE_NAM = 'CHANGE_NAM';
+export const CHANGE_LOC = 'CHANGE_LOC';
+export const CHANGE_DES = 'CHANGE_DES';

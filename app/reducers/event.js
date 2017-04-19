@@ -9,7 +9,7 @@ const initalState = {
   description: '',
 };
 
-export const event = function (state = initalState, action) {
+export const event = function(state = initalState, action) {
   switch (action.type) {
     case 'SAVE_EVENT':
       return action.payload;
@@ -30,6 +30,18 @@ export const event = function (state = initalState, action) {
         location: action.payload.location,
         name: action.payload.name,
         description: action.payload.description,
+      });
+    case 'CHANGE_NAM':
+      return Object.assign({}, state, {
+        name: action.payload,
+      });
+    case 'CHANGE_LOC':
+      return Object.assign({}, state, {
+        location: action.payload,
+      });
+    case 'CHANGE_DES':
+      return Object.assign({}, state, {
+        description: action.payload,
       });
     default:
       return state;

@@ -116,6 +116,7 @@ class Suggester extends Component {
   // thinking the yelp
   // API would find them usefuio
 
+
   geocodeCoords(coords) {
     const sug = this;
     const latlngString = `latlng=${coords.latitude},${coords.longitude}`;
@@ -263,8 +264,6 @@ class Suggester extends Component {
   }
 
   filterPast(yelp) {
-    console.log('filetering past events');
-
     if (this.state.pastEvents.length === 0) {
       return yelp;
     }
