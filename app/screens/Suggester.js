@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     color: 'white',
     fontWeight: '700',
-  }
-
+  },
 });
 
 let baseURL;

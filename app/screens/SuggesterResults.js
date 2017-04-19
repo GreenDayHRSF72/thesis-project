@@ -13,7 +13,28 @@ const {
   View,
   ActionSheetIOS,
   Alert,
+  StyleSheet,
 } = ReactNative;
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 0,
+    paddingTop: 0,
+    flex: 1,
+    backgroundColor: '#2ecc71',
+  },
+  image: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 10,
+  },
+  subtitle: {
+    textAlign: 'center',
+    paddingTop: 10,
+    color: 'white',
+    fontWeight: '700',
+  },
+});
 
 const BUTTONS = [
   'Get more Info',
@@ -74,14 +95,21 @@ class SuggesterResults extends Component {
   }
 
   render() {
-    return (<ScrollView>
-      <Text>
+    return (<ScrollView
+        style={styles.container}
+      >
+      <Text
+        style={styles.subtitle}
+      >
         We found {this.props.yelpResults.length} things that you may be interested in doing!
       </Text>
       <Image
+        style={styles.image}
         source={require('../img/ppp2.gif')}
       />
-      <Text>
+      <Text
+        style={styles.subtitle}
+      >
         Click on any of the options to see more information about them, or auto fill an event with the venue's information!
       </Text>
       <List>
