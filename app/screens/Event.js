@@ -70,9 +70,9 @@ class Event extends Component {
       alert('please pick event end time');
     } else {
       const event = {
-        name: this.props.name,
-        location: this.props.location,
-        description: this.props.description,
+        name: this.props.event.name,
+        location: this.props.event.location,
+        description: this.props.event.description,
         // date and time are retrieved from Redux store
         eventDate: this.props.event.date,
         startTime: this.props.event.startTime,
