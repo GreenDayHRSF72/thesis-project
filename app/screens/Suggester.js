@@ -14,7 +14,70 @@ const {
   ScrollView,
   Alert,
   Image,
+  StyleSheet,
+  TouchableOpacity,
 } = ReactNative;
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 0,
+    paddingTop: 0,
+    flex: 1,
+    backgroundColor: '#2ecc71',
+  },
+  picker: {
+    marginTop: 0,
+    paddingTop: 0,
+    flex: 1,
+    height: 150,
+    width: '90%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    backgroundColor: '#ededed',
+    borderStyle: 'solid',
+    borderWidth: 2,
+    borderColor: '#7e7e7e',
+  },
+  buttonContainer: {
+    marginTop: 10,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    backgroundColor: '#27ae60',
+    height: 35,
+    width: '90%',
+  },
+  buttonText: {
+    paddingTop: 10,
+    textAlign: 'center',
+    fontWeight: '700',
+    color: 'white',
+  },
+  questionText: {
+    color: 'white',
+    paddingTop: 10,
+    paddingBottom: 10,
+    textAlign: 'center',
+    fontWeight: '700',
+  },
+  image: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 10,
+  },
+  subtitle: {
+    textAlign: 'center',
+    paddingTop: 10,
+    color: 'white',
+  },
+  header: {
+    fontSize: 18,
+    textAlign: 'center', 
+    paddingTop: 10,
+    color: 'white',
+    fontWight: 700,
+  }
+
+});
 
 let baseURL;
 
@@ -28,7 +91,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const locationOptions = [
-  { text: 'Guantanamo Bay, because you clearly dont want to have fun', value: 0 },
+  { text: 'Nothing selected', value: 0 },
   { text: 'Close to my current location', value: 1 },
   { text: 'At another location', value: 2 },
 ];
@@ -271,7 +334,7 @@ class Suggester extends Component {
     for (var i = 0; i < yelp.length; i += 1) {
       const venueName = yelp[i].name.toUpperCase();
       console.log('examining ' + venueName)
-      if (past.indexOf(venueName) > -1 ) {
+      if (past.indexOf(venueName) > -1) {
         console.log('removing ' + venueName)
         yelp.splice(i, 1);
         i -= 1;
@@ -364,22 +427,24 @@ class Suggester extends Component {
 
   render() {
     if (this.state.yelpLoading === false) {
-      return (<ScrollView>
-        <Text>
-          {'\n'}
-          Welcome to the Suggester, {this.props.user.name}!{'\n'}
-        </Text>
+      return (<ScrollView style={styles.container}>
         <Image
+          style={styles.image}
           source={require('../img/ppp1.jpg')}
         />
-        <Text>
-          Don{'\''}t know what to do for your hangout? Pom Pom Pudding is here to help!
-          Just answer a few quick questions and we{'\''}ll find something for you!{'\n'}
+        <Text
+        style={styles.subtitle}
+        >
+          Welcome to the Suggester, {this.props.user.name}! Don{'\''}t know what to do for your hangout? Pom Pom Pudding is here to help!
+          Just answer a few quick questions and we{'\''}ll find something for you! Slide up on the selection boxes to reveal more choices.
         </Text>
-        <Text>
-          Where do you want to go?
+        <Text
+          style={styles.questionText}
+        >
+          Q1: Where do you want to go?
         </Text>
         <PickerIOS
+          style={styles.picker}
           selectedValue={this.state.location}
           onValueChange={(value) => {
             this.getCoords(value);
@@ -406,10 +471,13 @@ class Suggester extends Component {
             this.geocodeLocation(value);
           }}
         />
-        <Text>
-          How far from the that place are you willing to go?
+        <Text
+          style={styles.questionText}
+        >
+          Q2: How far from the that place are you willing to go?
         </Text>
         <PickerIOS
+          style={styles.picker}
           selectedValue={this.state.radius}
           onValueChange={(value) => {
             this.setState({ radius: value });
@@ -423,10 +491,13 @@ class Suggester extends Component {
             />
           ))}
         </PickerIOS>
-        <Text>
-          What are you willing to spend?
+        <Text
+          style={styles.questionText}
+        >
+          Q3: What are you willing to spend?
         </Text>
         <PickerIOS
+          style={styles.picker}
           selectedValue={this.state.budget}
           onValueChange={(value) => {
             this.setState({ budget: value });
@@ -440,10 +511,13 @@ class Suggester extends Component {
             />
           ))}
         </PickerIOS>
-        <Text>
-          Are you looking to spice things up?
+        <Text
+          style={styles.questionText}
+        >
+          Q4: Are you looking to spice things up?
         </Text>
         <PickerIOS
+          style={styles.picker}
           selectedValue={this.state.findNew}
           onValueChange={(value) => {
             this.setState({ findNew: value });
@@ -457,10 +531,13 @@ class Suggester extends Component {
             />
           ))}
         </PickerIOS>
-        <Text>
-          Is there anything you don{'\''}t want to do?
+        <Text
+          style={styles.questionText}
+        >
+          Q5: Is there anything you don{'\''}t want to do?
         </Text>
         <PickerIOS
+          style={styles.picker}
           selectedValue={this.state.dislike}
           onValueChange={(value) => {
             this.setState({ dislike: value });
@@ -487,22 +564,29 @@ class Suggester extends Component {
             this.setState({ dislikeVisible: false });
           }}
         />
-        <Button
-          title="Get my suggestions!"
-          onPress={this.queryYelp}
-        />
+      <TouchableOpacity onPress={this.queryYelp} style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>GET MY SUGGESTIONS</Text>
+          </TouchableOpacity>
         <Button
           title="Test get user Info"
           onPress={this.getAllUserInfo}
         />
       </ScrollView>);
     } else if (this.state.yelpLoading === true) {
-      return (<View>
+      return (<View
+          style={styles.container}
+        >
+        <Text
+          style={styles.header}
+        >
+          Now Loading your results...
+        </Text>
         <Image
+          style={styles.image}
           source={require('../img/gdt1.gif')}
         />
         <Text
-          style={{ textAlign: 'center', marginTop: 150 }}
+          style={styles.subtitle}
         >
           Pom Pom Pudding is working hard to come up some recommendations for you!{'\n'}
           Isn{'\''}t great that someone can make these hard decisions?{'\n'}
