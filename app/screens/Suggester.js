@@ -428,7 +428,7 @@ class Suggester extends Component {
       return (<ScrollView style={styles.container}>
         <Image
           style={styles.image}
-          source={require('../img/ppp1.jpg')}
+          source={require('../img/ppp3.jpg')}
         />
         <Text
         style={styles.subtitle}
