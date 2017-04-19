@@ -98,18 +98,24 @@ class Event extends Component {
             source={require('../img/congratulations.png')}
           />
           <Text style={styles.title}>
-            Your Event with Friends Starts from Here!
+            Your Event with Friends Starts from Here! If you are unsurof what to do, Please check out our Suggester, or type "HALP!" in the event name box.
           </Text>
         </View>
         <KeyboardAvoidingView behavior="padding" style={styles.formContainer}>
           <TextInput
             ref={(input) => { this.eventNameInput = input; }}
             clearTextOnFocus={true}
-            onChangeText={name => this.props.changeEventNam(name)}
+            onChangeText={(name) => {
+              this.props.changeEventNam(name);
+              if (this.props.event.name === 'HALP!') {
+                this.props.changeEventNam('');
+                this.props.navigation.navigate('Suggester');
+              }
+            }}
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.name}
-            placeholder="enter an event name"
+            placeholder="enter an event name, or... HALP!"
           />
           <TextInput
             ref={(input) => { this.eventLocationInput = input; }}
