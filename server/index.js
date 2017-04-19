@@ -8,6 +8,7 @@ const Promise = require('bluebird');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const config = require('../apis/config.js');
 
 let cSocket;
 const PORT = process.env.PORT || 5000;
@@ -42,8 +43,8 @@ app.get('/', (req, res) => {
 app.post('/suggestion/yelp', (req, res) => {
   const queryString = req.body.queryString;
   const yelp = new Yelp({
-    id: 'bcAq_PONnTWUskQ8XgDMOw',
-    secret: 'P1zj7M7burWhkMsOExoXT7jwe7d2S8FrhCR2bsFqKciBsnFfuHlsfWKDuLjQO19O',
+    id: config.apiConfig.yelp.appId,
+    secret: config.apiConfig.yelp.appSecret,
   });
 
   yelp.search(queryString)

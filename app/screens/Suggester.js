@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
-const config = require('../../apis/config.js')
+const config = require('../../apis/config.js');
 
 const {
   View,
