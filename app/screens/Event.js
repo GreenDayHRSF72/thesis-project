@@ -107,7 +107,7 @@ class Event extends Component {
             clearTextOnFocus={true}
             onChangeText={(name) => {
               this.props.changeEventNam(name);
-              if (this.props.event.name === 'HALP!') {
+              if (this.props.event.name === 'HALP') {
                 this.props.changeEventNam('');
                 this.props.navigation.navigate('Suggester');
               }
