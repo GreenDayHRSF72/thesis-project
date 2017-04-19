@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
+const config = require('../../apis/config.js')
+
 const {
   View,
   Text,
@@ -182,7 +184,7 @@ class Suggester extends Component {
   geocodeCoords(coords) {
     const sug = this;
     const latlngString = `latlng=${coords.latitude},${coords.longitude}`;
-    const key = 'AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo';
+    const key = config.apiConfig.google.apiKey;
     // console.log(`https://maps.googleapis.com/maps/api/geocode/json?${latlngString}&key=${key}`);
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?${latlngString}&key=${key}`, {
       method: 'GET',
@@ -224,7 +226,7 @@ class Suggester extends Component {
 
   geocodeLocation(submit) {
     const suggester = this;
-    Geocoder.setApiKey('AIzaSyAx_7pT4ayHbBHuVOYK0kjPfqmEUfRHcQo');
+    Geocoder.setApiKey(config.apiConfig.google.apiKey);
     Geocoder.getFromLocation(submit).then((json) => {
       const location = json.results[0].geometry.location;
       const address = json.results[0].formatted_address;
