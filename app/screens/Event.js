@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, Text, KeyboardAvoidingView, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Text, KeyboardAvoidingView, Image, TouchableOpacity, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -89,6 +89,10 @@ class Event extends Component {
     }
   }
 
+  componentWillMount() {
+    Alert.alert('asfasfd')
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -108,6 +112,7 @@ class Event extends Component {
             onChangeText={name => this.setState({ name })}
             style={styles.place}
             autoCorrect={false}
+            value={this.state.name}
             placeholder="enter an event name"
           />
           <TextInput
@@ -116,7 +121,7 @@ class Event extends Component {
             onChangeText={location => this.setState({ location })}
             style={styles.place}
             autoCorrect={false}
-            value={this.props.event.location}
+            value={this.state.location}
             placeholder="enter a location"
           />
           <TextInput
@@ -125,6 +130,7 @@ class Event extends Component {
             onChangeText={description => this.setState({ description })}
             style={styles.place}
             autoCorrect={false}
+            value={this.state.description}
             placeholder="short description"
           />
           <MyDatePicker />

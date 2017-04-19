@@ -5,7 +5,9 @@ const initalState = {
   date: null,
   startTime: null,
   endTime: null,
-}
+  name: '',
+  description: '',
+};
 
 export const event = function (state = initalState, action) {
   switch (action.type) {
@@ -26,7 +28,9 @@ export const event = function (state = initalState, action) {
     case 'SUG_EVENT':
       return Object.assign({}, state, {
         location: action.payload.location,
-      })
+        name: action.payload.name,
+        description: action.payload.description,
+      });
     default:
       return state;
   }

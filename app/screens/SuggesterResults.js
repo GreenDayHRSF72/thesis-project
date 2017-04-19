@@ -7,7 +7,6 @@ import { ActionCreators } from '../actions';
 
 const {
   Text,
-  PickerIOS,
   ScrollView,
   Image,
   Button,
@@ -19,7 +18,7 @@ const {
 const BUTTONS = [
   'Get more Info',
   'Setup event',
-  'Cancel'
+  'Cancel',
 ];
 
 const CANCEL_INDEX = 2;
@@ -44,18 +43,21 @@ class SuggesterResults extends Component {
     if (i <= 4) {
       return '\nHIGHLY RECOMMENDED!';
     }
-    
     return '';
   }
 
   redirectToEvents(yelp) {
-    var address = yelp.location;
-    var addStr = `${address.address1}, ${address.city}`;
+    const address = yelp.location;
+    const addStr = `${address.address1}, ${address.city}`;
+    const name = yelp.name;
 
-
-    this.props.suggestEvent({location: addStr})
+    this.props.suggestEvent({
+      location: addStr,
+      name,
+      description: 'meh',
+    });
     this.props.navigation.navigate('Event');
-    Alert.alert(JSON.stringify(this.props.event.location))
+    Alert.alert(JSON.stringify(this.props.event.location, this.props))
   }
 
   showActionSheet(item) {
@@ -65,22 +67,11 @@ class SuggesterResults extends Component {
     },
     (buttonIndex) => {
       if (buttonIndex === 0) {
-        this.linkOfficialPage(item.url)
+        this.linkOfficialPage(item.url);
       } else if (buttonIndex === 1) {
-        this.redirectToEvents(item)
+        this.redirectToEvents(item);
       }
     });
-  }
-
-  addButtons() {
-    return (<View><Button
-        title="Learn More"
-        onPress={() => {console.log('hello there')}}
-      />
-      <Button
-        title="Set Up Event"
-        onPress={() => { console.log('hi')}}
-      /></View>)
   }
 
   render() {

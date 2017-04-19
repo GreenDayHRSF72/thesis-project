@@ -181,9 +181,6 @@ class Suggester extends Component {
     Alert.alert(`${userEmail} wants to be within ${radius} meters of ${address}\n You want to only spend ${price} out of 4`);
   }
 
-  // WORK ON ME NAO!!!!!!
-
-
   getDislike(value) {
     const suggester = this;
     if (value === 1) {
