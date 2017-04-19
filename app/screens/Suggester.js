@@ -362,10 +362,6 @@ class Suggester extends Component {
     });
   }
 
-  componentDidMount(){
-
-  }
-
   render() {
     if (this.state.yelpLoading === false) {
       return (<ScrollView>
@@ -494,14 +490,6 @@ class Suggester extends Component {
         <Button
           title="Get my suggestions!"
           onPress={this.queryYelp}
-        />
-        <Button
-          title="Press me to view page state"
-          onPress={() => {
-            const sug = this;
-            Alert.alert(JSON.stringify(sug.state));
-            Alert.alert(JSON.stringify(sug.props.user));
-          }}
         />
         <Button
           title="Test get user Info"

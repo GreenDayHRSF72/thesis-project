@@ -132,7 +132,7 @@ class Event extends Component {
             onChangeText={description => this.props.changeEventDes(description)}
             style={styles.place}
             autoCorrect={false}
-            value={this.state.description}
+            value={this.props.event.description}
             placeholder="short description"
           />
           <MyDatePicker />

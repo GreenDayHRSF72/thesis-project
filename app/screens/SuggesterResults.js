@@ -17,7 +17,7 @@ const {
 
 const BUTTONS = [
   'Get more Info',
-  'Setup event',
+  'Setup event (this will take you to Event Creattion)',
   'Cancel',
 ];
 
@@ -54,10 +54,9 @@ class SuggesterResults extends Component {
     this.props.suggestEvent({
       location: addStr,
       name,
-      description: 'meh',
+      description: `Let's go to ${name}!`,
     });
     this.props.navigation.navigate('Event');
-    Alert.alert(JSON.stringify(this.props.event.location, this.props))
   }
 
   showActionSheet(item) {
@@ -83,7 +82,7 @@ class SuggesterResults extends Component {
         source={require('../img/ppp2.gif')}
       />
       <Text>
-        Click on any of the options to see more information about them!
+        Click on any of the options to see more information about them, or auto fill an event with the venue's information!
       </Text>
       <List>
         {
