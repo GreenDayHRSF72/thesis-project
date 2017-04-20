@@ -116,7 +116,7 @@ app.get('/events/createdBy/:creatorEmail', (req, res) => {
     res.json(result);
   })
   .catch((err) => {
-    console.log('err getting event by creator');
+    console.log('err getting event by creator', err);
     res.json('err getting event by creator');
   });
 });
@@ -129,7 +129,7 @@ app.get('/events/:participantId', (req, res) => {
     res.json(result);
   })
   .catch((err) => {
-    console.log('err getting event by participant id');
+    console.log('err getting event by participant id', err);
     res.json('err getting event by participant id');
   });
 });
@@ -159,7 +159,7 @@ app.post('/participants', (req, res) => {
     io.to(room).emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
   })
   .catch((err) => {
-    res.json('err saving participant to db');
+    res.json('err saving participant to db', err);
   })
   ;
 });
@@ -173,7 +173,7 @@ app.get('/users/:email', (req, res) => {
     res.json(result[0]);
   })
   .catch((err) => {
-    console.log('cannot get user info by email from DB');
+    console.log('cannot get user info by email from DB', err);
     res.json(err);
   });
 });
