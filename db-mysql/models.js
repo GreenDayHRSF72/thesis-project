@@ -27,10 +27,10 @@ var queryName = function(cb) {
 // Queries related to getting user data for suggestion algorithm
 // FIGURE THIS OUT BY EOD
 const getUserInterests = (email) => {
-  const qs = 'SELECT * FROM interests;'
+  const qs = 'SELECT * FROM interests;';
   const queryStr = `SELECT name FROM interests INNER JOIN users WHERE users.email = "${email}" && users.id = interest.user_id;`;
   return db.queryAsync(qs, email);
-}
+};
 
 const getActivitiesByEmail = (email) => {
   const queryStr = 'SELECT * FROM users WHERE email = ? LIMIT 1';

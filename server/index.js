@@ -151,14 +151,14 @@ app.post('/participants', (req, res) => {
       })
       .then(result => {
         console.log('participant saved to db');
-      })
+      });
   })
   .then(result => {
     res.json('participant saved to db');
     cSocket.join(room);
     io.to(room).emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
   })
-  .catch(err => {
+  .catch((err) => {
     res.json('err saving participant to db');
   })
   ;
@@ -192,7 +192,7 @@ app.get('/events', (req, res) => {
 });
 
 app.get('/events/participants/list/:*', (req, res) => {
-  let id = req.params[0];
+  const id = req.params[0];
   console.log('get participants for events ----->', id);
   db.getEventParticipants(id, (err, results) => {
     if (err) {
