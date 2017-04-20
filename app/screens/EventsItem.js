@@ -49,7 +49,7 @@ class EventsItem extends Component {
 
   rsvp() {
     return this.state.participants.map((participant, i) => {
-      const { id } = this.props.navigation.state.params;
+      const { id, name } = this.props.navigation.state.params;
       console.log('participants id', id, this.props.navigation.state.params);
       return (
         <View key={i}>
@@ -63,7 +63,7 @@ class EventsItem extends Component {
                 options={['yes', 'no', 'maybe']}
                 defaultValue={participant.status}
                 defaultIndex={['yes', 'no', 'maybe'].indexOf(participant.status)}
-                onSelect={(idx, value) => this.changeResponse(idx, value, participant, id)}
+                onSelect={(idx, value) => this.changeResponse(idx, value, participant, id, name)}
               />
             </View>
           }
@@ -87,7 +87,7 @@ class EventsItem extends Component {
     style.height -= 65;
     return style;
   }
-  changeResponse(idx, value, participant, eventID) {
+  changeResponse(idx, value, participant, eventID, eventname) {
     fetch( baseURL + '/events/participants/rsvp', {
       method: 'POST',
       headers: {
@@ -97,7 +97,9 @@ class EventsItem extends Component {
       body: JSON.stringify({
         eventId: eventID,
         participantId: participant.id,
+        participantName: participant.username,
         participantStatus: value,
+        eventName: eventname,
       }),
     })
     .then((data) => {

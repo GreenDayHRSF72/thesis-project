@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ReactNative from 'react-native';
 import { bindActionCreators } from 'redux';
 import SocketIOClient from 'socket.io-client';
+import moment from 'moment';
 import { ActionCreators } from '../actions';
 
 let baseURL;
@@ -21,11 +22,13 @@ const {
   Image,
 } = ReactNative;
 
+const date = new Date().toLocaleTimeString();
+
 
 class ActivityStream extends Component {
   constructor(props) {
     super(props);
-    this.state = { activities: [], current: '', currentImg: '' };
+    this.state = { activities: [], current: '', currentImg: '', curTime: moment().fromNow(), current:'' };
     this.socket = SocketIOClient(baseURL, { jsonp: false });
   }
 
@@ -34,6 +37,11 @@ class ActivityStream extends Component {
       this.state.activities.push(data);
       this.setState({ current: this.state.activities[this.state.activities.length - 1].activity, currentImg: this.state.activities[this.state.activities.length - 1].authorImage });
     });
+    setInterval(() => {
+      this.setState({
+        curTime: new Date().toLocaleString(),
+      });
+    }, 1000);
   }
 
   createFeed() {
@@ -45,16 +53,18 @@ class ActivityStream extends Component {
             source={{ uri: item.authorImage }}
           />
           <Text>{item.activity}</Text>
+          <Text>{moment().fromNow()}</Text>
         </View>
       );
     });
   }
 
+
   render() {
     return (
       <View>
         <Text style={{ marginTop: 20, textAlign: 'center' }}>
-          this is the live feed for testing!
+          this is the live feed for testing! {this.state.curTime}
         </Text>
         {this.createFeed()}
       </View>
