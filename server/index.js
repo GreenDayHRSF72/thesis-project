@@ -117,7 +117,7 @@ app.get('/events/createdBy/:creatorEmail', (req, res) => {
   })
   .catch((err) => {
     console.log('err getting event by creator');
-    res.send('err getting event by creator');
+    res.json('err getting event by creator');
   });
 });
 
@@ -130,7 +130,7 @@ app.get('/events/:participantId', (req, res) => {
   })
   .catch((err) => {
     console.log('err getting event by participant id');
-    res.send('err getting event by participant id');
+    res.json('err getting event by participant id');
   });
 });
 
@@ -154,12 +154,12 @@ app.post('/participants', (req, res) => {
       })
   })
   .then(result => {
-    res.send('participant saved to db');
+    res.json('participant saved to db');
     cSocket.join(room);
     io.to(room).emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
   })
   .catch(err => {
-    res.send('err saving participant to db');
+    res.json('err saving participant to db');
   })
   ;
 });
@@ -214,7 +214,7 @@ app.post('/events/participants/rsvp', (req, res) => {
       res.send(err);
     } else {
       console.log(results);
-      res.send('');
+      res.json('');
       cSocket.join(room);
       io.to(room).emit('refresh feed', { activity: `${req.body.eventName}: ${req.body.participantName} has RSVP'ed ${req.body.participantStatus}` });
     }

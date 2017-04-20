@@ -5,7 +5,7 @@ var connection = mysql.createConnection(mysqlConfig);
 var Bluebird = require('bluebird');
 const db = Bluebird.promisifyAll(connection);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
 }
 
