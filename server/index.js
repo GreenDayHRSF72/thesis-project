@@ -142,8 +142,8 @@ app.post('/participants', (req, res) => {
   const room = req.body.eventName + eventId;
   console.log('entering participants route with room ----->', room);
   // console.log(participants);
-  Promise.map(participants, function(participant) {
-    //console.log(participant);
+  Promise.map(participants, (participant) => {
+    console.log(participant);
     return db.addUserToDatabase(participant)
       .then(result => {
         console.log('saving user to db');
