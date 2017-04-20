@@ -61,7 +61,7 @@ app.post('suggestion/userinfo', (req, res) => {
   db.getUserInterests(req.body.email, (err, results) => {
     if (err) {
       console.log(err);
-      res.send(err);
+      res.json(err);
     } else {
       res.json(results);
     }
@@ -92,7 +92,7 @@ app.post('/users', (req, res) => {
 
   })
   .catch((err) => {
-    res.send(err);
+    res.json(err);
   });
 });
 
@@ -104,7 +104,7 @@ app.post('/events', (req, res) => {
   })
   .catch((err) => {
     console.log('there is an error');
-    res.send(err);
+    res.json(err);
   });
 });
 
@@ -174,7 +174,7 @@ app.get('/users/:email', (req, res) => {
   })
   .catch((err) => {
     console.log('cannot get user info by email from DB');
-    res.send(err);
+    res.json(err);
   });
 });
 
@@ -183,7 +183,7 @@ app.get('/events', (req, res) => {
   db.getPublicEvents((err, results) => {
     if (err) {
       console.log(err);
-      res.send(err);
+      res.json(err);
     } else {
       // console.log(results);
       res.json(results);
@@ -197,7 +197,7 @@ app.get('/events/participants/list/:*', (req, res) => {
   db.getEventParticipants(id, (err, results) => {
     if (err) {
       console.log(err);
-      res.send(err);
+      res.json(err);
     } else {
       console.log(results);
       res.json(results);
@@ -211,7 +211,7 @@ app.post('/events/participants/rsvp', (req, res) => {
   db.updateParticipantResponse(req.body, (err, results) => {
     if (err) {
       console.log(err);
-      res.send(err);
+      res.json(err);
     } else {
       console.log(results);
       res.json('');
