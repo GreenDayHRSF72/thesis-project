@@ -1,14 +1,17 @@
 
-var mysql = require('mysql');
-var mysqlConfig = require('./config.js');
-var connection = mysql.createConnection(mysqlConfig);
-var Bluebird = require('bluebird');
-const db = Bluebird.promisifyAll(connection);
+const mysql = require('mysql');
+const Bluebird = require('bluebird');
+const mysqlConfig = require('./config.js');
+
+let connection;
 
 if (process.env.NODE_ENV === 'production') {
   connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
+} else {
+  connection = mysql.createConnection(mysqlConfig);
 }
 
+const db = Bluebird.promisifyAll(connection);
 // to run: mysql -u userName -p database_name < file.sql
 
 // Create functions that query the databases
