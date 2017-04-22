@@ -1,17 +1,13 @@
+import endpoint from '../config/global';
+
+const baseURL = endpoint.baseURL;
+
+
 const formatTime = (time) => {
   const sliced = time.substring(0, time.length - 3);
   return `${sliced}:00`;
 };
 
-let baseURL;
-
-if (process.env.NODE_ENV === 'production') {
-  baseURL = 'https://hst-friend-ly.herokuapp.com';
-} else if (process.env.NODE_ENV === 'staging') {
-  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
-} else {
-  baseURL = 'http:/127.0.0.1:5000';
-}
 
 const addParticipantsToDB = (eventId, friendList, host, eventName) => {
   return fetch(baseURL + '/participants', {

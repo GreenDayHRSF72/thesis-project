@@ -6,6 +6,10 @@ import { ActionCreators } from '../actions';
 import Row from './Row';
 import util from '../lib/utility';
 
+import endpoint from '../config/global';
+
+const baseURL = endpoint.baseURL;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -78,7 +82,7 @@ class AddFriends extends React.Component {
     // event will be saved to DB in here
     let eventId = null;
     if (this.props.user.id) {
-      fetch('http:127.0.0.1:5000/events', {
+      fetch(baseURL + '/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

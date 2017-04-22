@@ -2,8 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import ReactNative, { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { List, ListItem } from 'react-native-elements';
-import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+import endpoint from '../config/global';
+
+const baseURL = endpoint.baseURL;
 
 const {
   Text,
@@ -12,15 +15,6 @@ const {
   ScrollView,
 } = ReactNative;
 
-let baseURL;
-
-if (process.env.NODE_ENV === 'production') {
-  baseURL = 'https://hst-friend-ly.herokuapp.com';
-} else if (process.env.NODE_ENV === 'staging') {
-  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
-} else {
-  baseURL = 'http:/127.0.0.1:5000';
-}
 
 const propTypes = {
   navigation: PropTypes.object.isRequired,
@@ -52,14 +46,14 @@ class EventsList extends Component {
     //   console.log('yeah');
     // }
     console.log('========will receive props', this.props.user.id);
-    fetch('http:127.0.0.1:5000/events/createdBy/' + this.props.user.email)
+    fetch(baseURL + '/events/createdBy/' + this.props.user.email)
     .then((response) => response.json())
     .then((responseJson) => {
       //console.log('active events are =========>', responseJson);
       this.setState({ activeEventsByCreator: responseJson });
     })
     .then(() => {
-      return fetch(`http:127.0.0.1:5000/events/${this.props.user.id}`);
+      return fetch(`${baseURL}/events/${this.props.user.id}`);
     })
     .then((response) => response.json())
     .then((responseJson) => {

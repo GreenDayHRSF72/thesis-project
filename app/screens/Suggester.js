@@ -5,6 +5,9 @@ import Geocoder from 'react-native-geocoding';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
+import endpoint from '../config/global';
+
+const baseURL = endpoint.baseURL;
 
 const config = require('../../apis/config.js');
 
@@ -73,23 +76,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 18,
-    textAlign: 'center', 
+    textAlign: 'center',
     paddingTop: 10,
     color: 'white',
     fontWeight: '700',
   },
 });
 
-let baseURL;
-
-// allows for multiuse url
-if (process.env.NODE_ENV === 'production') {
-  baseURL = 'https://hst-friend-ly.herokuapp.com';
-} else if (process.env.NODE_ENV === 'staging') {
-  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
-} else {
-  baseURL = 'http://127.0.0.1:5000';
-}
 
 const locationOptions = [
   { text: 'Nothing selected', value: 0 },

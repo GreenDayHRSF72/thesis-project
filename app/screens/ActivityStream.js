@@ -5,16 +5,9 @@ import { bindActionCreators } from 'redux';
 import SocketIOClient from 'socket.io-client';
 import moment from 'moment';
 import { ActionCreators } from '../actions';
+import endpoint from '../config/global';
 
-let baseURL;
-
-if (process.env.NODE_ENV === 'production') {
-  baseURL = 'https://hst-friend-ly.herokuapp.com';
-} else if (process.env.NODE_ENV === 'staging') {
-  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
-} else {
-  baseURL = 'localhost:5000';
-}
+const baseURL = endpoint.baseURL;
 
 const {
   View,
@@ -33,6 +26,7 @@ class ActivityStream extends Component {
   }
 
   componentDidMount() {
+    console.log('process.env.NODE_ENV----->', process.env.NODE_ENV, baseURL);
     this.socket.on('refresh feed', (data) => {
       this.state.activities.push(data);
       this.setState({ current: this.state.activities[this.state.activities.length - 1].activity, currentImg: this.state.activities[this.state.activities.length - 1].authorImage });

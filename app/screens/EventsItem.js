@@ -5,6 +5,9 @@ import { bindActionCreators } from 'redux';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { ActionCreators } from '../actions';
 import { ListItem, List, Icon } from 'react-native-elements';
+import endpoint from '../config/global';
+
+const baseURL = endpoint.baseURL;
 
 const {
   View,
@@ -14,15 +17,6 @@ const {
   StyleSheet,
 } = ReactNative;
 
-let baseURL;
-
-if (process.env.NODE_ENV === 'production') {
-  baseURL = 'https://hst-friend-ly.herokuapp.com';
-} else if (process.env.NODE_ENV === 'staging') {
-  baseURL = 'https://hst-friend-ly-staging.herokuapp.com';
-} else {
-  baseURL = 'http:/127.0.0.1:5000';
-}
 
 const styles = StyleSheet.create({
   textContainer: {
