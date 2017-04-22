@@ -2,13 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../db-mysql/models.js');
 const Yelp = require('node-yelp-fusion');
-const creds = require('../apis/config.js');
 const Promise = require('bluebird');
 
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const config = require('../apis/config.js');
+
+let config = require('../apis/config.js');
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  config = undefined;
+}
+
 
 let cSocket;
 const PORT = process.env.PORT || 5000;
@@ -43,8 +48,8 @@ app.get('/', (req, res) => {
 app.post('/suggestion/yelp', (req, res) => {
   const queryString = req.body.queryString;
   const yelp = new Yelp({
-    id: config.apiConfig.yelp.appId,
-    secret: config.apiConfig.yelp.appSecret,
+    id: config.apiConfig.yelp.appId || process.env.YELP_ID,
+    secret: config.apiConfig.yelp.appSecret || process.env.YELP_SECRET,
   });
 
   yelp.search(queryString)
@@ -52,12 +57,12 @@ app.post('/suggestion/yelp', (req, res) => {
     res.json(results);
   })
   .catch((err) => {
+    console.log('error from yelp suggestion', err);
     res.sendStatus(500);
   });
 });
 
 app.post('suggestion/userinfo', (req, res) => {
-  //console.log('the email is', req.body.email)
   db.getUserInterests(req.body.email, (err, results) => {
     if (err) {
       console.log(err);
@@ -65,21 +70,8 @@ app.post('suggestion/userinfo', (req, res) => {
     } else {
       res.json(results);
     }
-  })
-  
-}); 
-
-// app.get('/events', (req, res) => {
-//   db.getPublicEvents((err, results) => {
-//     if (err) {
-//       console.log(err);
-//       res.send(err);
-//     } else {
-//       console.log(results);
-//       res.json(results);
-//     }
-//   });
-// });
+  });
+});
 
 
 app.post('/users', (req, res) => {
@@ -99,7 +91,6 @@ app.post('/users', (req, res) => {
 app.post('/events', (req, res) => {
   db.addEvent(req.body)
   .then((results) => {
-    //console.log('saving event to DB', results.insertId);
     res.json(results.insertId);
   })
   .catch((err) => {
@@ -110,7 +101,7 @@ app.post('/events', (req, res) => {
 
 app.get('/events/createdBy/:creatorEmail', (req, res) => {
   const email = req.params.creatorEmail;
-  console.log('retrieving events created by ' + email);
+  console.log('retrieving events created by ', email);
   db.getEventByCreatorEmail(email)
   .then((result) => {
     res.json(result);
@@ -123,7 +114,7 @@ app.get('/events/createdBy/:creatorEmail', (req, res) => {
 
 app.get('/events/:participantId', (req, res) => {
   const id = req.params.participantId;
-  console.log('retrieving events I get invited to ' + id);
+  console.log('retrieving events I get invited to ', id);
   db.getEventByParticipantId(id)
   .then((result) => {
     res.json(result);
