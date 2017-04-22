@@ -61,7 +61,7 @@ app.post('suggestion/userinfo', (req, res) => {
   db.getUserInterests(req.body.email, (err, results) => {
     if (err) {
       console.log(err);
-      res.json(err);
+      res.send(err);
     } else {
       res.json(results);
     }
@@ -92,7 +92,7 @@ app.post('/users', (req, res) => {
 
   })
   .catch((err) => {
-    res.json(err);
+    res.send(err);
   });
 });
 
@@ -104,7 +104,7 @@ app.post('/events', (req, res) => {
   })
   .catch((err) => {
     console.log('there is an error');
-    res.json(err);
+    res.send(err);
   });
 });
 
@@ -117,7 +117,7 @@ app.get('/events/createdBy/:creatorEmail', (req, res) => {
   })
   .catch((err) => {
     console.log('err getting event by creator', err);
-    res.json('err getting event by creator');
+    res.send('err getting event by creator', err);
   });
 });
 
@@ -130,10 +130,9 @@ app.get('/events/:participantId', (req, res) => {
   })
   .catch((err) => {
     console.log('err getting event by participant id', err);
-    res.json('err getting event by participant id');
+    res.send('err getting event by participant id', err);
   });
 });
-
 
 
 app.post('/participants', (req, res) => {
@@ -154,12 +153,12 @@ app.post('/participants', (req, res) => {
       });
   })
   .then(result => {
-    res.json('participant saved to db');
+    res.send('participant saved to db');
     cSocket.join(room);
     io.to(room).emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
   })
   .catch((err) => {
-    res.json('err saving participant to db', err);
+    res.send('err saving participant to db', err);
   })
   ;
 });
@@ -174,7 +173,7 @@ app.get('/users/:email', (req, res) => {
   })
   .catch((err) => {
     console.log('cannot get user info by email from DB', err);
-    res.json(err);
+    res.send(err);
   });
 });
 
@@ -183,7 +182,7 @@ app.get('/events', (req, res) => {
   db.getPublicEvents((err, results) => {
     if (err) {
       console.log(err);
-      res.json(err);
+      res.send(err);
     } else {
       // console.log(results);
       res.json(results);
@@ -197,7 +196,7 @@ app.get('/events/participants/list/:*', (req, res) => {
   db.getEventParticipants(id, (err, results) => {
     if (err) {
       console.log(err);
-      res.json(err);
+      res.send(err);
     } else {
       console.log(results);
       res.json(results);
@@ -211,12 +210,12 @@ app.post('/events/participants/rsvp', (req, res) => {
   db.updateParticipantResponse(req.body, (err, results) => {
     if (err) {
       console.log(err);
-      res.json(err);
+      res.send(err);
     } else {
       console.log(results);
-      res.json('');
       cSocket.join(room);
       io.to(room).emit('refresh feed', { activity: `${req.body.eventName}: ${req.body.participantName} has RSVP'ed ${req.body.participantStatus}` });
+      res.send('');
     }
   });
 });
