@@ -1,0 +1,14 @@
+// create a view that will displya the name of the activity and a button to vote for the item.
+// the information required will be: 
+	// the act name
+	// the act description
+	// the act id (from the db)
+// when you click the button
+	// make sure there is an event handler
+	// it will first check the database and look all votes for the event from the user who is logged in.
+	// if the user 
+
+// naive solution: 
+	//it doesnt matter if the user has already voted
+	// add a vote to the votes table
+	// increment votes in the activities table.

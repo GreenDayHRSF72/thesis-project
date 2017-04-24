@@ -7,6 +7,7 @@ import * as activeEventReducer from './activeEvent';
 import * as suggestedActivityReducer from './suggestedActivity';
 import * as invitedFriendsReducer from './invitedFriends';
 import * as createdEventsReducer from './createdEvents';
+import * as activitiesReducer from './activities';
 
 export default combineReducers(Object.assign(
   counterReducer,
@@ -17,4 +18,5 @@ export default combineReducers(Object.assign(
   suggestedActivityReducer,
   invitedFriendsReducer,
   createdEventsReducer,
+  activitiesReducer,
 ));
