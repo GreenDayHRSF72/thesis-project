@@ -8,6 +8,28 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+const Mailgun = require('mailgun-js');
+/* 
+const mailgun = new Mailgun({apiKey: process.env.mailgunApiKey || config.apiConfig.mailgun.ApiKey, domain: process.env.mailgunDomain || config.apiConfig.mailgun.domain});
+  const data = {
+    from: req.body.senderEmail,
+    to: req.body.recipientEmail,
+    subject: req.body.subject,
+    text: req.body.message
+  };
+  console.log(data);
+  mailgun.messages().send(data, function (err, body) {
+    if (err) {
+      res.render ('error', { error: err });
+      console.log('got an error from mailgun API -------->', err);
+    } else {
+      console.log(body);
+      res.send({status: 'ok'});
+    }
+  });
+
+*/
+
 let config = require('../apis/config.js');
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
@@ -93,7 +115,7 @@ app.post('/events', (req, res) => {
     res.json(results.insertId);
   })
   .catch((err) => {
-    console.log('there is an error');
+    console.log('there is an error in /events post route', err);
     res.send(err);
   });
 });
@@ -104,7 +126,7 @@ app.post('/activities', (req, res) => {
     res.send('insert into activities table successfully');
   })
   .catch((err) => {
-    console.log('there is an error');
+    console.log('there is an error in /activities post route', err);
     res.send(err);
   });
 });
@@ -138,6 +160,7 @@ app.get('/events/:participantId', (req, res) => {
 
 app.post('/participants', (req, res) => {
   const participants = req.body.friendList;
+  console.log('req.body for mailgun --->', req.body);
   const eventId = req.body.eventId;
   const room = req.body.eventName + eventId;
   console.log('entering participants route with room ----->', room);
@@ -151,15 +174,31 @@ app.post('/participants', (req, res) => {
       })
       .then(result => {
         console.log('participant saved to db');
+        const mailgun = new Mailgun({apiKey: process.env.mailgunApiKey || config.apiConfig.mailgun.apiKey, domain: process.env.mailgunDomain || config.apiConfig.mailgun.domain});
+        const data = {
+          from: req.body.host.email,
+          to: participant.email,
+          subject: 'you have been invited to an event on friend.ly',
+          text: `${req.body.host.name} would like to invite you to an event. Check out our app to RSVP`,
+        };
+        console.log('mailgun data', data);
+        mailgun.messages().send(data, (err, body) => {
+          if (err) {
+            res.render ('error', { error: err });
+            console.log('got an error from mailgun API -------->', err);
+          } else {
+            console.log(body);
+          }
+        });
       });
   })
   .then(result => {
     res.send('participant saved to db');
     cSocket.join(room);
-    io.to(room).emit('refresh feed', { activity: `${req.body.host.name}  created an event`, authorImage: req.body.host.pic });
+    io.to(room).emit('refresh feed', { activity: `${req.body.host.name} created an event`, authorImage: req.body.host.pic });
   })
   .catch((err) => {
-    res.send('err saving participant to db', err);
+    res.send(err);
   })
   ;
 });
