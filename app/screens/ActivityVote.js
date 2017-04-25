@@ -39,7 +39,9 @@ class ActivityVote extends Component {
   }
 
   vote () {
-    Alert.alert('I VOTE'); 
+    // send a request to the baseURL at the vote endpoint (can use a POST request if needed)
+    // 
+    Alert.alert(`I vote for ${this.props.activity.id}`); 
   }
 
   render() {

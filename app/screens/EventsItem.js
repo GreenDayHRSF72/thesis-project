@@ -17,6 +17,7 @@ const {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } = ReactNative;
 
 const styles = StyleSheet.create({
@@ -117,12 +118,34 @@ class EventsItem extends Component {
   constructor(props) {
     super(props);
     this.props.saveActiveEvent(this.props.navigation.state.params);
-    this.state = { participants: [] };
+    this.state = { participants: [], event: this.props.navigation.state.params };
     this.showActionSheet = this.showActionSheet.bind(this);
   }
 
   componentWillMount() {
     this.getParticipantsAndStatus();
+
+  }
+
+  componentWillReceiveProps() {
+    // get id from the state, and send it over to the db to get all the activities 
+    const processData = this.props.getActivities;
+    fetch( `${baseURL}/altActs`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: this.state.event.id,
+      }),
+    })
+    .then(res => res.json())
+    .then((resJson)=> {
+      console.log(resJson);
+      processData(resJson);
+    })
+    .catch(err => console.log(err));
   }
 
   getParticipantsAndStatus() {

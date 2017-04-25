@@ -73,6 +73,20 @@ app.post('suggestion/userinfo', (req, res) => {
 });
 
 
+app.post('/altActs', (req, res) => {
+  // use the db helper function to grab info from the database 
+  db.getActivitiesByEvent(req.body.id)
+  .then((results) => {
+    console.log(results);
+    res.json(results);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.send(err);
+  })
+});
+
+
 app.post('/users', (req, res) => {
   db.addUserToDatabase(req.body)
   .then((results) => {

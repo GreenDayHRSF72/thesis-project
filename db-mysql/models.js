@@ -58,6 +58,10 @@ var getAllEventComments = (eventName, cb) => {
     }
   });
 }
+const getActivitiesByEvent = (id) => {
+  const queryString = 'SELECT * FROM activities WHERE event_id = ?';
+  return db.queryAsync(queryString, id);
+}
 
 const getUserByEmail = (email) => {
   const queryStr = 'SELECT * FROM users WHERE email = ? LIMIT 1';
@@ -167,4 +171,5 @@ module.exports = {
   getEventByCreatorEmail,
   getEventByParticipantId,
   addActivity,
+  getActivitiesByEvent,
 };
