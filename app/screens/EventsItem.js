@@ -6,6 +6,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import { Icon } from 'react-native-elements';
 import { ActionCreators } from '../actions';
 import endpoint from '../config/global';
+import ActivityVote from './ActivityVote';
 
 const baseURL = endpoint.baseURL;
 
@@ -159,6 +160,16 @@ class EventsItem extends Component {
     });
   }
 
+  createActivities() {
+    return this.props.activities.map((activity, i) => {
+      return (
+        <ActivityVote 
+          key={i}
+          activity={activity}
+        />
+      );
+    });
+  }
 
   createParticipants() { 
     return this.state.participants.map((participant, i) => {
@@ -252,6 +263,12 @@ class EventsItem extends Component {
             <Text style={styles.proposalTitle}>New Activity</Text>
           </TouchableOpacity>
         </View>
+        <View>
+          <Text>
+            Alternative Events
+          </Text>
+          {this.createActivities()}
+        </View>
         <Text style={styles.inviteeTitle}>Invitees Status</Text>
         <ScrollView style={styles.inviteeContainer}>
           {this.createParticipants()}
@@ -267,6 +284,7 @@ function mapStateToProps(state) {
     user: state.user,
     activeEvent: state.activeEvent,
     suggestedActivity: state.suggestedActivity,
+    activities: state.activities,
   };
 }
 

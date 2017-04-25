@@ -1,6 +1,12 @@
 import * as types from '../actions/types';
 
-export const activities = function(state = [], action) {
+let initialState = [
+	{name: 'name is name', location: 'location asdf'},
+	{name: 'i am not martin', location: 'unknowndf'},
+	{name: 'tyrone', location: 'I am not quite suredf'},
+]
+
+export const activities = function(state = initialState, action) {
   switch (action.type) {
     case 'GET_ACTIVITIES':
       return action.payload;

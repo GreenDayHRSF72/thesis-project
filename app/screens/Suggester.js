@@ -563,7 +563,7 @@ class Suggester extends Component {
             this.setState({ dislikeVisible: false });
           }}
         />
-      <TouchableOpacity onPress={this.queryYelp} style={styles.buttonContainer}>
+        <TouchableOpacity onPress={this.queryYelp} style={styles.buttonContainer}>
             <Text style={styles.buttonText}>GET MY SUGGESTIONS</Text>
           </TouchableOpacity>
         <Button
