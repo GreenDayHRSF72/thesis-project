@@ -12,3 +12,6 @@
 	//it doesnt matter if the user has already voted
 	// add a vote to the votes table
 	// increment votes in the activities table.
+
+// this.props.activeEvent.event_id is what we need to to access the activities for event
+	// the active_event 
