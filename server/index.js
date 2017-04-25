@@ -47,7 +47,9 @@ app.use(bodyParser.json());
 io.on('connection', (socket) => {
   cSocket = socket;
   console.log('A client just joined on', socket.id);
-  cSocket.emit('news', { hi: 'there' });
+  cSocket.on('user_id', (data) => {
+    console.log('user_id from socket connection', data);
+  });
   // socket.emit('refresh feed', { activity: 'trying to send an activity to activity feed' });
   // socket.on('user logged in', (data) => {
   //   console.log(data);
@@ -139,10 +141,33 @@ app.get('/events/createdBy/:creatorEmail', (req, res) => {
 });
 
 app.get('/events/:participantId', (req, res) => {
+  const formatTime = (time) => {
+    const sliced = time.substring(0, time.length - 3);
+    return `${sliced}:00`;
+  };
+  const isEventPast = (event) => {
+    // 2017-02-27T08:00:00.000Z
+    // 16:12:12
+    // 2017-02-27T16:12:12
+    const eventEndTime = formatTime(event.endTime);
+    const eventDate = event.eventDate.toJSON();
+    const currentTime = new Date(Date.now());
+    console.log('eventTime --->', `${eventDate.substring(0, 10)}T${eventEndTime}`);
+    const eventTime = new Date(`${eventDate.substring(0, 10)}T${eventEndTime}`);
+    return (currentTime - eventTime > 0) ? true : false;
+  };
   const id = req.params.participantId;
   console.log('retrieving events I get invited to ', id);
   db.getEventByParticipantId(id)
   .then((result) => {
+    console.log('result from db query on get events by participantID -->', result);
+    result.forEach((event) => {
+      if (!isEventPast(event)) {
+        const room = event.name + event.id;
+        cSocket.join(room);
+        io.to(room).emit('refresh feed', { author: event.username, activity: `invited you to ${event.name}`, authorImage: event.photourl });
+      }
+    });
     res.json(result);
   })
   .catch((err) => {
@@ -186,7 +211,7 @@ app.post('/participants', (req, res) => {
         });
       });
   })
-  .then(result => {
+  .then((result) => {
     res.send('participant saved to db');
     cSocket.join(room);
     io.to(room).emit('refresh feed', { author: req.body.host.name, activity: 'created an event', authorImage: req.body.host.pic });
@@ -249,14 +274,6 @@ app.post('/events/participants/rsvp', (req, res) => {
       io.to(room).emit('refresh feed', { activity: `${req.body.eventName}: ${req.body.participantName} has RSVP'ed ${req.body.participantStatus}` });
       res.send('');
     }
-  });
-});
-
-io.on('connection', (socket) => {
-  console.log('A client just joined on', socket.id);
-  socket.emit('news', { hi: 'there' });
-  socket.on('user logged in', (data) => {
-    console.log('socket user logged in data', data);
   });
 });
 
