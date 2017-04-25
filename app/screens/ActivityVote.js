@@ -60,7 +60,11 @@ class ActivityVote extends Component {
     })
     .then(res => res.json())
     .then((resJson) => {
-      console.log(resJson);
+      if (resJson === 'voted') {
+        Alert.alert('You have already voted for this event!');
+      } else {
+        Alert.alert('Thanks for voting!');
+      }
     })
     .catch(err => console.log(err));
   }

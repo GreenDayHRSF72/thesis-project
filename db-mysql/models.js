@@ -63,12 +63,19 @@ const getActivitiesByEvent = (id) => {
   return db.queryAsync(queryString, id);
 }
 
-const getAllVotesEvent = (eventId, actId) => {
+const getVotesForActivity = (actId, userId) => {
+  const queryString = 'SELECT * FROM votes where activity_id = ? && user_id = ?';
+  return db.queryAsync(queryString, [actId, userId]);
+}; 
 
-}
+const incrementVoteForAct = (actId) => {
+  const queryString = 'UPDATE activities SET votes = votes + 1 WHERE id = ?'
+  return db.queryAsync(queryString, actId);
+};
 
-const incrementVoteForEvent = (actID) => {
-  
+const addVote = (actId, userId) => {
+  const queryString = 'INSERT into votes (activity_id, user_id) VALUES (?, ?)';
+  return db.queryAsync(queryString, [actId, userId]);
 }
 
 const getUserByEmail = (email) => {
@@ -180,4 +187,7 @@ module.exports = {
   getEventByParticipantId,
   addActivity,
   getActivitiesByEvent,
+  getVotesForActivity,
+  incrementVoteForAct,
+  addVote,
 };

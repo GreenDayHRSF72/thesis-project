@@ -79,21 +79,37 @@ app.post('/altActs', (req, res) => {
 });
 
 app.post('/vote', (req, res) => {
-  console.log('User', req.body.userId);
-  console.log(('ActId', req.body.actId));
-  console.log('EventID', req.body.eventId);
+  const actId = req.body.actId;
+  const userId = req.body.userId;
+  const eventId = req.body.eventId;
 
   // first get all the votes from the db
+  db.getVotesForActivity(actId, userId)
+  .then((results) => {
+    if (results.length === 0) {
+      console.log('no votes found');
+      db.addVote(actId, userId)
+      .then(() => {
+        console.log('vote added');
+        db.incrementVoteForAct(actId)
+      })
+      .then(() => {
+        console.log('vote incremented ');
+      })
+      .then(() => {
+        res.json('YOU HAVE MADE THROUGH THE PROMIES CHAIN')
+      })
+    } else {
+      console.log('voted')
+      res.json('voted');
+    }
 
+  })
+  .catch((err) => {
+    console.log(err);
+    res.send(err);
+  });
 
-  // once that happens, then check the votes to see if the anything matches the user id?
-
-    // if it does send and err back saying youve already voted
-
-    // if not then add to the votes db, and then ++ the votes in the the thing in one query
-
-
-  res.json('Sup Brah!, youre at the votes endpoint');
 });
 
 
