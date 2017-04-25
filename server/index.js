@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
 }
 
 let cSocket;
+let socketId;
 const PORT = process.env.PORT || 5000;
 
 // app.user(express.static('../index.ios.js'));
@@ -46,6 +47,7 @@ app.use(bodyParser.json());
 
 io.on('connection', (socket) => {
   cSocket = socket;
+  socketId = socket.id;
   console.log('A client just joined on', socket.id);
   cSocket.on('user_id', (data) => {
     console.log('user_id from socket connection', data);
@@ -165,7 +167,9 @@ app.get('/events/:participantId', (req, res) => {
       if (!isEventPast(event)) {
         const room = event.name + event.id;
         cSocket.join(room);
-        io.to(room).emit('refresh feed', { author: event.username, activity: `invited you to ${event.name}`, authorImage: event.photourl });
+        if (io.sockets.connected[socketId]) {
+          io.sockets.connected[socketId].emit('refresh feed', { author: event.username, activity: `invited you to ${event.name}`, authorImage: event.photourl });
+        }
       }
     });
     res.json(result);
