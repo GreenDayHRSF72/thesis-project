@@ -39,21 +39,16 @@ const styles = StyleSheet.create({
 class ActivityStream extends Component {
   constructor(props) {
     super(props);
-    this.state = { activities: [], current: '', currentImg: '', curTime: moment().fromNow(), current:'' };
+    this.state = { activities: [], current: '', currentImg: '' };
     this.socket = SocketIOClient(baseURL, { jsonp: false });
   }
 
   componentDidMount() {
-    console.log('process.env.NODE_ENV----->', process.env.NODE_ENV, baseURL);
     this.socket.on('refresh feed', (data) => {
+      console.log('data from socket refresh feed', data);
       this.state.activities.push(data);
       this.setState({ current: this.state.activities[this.state.activities.length - 1].activity, currentImg: this.state.activities[this.state.activities.length - 1].authorImage });
     });
-    setInterval(() => {
-      this.setState({
-        curTime: new Date().toLocaleString(),
-      });
-    }, 1000);
   }
 
   createFeed() {
@@ -70,7 +65,7 @@ class ActivityStream extends Component {
               <Text style={{ fontWeight: '600' }}>{item.author}</Text>
               <Text> {item.activity}</Text>
               </View>
-              <Text style={{ color: 'grey' }}>{moment().fromNow()}</Text>
+              <Text style={{ color: 'grey' }}>{moment(item.createdAt).fromNow()}</Text>
             </View>
           </View>
         </View>

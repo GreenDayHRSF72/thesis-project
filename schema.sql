@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS events (
 	private boolean NOT NULL DEFAULT 0,
 	startTime time,
 	endTime time, 
+	createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	/*
 	startTime
 	endTime

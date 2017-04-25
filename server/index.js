@@ -9,26 +9,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const Mailgun = require('mailgun-js');
-/* 
-const mailgun = new Mailgun({apiKey: process.env.mailgunApiKey || config.apiConfig.mailgun.ApiKey, domain: process.env.mailgunDomain || config.apiConfig.mailgun.domain});
-  const data = {
-    from: req.body.senderEmail,
-    to: req.body.recipientEmail,
-    subject: req.body.subject,
-    text: req.body.message
-  };
-  console.log(data);
-  mailgun.messages().send(data, function (err, body) {
-    if (err) {
-      res.render ('error', { error: err });
-      console.log('got an error from mailgun API -------->', err);
-    } else {
-      console.log(body);
-      res.send({status: 'ok'});
-    }
-  });
-
-*/
 
 let config = require('../apis/config.js');
 
@@ -49,9 +29,9 @@ io.on('connection', (socket) => {
   cSocket = socket;
   socketId = socket.id;
   console.log('A client just joined on', socket.id);
-  cSocket.on('user_id', (data) => {
-    console.log('user_id from socket connection', data);
-  });
+  // cSocket.on('user_id', (data) => {
+  //   console.log('user_id from socket connection', data);
+  // });
   // socket.emit('refresh feed', { activity: 'trying to send an activity to activity feed' });
   // socket.on('user logged in', (data) => {
   //   console.log(data);
@@ -148,13 +128,9 @@ app.get('/events/:participantId', (req, res) => {
     return `${sliced}:00`;
   };
   const isEventPast = (event) => {
-    // 2017-02-27T08:00:00.000Z
-    // 16:12:12
-    // 2017-02-27T16:12:12
     const eventEndTime = formatTime(event.endTime);
     const eventDate = event.eventDate.toJSON();
     const currentTime = new Date(Date.now());
-    console.log('eventTime --->', `${eventDate.substring(0, 10)}T${eventEndTime}`);
     const eventTime = new Date(`${eventDate.substring(0, 10)}T${eventEndTime}`);
     return (currentTime - eventTime > 0) ? true : false;
   };
@@ -162,13 +138,13 @@ app.get('/events/:participantId', (req, res) => {
   console.log('retrieving events I get invited to ', id);
   db.getEventByParticipantId(id)
   .then((result) => {
-    console.log('result from db query on get events by participantID -->', result);
     result.forEach((event) => {
+      console.log(event);
       if (!isEventPast(event)) {
         const room = event.name + event.id;
         cSocket.join(room);
         if (io.sockets.connected[socketId]) {
-          io.sockets.connected[socketId].emit('refresh feed', { author: event.username, activity: `invited you to ${event.name}`, authorImage: event.photourl });
+          io.sockets.connected[socketId].emit('refresh feed', { createdAt: event.createdAt, author: event.username, activity: `invited you to ${event.name}`, authorImage: event.photourl });
         }
       }
     });
