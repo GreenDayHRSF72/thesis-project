@@ -20,9 +20,6 @@ let cSocket;
 let socketId;
 const PORT = process.env.PORT || 5000;
 
-// app.user(express.static('../index.ios.js'));
-// TODO setup an html doc to store web version?
-// deploy separate server for mobile
 app.use(bodyParser.json());
 
 io.on('connection', (socket) => {
@@ -55,7 +52,6 @@ app.post('/suggestion/yelp', (req, res) => {
     res.json(results);
   })
   .catch((err) => {
-    console.log('error from yelp suggestion', err);
     res.sendStatus(500);
   });
 });
@@ -72,18 +68,32 @@ app.post('suggestion/userinfo', (req, res) => {
   });
 });
 
-
 app.post('/altActs', (req, res) => {
-  // use the db helper function to grab info from the database 
   db.getActivitiesByEvent(req.body.id)
   .then((results) => {
-    console.log(results);
     res.json(results);
   })
   .catch((err) => {
-    console.log(err);
     res.send(err);
   })
+});
+
+app.post('/vote', (req, res) => {
+  console.log('User', req.body.userId);
+  console.log(('ActId', req.body.actId));
+  console.log('EventID', req.body.eventId);
+
+  // first get all the votes from the db
+
+
+  // once that happens, then check the votes to see if the anything matches the user id?
+
+    // if it does send and err back saying youve already voted
+
+    // if not then add to the votes db, and then ++ the votes in the the thing in one query
+
+
+  res.json('Sup Brah!, youre at the votes endpoint');
 });
 
 

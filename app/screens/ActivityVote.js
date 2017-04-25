@@ -3,6 +3,9 @@ import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import endpoint from '../config/global';
+
+const baseURL = endpoint.baseURL;
 
 const styles = StyleSheet.create({
   container: {
@@ -33,15 +36,33 @@ class ActivityVote extends Component {
     super(props);
     this.state = {
       // Info should be stored in redux
-    }
+    };
 
     this.vote = this.vote.bind(this);
   }
 
-  vote () {
-    // send a request to the baseURL at the vote endpoint (can use a POST request if needed)
-    // 
-    Alert.alert(`I vote for ${this.props.activity.id}`); 
+  vote() {
+    const actId = this.props.activity.id;
+    const userId = this.props.user.id;
+    const eventId = this.props.activeEvent.id;
+
+    fetch(`${baseURL}/vote`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        actId,
+        userId,
+        eventId,
+      }),
+    })
+    .then(res => res.json())
+    .then((resJson) => {
+      console.log(resJson);
+    })
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -51,7 +72,8 @@ class ActivityVote extends Component {
       >
         <Text>
           Name: {this.props.activity.name}{'\n'}
-          Location: {this.props.activity.location}
+          Location: {this.props.activity.location}{'\n'}
+          CurrentVotes: {this.props.activity.votes}
         </Text>
         <TouchableOpacity onPress={this.vote} style={styles.voteButton}>
           <Text style={styles.voteTitle}>Vote</Text>

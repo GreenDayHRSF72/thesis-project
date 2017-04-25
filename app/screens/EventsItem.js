@@ -142,7 +142,6 @@ class EventsItem extends Component {
     })
     .then(res => res.json())
     .then((resJson)=> {
-      console.log(resJson);
       processData(resJson);
     })
     .catch(err => console.log(err));
@@ -184,14 +183,22 @@ class EventsItem extends Component {
   }
 
   createActivities() {
-    return this.props.activities.map((activity, i) => {
+    if (this.props.activities.length === 0) { 
       return (
-        <ActivityVote 
-          key={i}
-          activity={activity}
-        />
-      );
-    });
+        <Text>
+          The are currently not Alternative activities proposed for this event. Click the new Activity button to suggest a new activity
+        </Text>
+      )
+    } else {
+      return this.props.activities.map((activity, i) => {
+        return (
+          <ActivityVote 
+            key={i}
+            activity={activity}
+          />
+        );
+      });
+    }
   }
 
   createParticipants() { 
@@ -254,7 +261,7 @@ class EventsItem extends Component {
     const { name, description, eventDate, location, startTime, endTime, username, photourl } = this.props.navigation.state.params;
     //console.log('this.state.participants', this.state.participants);
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/*<Image
           style={styles.hostImage}
           source={{ uri: photourl }}
@@ -286,17 +293,17 @@ class EventsItem extends Component {
             <Text style={styles.proposalTitle}>New Activity</Text>
           </TouchableOpacity>
         </View>
-        <View>
-          <Text>
-            Alternative Events
-          </Text>
+        <Text style={styles.inviteeTitle}>
+          Alternative Events 
+        </Text>
+        <ScrollView>
           {this.createActivities()}
-        </View>
+        </ScrollView>
         <Text style={styles.inviteeTitle}>Invitees Status</Text>
         <ScrollView style={styles.inviteeContainer}>
           {this.createParticipants()}
         </ScrollView>
-      </View>
+      </ScrollView>
     );
   }
 }

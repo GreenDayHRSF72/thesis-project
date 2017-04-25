@@ -81,6 +81,7 @@ class NewActivity extends Component {
   }
 
   handleButtonPress() {
+    const sug = this; 
     //name, event_id, location
     // const activityName = this.state.activityName.slice(0);
     // const activityLocation = this.state.activityLocation.slice(0);
@@ -98,6 +99,7 @@ class NewActivity extends Component {
     })
     .then(() => {
       console.log('successfully save activity to DB');
+      sug.props.navigation.navigate('EventDetails', sug.props.activeEvent);
     })
     .catch(err => console.log(err));
   }
