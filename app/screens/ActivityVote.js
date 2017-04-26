@@ -39,8 +39,15 @@ class ActivityVote extends Component {
     };
 
     this.vote = this.vote.bind(this);
+    this.displayMain = this.displayMain.bind(this);
   }
 
+  displayMain() {
+    if (this.props.activity.mainActivity === 1) {
+      return '\nCURRENT ACTIVITY';
+    }
+  }
+ 
   vote() {
     const actId = this.props.activity.id;
     const userId = this.props.user.id;
@@ -78,6 +85,7 @@ class ActivityVote extends Component {
           Name: {this.props.activity.name}{'\n'}
           Location: {this.props.activity.location}{'\n'}
           CurrentVotes: {this.props.activity.votes}
+          {this.displayMain()}
         </Text>
         <TouchableOpacity onPress={this.vote} style={styles.voteButton}>
           <Text style={styles.voteTitle}>Vote</Text>

@@ -190,6 +190,12 @@ class EventsItem extends Component {
           The are currently not Alternative activities proposed for this event. Click the new Activity button to suggest a new activity
         </Text>
       )
+    } else if (this.props.activities.length === 1) {
+      return (
+        <Text>
+          There is is only one activity. Please add alternative activities to begin voting!
+        </Text>
+      )
     } else {
       return this.props.activities.map((activity, i) => {
         return (
@@ -295,7 +301,7 @@ class EventsItem extends Component {
           </TouchableOpacity>
         </View>
         <Text style={styles.inviteeTitle}>
-          Alternative Events 
+          Contending Activities
         </Text>
         <ScrollView>
           {this.createActivities()}
