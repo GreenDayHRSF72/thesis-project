@@ -69,13 +69,18 @@ const getVotesForActivity = (actId, userId) => {
 }; 
 
 const incrementVoteForAct = (actId) => {
-  const queryString = 'UPDATE activities SET votes = votes + 1 WHERE id = ?'
+  const queryString = 'UPDATE activities SET votes = votes + 1 WHERE id = ?';
   return db.queryAsync(queryString, actId);
 };
 
 const addVote = (actId, userId) => {
   const queryString = 'INSERT into votes (activity_id, user_id) VALUES (?, ?)';
   return db.queryAsync(queryString, [actId, userId]);
+}
+
+const addMainAct = (eventId, name, location) => {
+  const queryString = ' INSERT INTO activities (event_id, name, location, mainActivity) VALUES (?, ?, ?, 1)';
+  return db.queryAsync(queryString, [eventId, name, location]);
 }
 
 const getUserByEmail = (email) => {
@@ -190,4 +195,5 @@ module.exports = {
   getVotesForActivity,
   incrementVoteForAct,
   addVote,
+  addMainAct,
 };

@@ -128,9 +128,16 @@ app.post('/users', (req, res) => {
 });
 
 app.post('/events', (req, res) => {
+  let insertId;
   db.addEvent(req.body)
   .then((results) => {
-    res.json(results.insertId);
+    insertId = results.insertId;
+    console.log('got the inser id ======>', insertId);
+    db.addMainAct(insertId, req.body.name, req.body.location);
+  })
+  .then(() => {
+    console.log('added activity to db');
+    res.json(insertId);
   })
   .catch((err) => {
     console.log('there is an error in /events post route', err);
