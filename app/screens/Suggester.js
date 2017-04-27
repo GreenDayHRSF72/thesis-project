@@ -469,8 +469,8 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Prompt
-          title="Please enter the address of where you want to be"
-          placeholder="ex. 944 Market Street (or) Halal Guys, San Francisco"
+          title="Please enter the name address of the location you want to be near."
+          placeholder="Ex: 944 Market Street (or) Halal Guys, San Francisco"
           visible={this.state.locationVisible}
           onCancel={() => {
             this.setState({ locationVisible: false });
@@ -566,8 +566,8 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Prompt
-          title="Please list the things you don\'t want to do! (Please separate with commas)"
-          placeholder="bars, clubs, boring things, etc."
+          title="Please list the things you don\'t want to do (Please separate with commas)!"
+          placeholder="Bars, Clubs, Boring Things, etc."
           visible={this.state.dislikeVisible}
           onCancel={() => {
             this.setState({ dislikeVisible: false });
