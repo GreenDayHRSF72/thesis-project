@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     textAlign: 'center',
     fontWeight: '700',
+    fontSize: 15,
   },
   image: {
     marginLeft: 'auto',
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     color: 'white',
+    fontWeight: '500',
   },
   header: {
     fontSize: 18,
@@ -450,6 +452,7 @@ class Suggester extends Component {
           Q1: Where do you want to go?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.location}
           onValueChange={(value) => {
@@ -483,6 +486,7 @@ class Suggester extends Component {
           Q2: How far from your desired location are you willing to travel?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.radius}
           onValueChange={(value) => {
@@ -503,6 +507,7 @@ class Suggester extends Component {
           Q3: What are you willing to spend per person?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.budget}
           onValueChange={(value) => {
@@ -523,6 +528,7 @@ class Suggester extends Component {
           Q4: Are you looking to spice things up?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.findNew}
           onValueChange={(value) => {
@@ -543,6 +549,7 @@ class Suggester extends Component {
           Q5: Is there anything you don{'\''}t want to do?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.dislike}
           onValueChange={(value) => {
