@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import endpoint from '../config/global';
+import { Icon } from 'react-native-elements';
 
 const baseURL = endpoint.baseURL;
 
@@ -11,8 +12,14 @@ const styles = StyleSheet.create({
   container: {
     borderStyle: 'solid',
     borderColor: 'gray',
-    borderWidth: 1,
-    backgroundColor: 'white',
+    width: '98%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 3,
+    marginBottom: 3,
+    padding: 5,
+    backgroundColor: '#27ae60',
+    borderRadius: 5,
   },
   voteButton: {
     borderWidth: 0,
@@ -28,6 +35,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     fontWeight: '600',
+  },
+  infoContainer: {
+    width: '75%',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  voteContainer: {
+    width: '25%',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
 });
 
@@ -81,15 +98,26 @@ class ActivityVote extends Component {
       <View
         style={styles.container}
       >
+        <View>
         <Text>
-          Name: {this.props.activity.name}{'\n'}
-          Location: {this.props.activity.location}{'\n'}
-          CurrentVotes: {this.props.activity.votes}
+          Name: {this.props.activity.name}
+        </Text>
+        <Text>
+        {this.props.activity.location}
+        </Text>
+        <Text>
           {this.displayMain()}
         </Text>
-        <TouchableOpacity onPress={this.vote} style={styles.voteButton}>
-          <Text style={styles.voteTitle}>Vote</Text>
-        </TouchableOpacity>
+        </View>
+        <View>
+          <Text>
+          Votes{'\n'}
+          {this.props.activity.votes}
+          </Text>
+          <TouchableOpacity onPress={this.vote} style={styles.voteButton}>
+            <Text style={styles.voteTitle}>Vote</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }

@@ -85,6 +85,9 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 5,
   },
+  participantText: {
+    color: 'white',
+  },
   proposalContainer: {
     marginLeft: 20,
     marginTop: 20,
@@ -108,7 +111,9 @@ const styles = StyleSheet.create({
   },
   commentText: {
     paddingTop: 10,
-    textAlign: 'center',
+    textAlign: 'left',
+    paddingLeft: 20,
+    color: 'white',
   },
   commentButton: {
     marginLeft: 'auto',
@@ -242,17 +247,23 @@ class EventsItem extends Component {
     }
   }
 
-  createParticipants() { 
-    return this.state.participants.map((participant, i) => {
+  createParticipants() {
+    if (this.state.participants.length > 0) {
+      return this.state.participants.map((participant, i) => {
+        return (
+          <View style={{ flexDirection: 'row' }} key={i}>
+            {participant.status === 'yes' && <Icon type="font-awesome" name="check" size={15} color="#7f8c8d"/>}
+            {participant.status === 'no' && <Icon type="font-awesome" name="close" size={15} color="black"/>}
+            {participant.status === 'maybe' && <Icon type="font-awesome" name="question" size={20} color="#7f8c8d"/>}
+            <Text style={styles.participant}>{participant.username}</Text>
+          </View>
+        );
+      });
+    } else {
       return (
-        <View style={{ flexDirection: 'row' }} key={i}>
-          {participant.status === 'yes' && <Icon type="font-awesome" name="check" size={15} color="#7f8c8d"/>}
-          {participant.status === 'no' && <Icon type="font-awesome" name="close" size={15} color="black"/>}
-          {participant.status === 'maybe' && <Icon type="font-awesome" name="question" size={20} color="#7f8c8d"/>}
-          <Text style={styles.participant}>{participant.username}</Text>
-        </View>
-      );
-    });
+        <Text style={styles.participantText}>No one has been invited to this event</Text>
+      )
+    }
   }
 
   showComments() {

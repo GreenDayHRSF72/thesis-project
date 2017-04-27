@@ -39,14 +39,14 @@ const styles = StyleSheet.create({
   message: {
     marginTop: 15,
     height: 40,
-    backgroundColor: 'white',
+    backgroundColor: '#27ae60',
     marginBottom: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
-    color: 'black',
+    color: 'white',
     paddingLeft: 20,
     borderRadius: 8,
-    width: '99%',
+    width: '98%',
   },
   title: {
     marginLeft: 10,

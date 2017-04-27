@@ -16,7 +16,9 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginTop: 3,
     marginBottom: 3,
+    padding: 5,
     backgroundColor: '#27ae60',
+    borderRadius: 5,
   },
   username: {
     color: 'white',
