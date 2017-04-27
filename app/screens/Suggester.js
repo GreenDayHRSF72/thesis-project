@@ -45,9 +45,6 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: '#27ae60',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    borderColor: '#7e7e7e',
     borderRadius: 8,
   },
   buttonContainer: {

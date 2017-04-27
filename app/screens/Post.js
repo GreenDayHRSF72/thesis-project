@@ -11,8 +11,25 @@ const styles = StyleSheet.create({
   container: {
     borderStyle: 'solid',
     borderColor: 'gray',
-    borderWidth: 1,
-    backgroundColor: 'white',
+    width: '98%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 3,
+    marginBottom: 3,
+    backgroundColor: '#27ae60',
+  },
+  username: {
+    color: 'white',
+    paddingTop: 2,
+    fontWeight: 'bold',
+    fontSize: 12,
+    paddingLeft: 5,
+  },
+  body: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 5,
+    color: '#DCDCDC',
   },
 });
 
@@ -25,8 +42,8 @@ class Post extends Component {
     return (
       <View style={styles.container}>
         <Text>
-          {this.props.post.username}{'\n'}
-          {this.props.post.body}
+          <Text style={styles.username}>{this.props.post.username.toUpperCase()}:{'\n'}</Text>
+          <Text style={styles.body}>{this.props.post.body}</Text>
         </Text>
       </View>
     );
