@@ -96,7 +96,7 @@ class Event extends Component {
             source={require('../img/congratulations.png')}
           />
           <Text style={styles.title}>
-            Your Event with Friends Starts from Here! If you are unsurof what to do, Please check out our Suggester, or type "HALP!" in the event name box.
+            Your event with friends starts here! If you are unsure of what to do, Please check out our Suggester page by touching the Suggester icon in the menu or typing "HALP!" in the 'Event Name' box.
           </Text>
         </View>
         <KeyboardAvoidingView behavior="padding" style={styles.formContainer}>
@@ -112,7 +112,7 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.name}
-            placeholder="enter an event name, or... HALP!"
+            placeholder="Enter an event name, or 'HALP!'"
             placeholderTextColor="white"
           />
           <TextInput
@@ -121,7 +121,7 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.location}
-            placeholder="enter a location"
+            placeholder="Enter a location"
             placeholderTextColor="white"
           />
           <TextInput
@@ -130,12 +130,12 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.description}
-            placeholder="short description"
+            placeholder="Enter a short description"
             placeholderTextColor="white"
           />
           <MyDatePicker />
           <TouchableOpacity onPress={this.onPressButton} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>SUBMIT</Text>
+            <Text style={styles.buttonText}>CREATE EVENT</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>

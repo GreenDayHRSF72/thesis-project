@@ -28,8 +28,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
-  buttonContainer: {
-    backgroundColor: '#27ae60',
+  inviteContainer: {
+    backgroundColor: '#2980b9',
+    height: 40,
+    marginBottom: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  doneContainer: {
+    backgroundColor: '#e67e22',
     height: 40,
     marginBottom: 10,
     borderRadius: 8,
@@ -267,10 +274,10 @@ class AddFriends extends React.Component {
             placeholder="Enter friend's email"
             placeholderTextColor="white"
           />
-          <TouchableOpacity onPress={() => this.onPressAddButton()} style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => this.onPressAddButton()} style={styles.inviteContainer}>
             <Text style={styles.buttonText}>ADD TO INVITATION LIST</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.onPressDoneButton()} style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => this.onPressDoneButton()} style={styles.doneContainer}>
             <Text style={styles.buttonText}>DONE</Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row' }}>

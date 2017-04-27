@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
   },
+  listItem: {
+    backgroundColor: '#27ae60'
+  }
 });
 
 const BUTTONS = [
@@ -131,6 +134,7 @@ class SuggesterResults extends Component {
         {
         this.props.yelpResults.map((result, i) => (
           <ListItem
+            style={styles.listItem}
             roundAvatar
             key={i}
             title={result.name}

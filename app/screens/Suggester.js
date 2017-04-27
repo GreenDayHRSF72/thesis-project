@@ -443,7 +443,7 @@ class Suggester extends Component {
         <Text
         style={styles.subtitle}
         >
-          Welcome to our Recommendation Wizard! Don{'\''}t know what to do for your hangout? Our friend is here to help!
+          Welcome to our Suggester! Don{'\''}t know what to do for your hangout? Our friend is here to help!
           Just answer a few quick questions and we{'\''}ll find something for you!
         </Text>
         <Text
@@ -578,7 +578,7 @@ class Suggester extends Component {
           }}
         />
         <TouchableOpacity onPress={this.queryYelp} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Recommend</Text>
+            <Text style={styles.buttonText}>SUGGEST</Text>
           </TouchableOpacity>
       </ScrollView>);
     } else if (this.state.yelpLoading === true) {
@@ -597,7 +597,7 @@ class Suggester extends Component {
         <Text
           style={styles.subtitle}
         >
-          Our friend is working hard to come up some recommendations for you!{'\n'}
+          Our friend is working hard to come up some suggestions for you!{'\n'}
           Isn{'\''}t great that someone can make these hard decisions?{'\n'}
           You should invite him or he{'\''}ll be sad.{'\n'}{'\n'}
       </Text>
