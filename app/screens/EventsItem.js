@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 40,
     flexDirection: 'row',
+    backgroundColor: '#27ae60',
     flexWrap: 'wrap',
   },
   rsvpText: {
@@ -132,8 +133,8 @@ const styles = StyleSheet.create({
 });
 
 const BUTTONS = [
-  'Got an Idea',
-  'Need Suggestions',
+  'Got an idea',
+  'Need suggestions',
   'Cancel',
 ];
 

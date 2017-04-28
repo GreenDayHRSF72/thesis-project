@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#e67e22',
+    backgroundColor: '#2980b9',
     marginBottom: 10,
     borderRadius: 8,
     marginLeft: 15,
@@ -275,10 +275,10 @@ class AddFriends extends React.Component {
             placeholderTextColor="white"
           />
           <TouchableOpacity onPress={() => this.onPressAddButton()} style={styles.inviteContainer}>
-            <Text style={styles.buttonText}>ADD TO INVITATION LIST</Text>
+            <Text style={styles.buttonText}>Add To Invitation List</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.onPressDoneButton()} style={styles.doneContainer}>
-            <Text style={styles.buttonText}>DONE</Text>
+            <Text style={styles.buttonText}>Done</Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row' }}>
             <Icon type="font-awesome" name="envelope" size={16} color="#2980b9" />

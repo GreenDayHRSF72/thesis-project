@@ -109,9 +109,12 @@ class Comments extends Component {
 
   render() {
     return (<ScrollView style={styles.container}>
+      <Text style={styles.title}>
+        Enter Comment In Field Below
+      </Text>
       <TextInput
         style={styles.message}
-        placeholder='comment here...'
+        placeholder='This event is going to be fun'
         onChangeText={(text) => { this.setState({message: text}); }}
         value={this.state.message}
         clearTextOnFocus={false}

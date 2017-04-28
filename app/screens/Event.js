@@ -114,7 +114,7 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.name}
-            placeholder="Enter an event name, or 'HALP!'"
+            placeholder='Enter an event name, or "HALP!"'
             placeholderTextColor="white"
           />
           <TextInput
@@ -137,7 +137,7 @@ class Event extends Component {
           />
           <MyDatePicker />
           <TouchableOpacity onPress={this.onPressButton} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>CREATE EVENT</Text>
+            <Text style={styles.buttonText}>Create Event</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
