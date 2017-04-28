@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -10,41 +10,59 @@ const baseURL = endpoint.baseURL;
 
 const styles = StyleSheet.create({
   container: {
-    borderStyle: 'solid',
-    borderColor: 'gray',
     width: '98%',
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: 3,
     marginBottom: 3,
-    padding: 5,
     backgroundColor: '#27ae60',
     borderRadius: 5,
+    flexWrap:  'wrap',
+    flexDirection: 'row',
   },
   voteButton: {
     borderWidth: 0,
-    borderRadius: 4,
-    height: 20,
-    width: 75,
-    backgroundColor: '#2980b9',
+    borderRadius: 5,
+    height: 60,
+    width: 60,
     overflow: 'hidden',
   },
   voteTitle: {
-    textAlign: 'center',
     paddingTop: 5,
+    paddingLeft: 5,
     color: 'white',
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  voteLocation: {
+    paddingBottom: 5,
+    paddingLeft: 5,
+    color: 'white',
+    fontSize: 15,
+    color: '#DCDCDC',
+
   },
   infoContainer: {
     width: '75%',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+    borderRadius: 5,
   },
   voteContainer: {
-    width: '25%',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+    width: 50,
+    marginLeft: 40,
+    marginTop: 10,
+    alignSelf: 'flex-end',
+  },
+  image: {
+    height: 45,
+    width: 45,
+  },
+  headline: {
+    paddingTop: 12,
+    fontSize: 15,
+    textAlign: 'center',
+    backgroundColor: 'rgba(0,0,0,0)',
+    color: 'white'
   },
 });
 
@@ -61,7 +79,7 @@ class ActivityVote extends Component {
 
   displayMain() {
     if (this.props.activity.mainActivity === 1) {
-      return '\nCURRENT ACTIVITY';
+      return(<Text style={{ color: "#e67e22", fontWeight: 'bold', paddingLeft: 5, }}>MAIN ACTIVITY</Text>);
     }
   }
  
@@ -98,24 +116,21 @@ class ActivityVote extends Component {
       <View
         style={styles.container}
       >
-        <View>
-        <Text>
-          Name: {this.props.activity.name}
-        </Text>
-        <Text>
-        {this.props.activity.location}
-        </Text>
-        <Text>
+        <View style={styles.infoContainer}>
+          <Text style={styles.voteTitle}>{this.props.activity.name}</Text>
+          <Text style={styles.voteLocation}>{this.props.activity.location}</Text>
           {this.displayMain()}
-        </Text>
         </View>
-        <View>
-          <Text>
-          Votes{'\n'}
-          {this.props.activity.votes}
-          </Text>
+        <View style={styles.voteContainer}>
           <TouchableOpacity onPress={this.vote} style={styles.voteButton}>
-            <Text style={styles.voteTitle}>Vote</Text>
+            <Image
+            style={styles.image}
+            source={require('../img/heart.gif')}
+            >
+              <View>
+                <Text style={styles.headline}>{this.props.activity.votes}</Text>
+              </View>
+            </Image>
           </TouchableOpacity>
         </View>
       </View>

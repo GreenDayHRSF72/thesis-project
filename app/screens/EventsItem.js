@@ -181,7 +181,7 @@ class EventsItem extends Component {
       })
       .then(re => re.json())
       .then((resJ) => {
-        processComs(resJ);
+        processComs(resJ.reverse());
       });
     })
     .catch(err => console.log(err));
@@ -261,7 +261,7 @@ class EventsItem extends Component {
       });
     } else {
       return (
-        <Text style={styles.participantText}>No one has been invited to this event</Text>
+        <Text style={styles.participantText}>No one has been invited to this event.</Text>
       )
     }
   }
