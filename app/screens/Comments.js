@@ -11,6 +11,7 @@ const baseURL = endpoint.baseURL;
 const styles = StyleSheet.create({
   container: {
     marginTop: 0,
+    marginBottom: 10,
     paddingTop: 0,
     flex: 1,
     backgroundColor: '#2ecc71',
@@ -50,10 +51,17 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 10,
-    color: 'white',
-    opacity: 1,
     fontSize: 20,
+    color: 'white',
     fontWeight: '500',
+    marginBottom: 6,
+  },
+  subtitle: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
@@ -108,6 +116,7 @@ class Comments extends Component {
     const body = this.state.message;
     const userId = this.props.user.id;
     const eventId = this.props.activeEvent.id;
+    const processComs = this.props.getComments;
 
     console.log(body, userId, eventId);
 
@@ -123,10 +132,23 @@ class Comments extends Component {
         eventId,
       }),
     })
-    .then(res => res.json())
-    .then((resJson) => {
-      console.log(resJson);
-      com.setState({message: ''});
+    //then get the new messages
+    .then(() => {
+      fetch(`${baseURL}/comments`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: this.props.activeEvent.id,
+        }),
+      })
+      .then(res => res.json())
+      .then((resJson) => {
+        processComs(resJson.reverse());
+        com.setState({message: ''});
+      });
     })
     .catch((err) => { console.log(err) });
   }
@@ -141,19 +163,18 @@ class Comments extends Component {
       }
       style={styles.container}
       >
-      <Text style={styles.title}>
-        Enter Comment In Field Below
-      </Text>
       <TextInput
         style={styles.message}
-        placeholder='This event is going to be fun
-        '
+        placeholder='This event is going to be fun!'
         onChangeText={(text) => { this.setState({message: text}); }}
         value={this.state.message}
         clearTextOnFocus={false}
         autoCorrect={false}
         placeholderColor='gray'
       />
+      <Text style={styles.subtitle}>
+        Enter you comment above. Scroll beyond the top of the screen to refresh the comments.
+      </Text>
       <TouchableOpacity onPress={this.submitComment} style={styles.buttonContainer}>
         <Text style={styles.buttonText}>Comment</Text>
       </TouchableOpacity>
