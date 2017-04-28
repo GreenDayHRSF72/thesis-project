@@ -19,10 +19,19 @@ const propTypes = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 0,
+    paddingTop: 0,
+    flex: 1,
+    backgroundColor: '#2ecc71',
+  },
+  header: {
+    backgroundColor: '#27ae60',
+  },
   title: {
     textAlign: 'center',
     marginTop: 15,
-    color: '#2c3e50',
+    color: 'white',
     fontSize: 15,
     fontWeight: '600',
   },
@@ -103,9 +112,9 @@ class EventsList extends Component {
   }
 
   render() {
-    return (<ScrollView>
+    return (<ScrollView style={styles.container}>
       {this.state.activeEventsByCreator ?
-        <ScrollView>
+        <ScrollView style={styles.header}>
           <Text style={styles.title}>Created Events</Text>
           <List>
             {this.createFeed(this.state.activeEventsByCreator)}
@@ -114,7 +123,7 @@ class EventsList extends Component {
       }
 
       {this.state.invitedEventsByParticipantId ?
-        <ScrollView>
+        <ScrollView style={styles.header}>
           <Text style={styles.title}>Invited Events</Text>
           <List>
             {this.createFeed(this.state.invitedEventsByParticipantId)}

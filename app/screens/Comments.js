@@ -122,7 +122,7 @@ class Comments extends Component {
         <Text style={styles.buttonText}>Comment</Text>
       </TouchableOpacity>
       <Text style={styles.title}>
-        Comments:
+        Comments
       </Text>
       <View>
         {this.displayComments()}
