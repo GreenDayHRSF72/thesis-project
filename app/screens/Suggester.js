@@ -575,7 +575,7 @@ class Suggester extends Component {
           }}
         />
         <TouchableOpacity onPress={this.queryYelp} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>SUGGEST</Text>
+            <Text style={styles.buttonText}>Suggest</Text>
           </TouchableOpacity>
       </ScrollView>);
     } else if (this.state.yelpLoading === true) {

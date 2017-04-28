@@ -128,7 +128,7 @@ class Login extends Component {
           source={{ uri: this.props.user.pic }}
         />
         <Text style={styles.welcomeTitle}>
-          Welcome { `back, ${this.props.user.name}!` || ', Please sign in!' }
+          Welcome back, {this.props.user.name === undefined ? ' please sign in!' : this.props.user.name }
         </Text>
         <LoginButton
           readPermissions={['public_profile', 'email', 'user_friends']}

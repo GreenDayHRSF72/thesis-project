@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
 });
 
 const BUTTONS = [
-  'Get More Info',
-  'Setup Event (Redirect to Event Creattion)',
-  'Setup Proposed Activity',
+  'Get more info',
+  'Set up as New Event',
+  'Set up as Alternative Activity',
   'Cancel',
 ];
 
@@ -82,7 +82,7 @@ class SuggesterResults extends Component {
 
   highRecommend(i) {
     if (i <= 4) {
-      return '\nHIGHLY RECOMMENDED!';
+      return '\nHighly Recommended';
     }
     return '';
   }
@@ -135,7 +135,7 @@ class SuggesterResults extends Component {
       <Text
         style={styles.subtitle}
       >
-        We found {this.props.yelpResults.length} things that you may be interested in doing!
+        Our Suggester found {this.props.yelpResults.length} things that you may be interested in doing!
       </Text>
       <Image
         style={styles.image}
@@ -144,7 +144,7 @@ class SuggesterResults extends Component {
       <Text
         style={styles.subtitle}
       >
-        Click on any of the options to see more information about them, or auto fill an event with the venue's information!
+        Click on any of the results to see more information, or create a New Event or Alternative Activity with the venue's information!
       </Text>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Results</Text>
