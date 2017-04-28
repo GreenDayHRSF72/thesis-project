@@ -83,9 +83,9 @@ class ActivityStream extends Component {
               />
               <View style={styles.textContainer}>
                 <View style={{ flexWrap: 'wrap' }}>
-                  <Text style={{ fontWeight: '600', color: 'white' }}>{item.author} {item.activity}.</Text>
+                  <Text style={{ fontWeight: '600', color: 'white' }}>{item.author}{'\n'}{item.activity}.</Text>
                 </View>
-                <Text style={{ color: 'grey' }}>{moment(item.createdAt).fromNow()}</Text>
+                <Text style={{ color: '#D3D3D3' }}>{moment(item.createdAt).fromNow()}</Text>
               </View>
             </View>
           </View>
