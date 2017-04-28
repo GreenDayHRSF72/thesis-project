@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 10,
     color: 'white',
-    fontWeight: '700',
   },
   headerContainer: {
     marginTop: 10,
@@ -135,7 +134,7 @@ class SuggesterResults extends Component {
       <Text
         style={styles.subtitle}
       >
-        Our Suggester found {this.props.yelpResults.length} things that you may be interested in doing!
+        Our Suggester found <Text style={{fontWeight: 'bold'}}>{this.props.yelpResults.length}</Text> things that you may be interested in doing!
       </Text>
       <Image
         style={styles.image}
@@ -144,7 +143,7 @@ class SuggesterResults extends Component {
       <Text
         style={styles.subtitle}
       >
-        Click on any of the results to see more information, or create a New Event or Alternative Activity with the venue's information!
+        Click on any of the results to see more information, or create a New Event or Alternative Activity with the result's information!
       </Text>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Results</Text>

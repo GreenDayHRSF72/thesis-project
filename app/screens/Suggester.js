@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2ecc71',
   },
+
   picker: {
     marginTop: 0,
     paddingTop: 0,
@@ -594,9 +595,10 @@ class Suggester extends Component {
         <Text
           style={styles.subtitle}
         >
+          {'\n'}{'\n'}
           Our friend is working hard to come up some suggestions for you!{'\n'}
           Isn{'\''}t great that someone can make these hard decisions?{'\n'}
-          You should invite him or he{'\''}ll be sad.{'\n'}{'\n'}
+          You should invite him or he{'\''}ll be sad.
       </Text>
       </View>);
     }
