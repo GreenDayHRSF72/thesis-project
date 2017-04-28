@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, Text, KeyboardAvoidingView, Image, TouchableOpacity, AlertIOS, ScrollView } from 'react-native';
+import { RefreshControl, View, StyleSheet, TextInput, Text, KeyboardAvoidingView, Image, TouchableOpacity, AlertIOS, ScrollView } from 'react-native';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -63,12 +63,36 @@ class Comments extends Component {
     this.state = {
       // do not know if I will need yet?
       message: '',
+      refreshing: false,
     };
 
     this.displayComments = this.displayComments.bind(this);
     this.submitComment = this.submitComment.bind(this);
   }
 
+  _onRefresh() {
+    const render = this.render;
+    const processComs = this.props.getComments;
+    const com = this;
+    this.setState({ refreshing: true });
+    // reset the props
+   fetch(`${baseURL}/comments`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: this.props.activeEvent.id,
+      }),
+    })
+    .then(re => re.json())
+    .then((resJ) => {
+      processComs(resJ.reverse());
+      com.setState({ refreshing: false });
+      render();
+    });
+  }
   displayComments() {
     if (this.props.comments.length > 0) {
       return this.props.comments.map((post, i) => {
@@ -108,13 +132,22 @@ class Comments extends Component {
   }
 
   render() {
-    return (<ScrollView style={styles.container}>
+    return (<ScrollView 
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh.bind(this)}
+        />
+      }
+      style={styles.container}
+      >
       <Text style={styles.title}>
         Enter Comment In Field Below
       </Text>
       <TextInput
         style={styles.message}
-        placeholder='This event is going to be fun'
+        placeholder='This event is going to be fun
+        '
         onChangeText={(text) => { this.setState({message: text}); }}
         value={this.state.message}
         clearTextOnFocus={false}
@@ -129,7 +162,7 @@ class Comments extends Component {
       </Text>
       <View>
         {this.displayComments()}
-      </View> 
+      </View>
     </ScrollView>);
   }
 }
