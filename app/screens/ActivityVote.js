@@ -109,27 +109,25 @@ class ActivityVote extends Component {
       voted = resJson;
     })
     .then(()=> {
-      fetch(`${baseURL}/altActs`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: this.props.activeEvent.id,
-        }),
-      })
-      .then(res => res.json())
-      .then((resJson) => {
-        processActs(resJson);
-      })
-      .then(() => {
-        if (voted === 'voted') {
-          Alert.alert('You have already voted!')
-        } else {  
-          Alert.alert('Thanks for voting!');
-        }
-      })
+      if (voted !== 'voted') {
+        Alert.alert('Thanks for voting!');
+        fetch(`${baseURL}/altActs`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: this.props.activeEvent.id,
+          }),
+        })
+        .then(res => res.json())
+        .then((resJson) => {
+          processActs(resJson);
+        });
+      } else {
+        Alert.alert('You have already voted!');
+      }
     })
     .catch(err => console.log(err));
   }
