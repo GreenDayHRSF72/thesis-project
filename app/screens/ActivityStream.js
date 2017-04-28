@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
+  defaultText: {
+    textAlign: 'center',
+    marginTop: 15,
+    color: 'white',
+    fontSize: 15,
+    fontWeight: '600',
+  },
 });
 
 class ActivityStream extends Component {
@@ -92,12 +99,12 @@ class ActivityStream extends Component {
     return (
       <ScrollView style={styles.container}>
         <View>
-        <Text style={styles.titleText}>
-          Live Feed
-        </Text>
+          <Text style={styles.titleText}>
+            Live Feed
+          </Text>
         </View>
         <View>
-          {this.createFeed()}
+          { this.state.activities.length === 0 ? (<Text style={styles.defaultText}>Nothing is happening at the moment.{'\n'}Please do the things!</Text>) : this.createFeed() }
         </View>
       </ScrollView>
     );
