@@ -93,7 +93,7 @@ class Event extends Component {
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Image
-            style={{ width: 100, height: 100, justifyContent: 'center' }}
+            style={{ width: 100, height: 100, justifyContent: 'center', marginTop: 10 }}
             source={require('../img/congratulations.png')}
           />
           <Text style={styles.title}>
