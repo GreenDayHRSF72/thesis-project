@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   formContainer: {
-    marginTop: 10,
     padding: 20,
     flexGrow: 10,
   },
