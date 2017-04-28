@@ -259,7 +259,7 @@ class EventsItem extends Component {
     if (this.state.participants.length > 0) {
       return this.state.participants.map((participant, i) => {
         return (
-          <View style={{ flexDirection: 'row', backgroundColor: '#27ae60', padding: 5, borderRadius: 5, width: '98%', marginLeft: 'auto', marginRight: 'auto'}} key={i}>
+          <View style={{ flexDirection: 'row', marginTop: 3, marginBottom: 3, backgroundColor: '#27ae60', padding: 5, borderRadius: 5, width: '98%', marginLeft: 'auto', marginRight: 'auto'}} key={i}>
             {participant.status === 'yes' && <Icon type="font-awesome" name="check" size={15} color="#7f8c8d"/>}
             {participant.status === 'no' && <Icon type="font-awesome" name="close" size={15} color="black"/>}
             {participant.status === 'maybe' && <Icon type="font-awesome" name="question" size={20} color="#7f8c8d"/>}
