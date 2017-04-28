@@ -75,7 +75,7 @@ class ActivityStream extends Component {
     return this.state.activities.map((item, i) => {
       return (
         <TouchableHighlight key={i} onPress={() => this.onLearnMore(item.eventDetails)}>
-          <View key={i} style={{ marginLeft: 'auto', marginRight: 'auto', padding: 10, width: '98%', backgroundColor: '#27ae60', borderRadius: 5, }}>
+          <View key={i} style={{ marginBottom: 3, marginTop: 3, marginLeft: 'auto', marginRight: 'auto', padding: 10, width: '98%', backgroundColor: '#27ae60', borderRadius: 5, marginBottom }}>
             <View style={{ flexDirection: 'row' }}>
               <Image
                 style={{ width: 50, height: 50, borderRadius: 25 }}
