@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 40,
     flexDirection: 'row',
-    backgroundColor: '#27ae60',
     flexWrap: 'wrap',
   },
   rsvpText: {
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   inviteeContainer: {
-    marginLeft: 20,
     marginTop: 0,
   },
   inviteeTitle: {
@@ -88,6 +86,7 @@ const styles = StyleSheet.create({
   },
   participantText: {
     color: 'white',
+    marginLeft: 20,
   },
   proposalContainer: {
     marginLeft: 20,
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   commentText: {
-    paddingTop: 10,
     textAlign: 'left',
     paddingLeft: 20,
     color: 'white',
@@ -129,6 +127,15 @@ const styles = StyleSheet.create({
   },
   strong: {
     fontWeight: '600',
+  },
+  inviteeContainer: {
+    width: '98%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 3,
+    marginBottom: 3,
+    backgroundColor: '#27ae60',
+    borderRadius: 5,
   },
 });
 
@@ -252,7 +259,7 @@ class EventsItem extends Component {
     if (this.state.participants.length > 0) {
       return this.state.participants.map((participant, i) => {
         return (
-          <View style={{ flexDirection: 'row' }} key={i}>
+          <View style={{ flexDirection: 'row', backgroundColor: '#27ae60', padding: 5, borderRadius: 5, width: '98%', marginLeft: 'auto', marginRight: 'auto'}} key={i}>
             {participant.status === 'yes' && <Icon type="font-awesome" name="check" size={15} color="#7f8c8d"/>}
             {participant.status === 'no' && <Icon type="font-awesome" name="close" size={15} color="black"/>}
             {participant.status === 'maybe' && <Icon type="font-awesome" name="question" size={20} color="#7f8c8d"/>}
@@ -359,7 +366,7 @@ class EventsItem extends Component {
           {this.createActivities()}
         </ScrollView>
         <Text style={styles.inviteeTitle}>Invitees Status</Text>
-        <ScrollView style={styles.inviteeContainer}>
+        <ScrollView>
           {this.createParticipants()}
         </ScrollView>
         <View>
