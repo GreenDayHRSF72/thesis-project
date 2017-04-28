@@ -34,9 +34,25 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
   },
-  listItem: {
-    backgroundColor: '#27ae60'
-  }
+  headerContainer: {
+    marginTop: 10,
+    marginBottom: -30,
+    height: 75,
+    backgroundColor: '#27ae60',
+    borderWidth: 1,
+    borderColor: '#D3D3D3',
+    borderStyle: 'solid',
+    width: '120%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  headerText: {
+    color: 'white',
+    paddingTop: 25,
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
 });
 
 const BUTTONS = [
@@ -130,6 +146,9 @@ class SuggesterResults extends Component {
       >
         Click on any of the options to see more information about them, or auto fill an event with the venue's information!
       </Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Results</Text>
+      </View>
       <List>
         {
         this.props.yelpResults.map((result, i) => (
