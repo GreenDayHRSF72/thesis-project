@@ -8,6 +8,8 @@ export const user = function (state = {}, action) {
       return Object.assign({}, state, {
         id: action.id,
       });
+    case 'CLEAR_USER':
+      return {};
     default:
       return state;
   }

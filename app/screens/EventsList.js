@@ -12,6 +12,7 @@ const baseURL = endpoint.baseURL;
 const {
   Text,
   ScrollView,
+  View,
 } = ReactNative;
 
 const propTypes = {
@@ -112,25 +113,31 @@ class EventsList extends Component {
   }
 
   render() {
-    return (<ScrollView style={styles.container}>
-      {this.state.activeEventsByCreator ?
-        <ScrollView style={styles.header}>
-          <Text style={styles.title}>Created Events</Text>
-          <List>
-            {this.createFeed(this.state.activeEventsByCreator)}
-          </List>
-        </ScrollView> : null
-      }
+    if (this.props.user.name !== undefined) {
+      return (<ScrollView style={styles.container}>
+        {this.state.activeEventsByCreator ?
+          <ScrollView style={styles.header}>
+            <Text style={styles.title}>Created Events</Text>
+            <List>
+              {this.createFeed(this.state.activeEventsByCreator)}
+            </List>
+          </ScrollView> : null
+        }
 
-      {this.state.invitedEventsByParticipantId ?
-        <ScrollView style={styles.header}>
-          <Text style={styles.title}>Invited Events</Text>
-          <List>
-            {this.createFeed(this.state.invitedEventsByParticipantId)}
-          </List>
-        </ScrollView> : null
-      }
-    </ScrollView>);
+        {this.state.invitedEventsByParticipantId ?
+          <ScrollView style={styles.header}>
+            <Text style={styles.title}>Invited Events</Text>
+            <List>
+              {this.createFeed(this.state.invitedEventsByParticipantId)}
+            </List>
+          </ScrollView> : null
+        }
+      </ScrollView>);
+    } else {
+      return (<View style={styles.container}>
+        <Text style={styles.title}> You must be logged in to view your Created Events and the Events you have been invited to!</Text>
+      </View>);
+    }
   }
 }
 

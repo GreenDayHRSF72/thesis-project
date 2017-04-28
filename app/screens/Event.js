@@ -89,63 +89,69 @@ class Event extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Image
-            style={{ width: 100, height: 100, justifyContent: 'center', marginTop: 10 }}
-            source={require('../img/congratulations.png')}
-          />
-          <Text style={styles.title}>
-            Your event with friends starts here! If you are unsure of what to do, Please check out our Suggester page by touching the Suggester icon in the menu or typing "HALP!" in the 'Event Name' box.
-          </Text>
+    if (this.props.user.name !== undefined) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Image
+              style={{ width: 100, height: 100, justifyContent: 'center', marginTop: 10 }}
+              source={require('../img/congratulations.png')}
+            />
+            <Text style={styles.title}>
+              Your event with friends starts here! If you are unsure of what to do, Please check out our Suggester page by touching the Suggester icon in the menu or typing "HALP!" in the 'Event Name' box.
+            </Text>
+          </View>
+          <KeyboardAvoidingView behavior="padding" style={styles.formContainer}>
+            <TextInput
+              clearTextOnFocus={true}
+              onChangeText={(name) => {
+                this.props.changeEventNam(name);
+                if (this.props.event.name === 'HALP') {
+                  this.props.changeEventNam('');
+                  this.props.navigation.navigate('Suggester');
+                }
+              }}
+              style={styles.place}
+              autoCorrect={false}
+              value={this.props.event.name}
+              placeholder='Enter an event name, or "HALP!"'
+              placeholderTextColor="white"
+            />
+            <TextInput
+              clearTextOnFocus={true}
+              onChangeText={location => this.props.changeEventLoc(location)}
+              style={styles.place}
+              autoCorrect={false}
+              value={this.props.event.location}
+              placeholder="Enter a location"
+              placeholderTextColor="white"
+            />
+            <TextInput
+              clearTextOnFocus={true}
+              onChangeText={description => this.props.changeEventDes(description)}
+              style={styles.place}
+              autoCorrect={false}
+              value={this.props.event.description}
+              placeholder="Enter a short description"
+              placeholderTextColor="white"
+            />
+            <MyDatePicker />
+            <TouchableOpacity onPress={this.onPressButton} style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Create Event</Text>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
         </View>
-        <KeyboardAvoidingView behavior="padding" style={styles.formContainer}>
-          <TextInput
-            clearTextOnFocus={true}
-            onChangeText={(name) => {
-              this.props.changeEventNam(name);
-              if (this.props.event.name === 'HALP') {
-                this.props.changeEventNam('');
-                this.props.navigation.navigate('Suggester');
-              }
-            }}
-            style={styles.place}
-            autoCorrect={false}
-            value={this.props.event.name}
-            placeholder='Enter an event name, or "HALP!"'
-            placeholderTextColor="white"
-          />
-          <TextInput
-            clearTextOnFocus={true}
-            onChangeText={location => this.props.changeEventLoc(location)}
-            style={styles.place}
-            autoCorrect={false}
-            value={this.props.event.location}
-            placeholder="Enter a location"
-            placeholderTextColor="white"
-          />
-          <TextInput
-            clearTextOnFocus={true}
-            onChangeText={description => this.props.changeEventDes(description)}
-            style={styles.place}
-            autoCorrect={false}
-            value={this.props.event.description}
-            placeholder="Enter a short description"
-            placeholderTextColor="white"
-          />
-          <MyDatePicker />
-          <TouchableOpacity onPress={this.onPressButton} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Create Event</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </View>
-    );
+      );
+    } else {
+      return (<View style={styles.container}>
+        <Text style={styles.title}>{'\n'}You must be logged in to Create New Events!</Text>
+      </View>);
+    }
   }
 }
 
 function mapStateToProps(state) {
-  return { event: state.event };
+  return { event: state.event, user: state.user };
 }
 
 function mapDispatchToProps(dispatch) {

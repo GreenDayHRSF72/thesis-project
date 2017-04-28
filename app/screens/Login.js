@@ -9,6 +9,7 @@ import {
   View,
   Text,
   Image,
+  AlertIOS,
 } from 'react-native';
 import { ActionCreators } from '../actions';
 import endpoint from '../config/global';
@@ -69,7 +70,7 @@ class Login extends Component {
 
   responseInfoCallback(error, result) {
     if (error) {
-      alert('Error fetching Facebook data, please log in Facebook again');
+      //alert('Error fetching Facebook data, please log in Facebook again');
     } else {
       console.log('Facebook user profile=======>', result);
       // save user info to Redux
@@ -153,7 +154,10 @@ class Login extends Component {
               }
             }
           }
-          onLogoutFinished={() => alert('logout.')}
+          onLogoutFinished={() => {
+            this.props.clearUser();
+            AlertIOS.alert('You have logged out', 'See you again soon!');
+          }}
         />
       </View>
     );

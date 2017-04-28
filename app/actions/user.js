@@ -14,3 +14,9 @@ export function saveUserId(id) {
   };
 }
 
+export function clearUser() {
+  return {
+    type: types.CLEAR_USER,
+  };
+}
+
