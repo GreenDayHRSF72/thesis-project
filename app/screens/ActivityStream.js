@@ -22,18 +22,17 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: 15,
     marginTop: 10,
-    width: 200,
   },
-  titleContainer: {
-    margin: 15,
-    padding: 10,
+  container: {
+    backgroundColor: '#2ecc71',
   },
   titleText: {
     padding: 10,
     fontSize: 30,
+    marginTop: 15,
     fontWeight: '600',
     textAlign: 'center',
-    color: '#27ae60',
+    color: 'white',
   },
 });
 
@@ -69,7 +68,7 @@ class ActivityStream extends Component {
     return this.state.activities.map((item, i) => {
       return (
         <TouchableHighlight key={i} onPress={() => this.onLearnMore(item.eventDetails)}>
-          <View key={i} style={{ padding: 8, borderBottomWidth: 1 }}>
+          <View key={i} style={{ marginLeft: 'auto', marginRight: 'auto', padding: 10, width: '98%', backgroundColor: '#27ae60', borderRadius: 5, }}>
             <View style={{ flexDirection: 'row' }}>
               <Image
                 style={{ width: 50, height: 50, borderRadius: 25 }}
@@ -77,8 +76,7 @@ class ActivityStream extends Component {
               />
               <View style={styles.textContainer}>
                 <View style={{ flexWrap: 'wrap' }}>
-                  <Text style={{ fontWeight: '600' }}>{item.author}</Text>
-                  <Text> {item.activity}</Text>
+                  <Text style={{ fontWeight: '600', color: 'white' }}>{item.author} {item.activity}.</Text>
                 </View>
                 <Text style={{ color: 'grey' }}>{moment(item.createdAt).fromNow()}</Text>
               </View>
@@ -92,14 +90,16 @@ class ActivityStream extends Component {
 
   render() {
     return (
-      <View style={styles.titleContainer}>
+      <ScrollView style={styles.container}>
+        <View>
         <Text style={styles.titleText}>
           Live Feed
         </Text>
-        <ScrollView>
+        </View>
+        <View>
           {this.createFeed()}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 }
