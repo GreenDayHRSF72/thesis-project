@@ -28,8 +28,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
-  buttonContainer: {
-    backgroundColor: '#27ae60',
+  inviteContainer: {
+    backgroundColor: '#2980b9',
+    height: 40,
+    marginBottom: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  doneContainer: {
+    backgroundColor: '#e67e22',
     height: 40,
     marginBottom: 10,
     borderRadius: 8,
@@ -46,7 +53,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#e67e22',
+    backgroundColor: '#2980b9',
     marginBottom: 10,
     borderRadius: 8,
     marginLeft: 15,
@@ -94,7 +101,6 @@ const propTypes = {
   event: PropTypes.object.isRequired,
   saveEventId: PropTypes.func.isRequired,
   removeFriendFromInvitationList: PropTypes.func.isRequired,
-  saveEvent: PropTypes.func.isRequired,
 };
 
 class AddFriends extends React.Component {
@@ -242,16 +248,16 @@ class AddFriends extends React.Component {
             placeholder="Enter a friend's name"
             placeholderTextColor="white"
             renderItem={({ name }) => (
-              <TouchableOpacity onPress={() => {
-                this.setState({ queryName: name });
-                const selectedUser = this.state.users.filter(user => user.username === name);
-                console.log(selectedUser);
-                if (selectedUser[0]) {
-                 this.setState({ friendEmail: selectedUser[0].email });
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ queryName: name });
+                  const selectedUser = this.state.users.filter(user => user.username === name);
+                  if (selectedUser[0]) {
+                    this.setState({ friendEmail: selectedUser[0].email });
                 }
                 }}>
                 <Text style={styles.itemText}>
-                  {name} 
+                  {name}
                 </Text>
               </TouchableOpacity>
             )}
@@ -268,11 +274,11 @@ class AddFriends extends React.Component {
             placeholder="Enter friend's email"
             placeholderTextColor="white"
           />
-          <TouchableOpacity onPress={() => this.onPressAddButton()} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>ADD TO INVITATION LIST</Text>
+          <TouchableOpacity onPress={() => this.onPressAddButton()} style={styles.inviteContainer}>
+            <Text style={styles.buttonText}>Add To Invitation List</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.onPressDoneButton()} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>DONE</Text>
+          <TouchableOpacity onPress={() => this.onPressDoneButton()} style={styles.doneContainer}>
+            <Text style={styles.buttonText}>Done</Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row' }}>
             <Icon type="font-awesome" name="envelope" size={16} color="#2980b9" />

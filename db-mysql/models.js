@@ -84,14 +84,15 @@ const addMainAct = (eventId, name, location) => {
 };
 
 const getCommentsForEvent = (eventId) => {
-  const queryString = 'SELECT users.username, comments.body FROM comments INNER JOIN users WHERE comments.event_id = ? && comments.user_id = users.id';
+  // const queryString = 'SELECT users.username, comments.body FROM comments INNER JOIN users WHERE comments.event_id = ? && comments.user_id = users.id';
+  const queryString = 'SELECT users.username, comments.body FROM comments INNER JOIN users ON (comments.user_id = users.id) WHERE comments.event_id = ?';
   return db.queryAsync(queryString, eventId);
 };
 
 const addComment = (userId, eventId, body) => {
   const queryString = 'INSERT INTO comments (event_id, user_id, body) VALUES (?, ?, ?)';
-  return db.queryAsync(queryString, [eventId, userId, body]); 
-}
+  return db.queryAsync(queryString, [eventId, userId, body]);
+};
 
 const getUserByEmail = (email) => {
   const queryStr = 'SELECT * FROM users WHERE email = ? LIMIT 1';
@@ -139,7 +140,7 @@ const getEventByEventId = (eventId) => {
   return db.queryAsync(queryStr, eventId);
 };
 
-var getPublicEvents = (cb) => {
+const getPublicEvents = (cb) => {
   connection.query('SELECT events.*, users.username, users.photourl FROM events INNER JOIN users ON events.creator_id = users.id;', (err, results) => {
     if (err) {
       cb(err, null);
@@ -149,14 +150,13 @@ var getPublicEvents = (cb) => {
         event.id = counter;
         counter += 1;
       });
-      //console.log('getPublicEvents query ----->', results);
       cb(null, results);
     }
   });
 };
 
 // Test models
-var selectAllFromTest = (cb) => {
+const selectAllFromTest = (cb) => {
   connection.query('SELECT * FROM test', (err, results) => {
     if (err) {
       cb(err, null);
@@ -166,13 +166,13 @@ var selectAllFromTest = (cb) => {
   });
 };
 
-var insertValueIntoTest = (val, cb) => {
+const insertValueIntoTest = (val, cb) => {
   connection.query(`INSERT INTO test (value) VALUES ${val};`, (err, results) => {
-      if (err) {
-        cb(err, null);
-      } else {
-        cb(null, results);
-      }
+    if (err) {
+      cb(err, null);
+    } else {
+      cb(null, results);
+    }
   });
 };
 

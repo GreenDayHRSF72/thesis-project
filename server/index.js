@@ -114,12 +114,12 @@ app.post('/vote', (req, res) => {
 app.post('/comments', (req, res) => {
   console.log(req.body.id);
   db.getCommentsForEvent(req.body.id)
-  .then((results) =>{
+  .then((results) => {
     res.json(results);
   })
-  .catch((err) =>{
+  .catch((err) => {
     res.send(err);
-  })
+  });
 });
 
 app.post('/post', (req, res) => {

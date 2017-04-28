@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2ecc71',
   },
+
   picker: {
     marginTop: 0,
     paddingTop: 0,
@@ -44,18 +45,19 @@ const styles = StyleSheet.create({
     width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#ededed',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    borderColor: '#7e7e7e',
+    backgroundColor: '#27ae60',
+    borderRadius: 8,
   },
   buttonContainer: {
     marginTop: 10,
     marginRight: 'auto',
     marginLeft: 'auto',
-    backgroundColor: '#27ae60',
+    marginBottom: 10,
+    backgroundColor: '#e67e22',
     height: 35,
     width: '90%',
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   buttonText: {
     paddingTop: 10,
@@ -67,8 +69,11 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingTop: 10,
     paddingBottom: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
     textAlign: 'center',
     fontWeight: '700',
+    fontSize: 15,
   },
   image: {
     marginLeft: 'auto',
@@ -78,7 +83,10 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
     paddingTop: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
     color: 'white',
+    fontWeight: '500',
   },
   header: {
     fontSize: 18,
@@ -91,35 +99,35 @@ const styles = StyleSheet.create({
 
 
 const locationOptions = [
-  { text: 'Nothing selected', value: 0 },
+  { text: 'Please select an option', value: 0 },
   { text: 'Close to my current location', value: 1 },
-  { text: 'At another location', value: 2 },
+  { text: 'Enter a location', value: 2 },
 ];
 
 const distanceOptions = [
   { text: 'I\'m too lazy to go anywhere else', value: 500 },
   { text: 'I don\'t mind a bit of a stroll', value: 2400 },
-  { text: 'Let\'s go on an adventure!', value: 8000 },
-  { text: 'Better call an Uber!', value: 16000 },
+  { text: 'Let\'s go on an adventure', value: 8000 },
+  { text: 'Better call a cab', value: 16000 },
   { text: 'Might as well run a marathon', value: 40000 },
 ];
 
 const priceOptions = [
-  { text: 'I don\'t have much of a preference', value: '1,2,3,4' },
-  { text: 'I\'m super broke right now!', value: '1' },
-  { text: 'Something reasonable would be nice', value: '1,2' },
-  { text: 'I think I can splurge a little bit I suppose', value: '2,3' },
-  { text: 'Let\'s make it rain! Treat Yo\'self!', value: '4' },
+  { text: 'No preference', value: '1,2,3,4' },
+  { text: 'I\'m super broke right now', value: '1' },
+  { text: 'Something reasonable please', value: '1,2' },
+  { text: 'I think I can splurge a little', value: '2,3' },
+  { text: 'Make it rain/Treat yo\'self', value: '4' },
 ];
 
 const freshOptions = [
   { text: 'I really don\'t care', value: false },
-  { text: 'I would prefer to try something new', value: true },
+  { text: 'Something new would be nice', value: true },
 ];
 
 const dislikeOptions = [
   { text: 'I\'m open to anything', value: 1 },
-  { text: 'Let\'s drink some Hater-ade!', value: 2 }
+  { text: 'Let\'s drink some Haterade', value: 2 }
 ];
 
 class Suggester extends Component {
@@ -363,7 +371,6 @@ class Suggester extends Component {
     })
     .catch((error) => {
       console.log(error);
-      Alert.alert('There seems to be an error', JSON.stringify(error));
       // console.log(error);
     });
   }
@@ -402,7 +409,7 @@ class Suggester extends Component {
       // console.log(resJson);
       let businesses = resJson.businesses;
       if (businesses.length === 0) {
-        Alert.alert(`Sorry there is nothing fun do at the location specified, please try again!${'\n'}The questions have been reset!`);
+        Alert.alert(`We couldn\'t find something fun for you to do. Please try again!`);
         sug.resetState();
       } else {
         console.log(businesses);
@@ -419,7 +426,7 @@ class Suggester extends Component {
       sug.setState({ yelpLoading: false });
       console.log(error);
       sug.resetState();
-      Alert.alert('There seems to be an error, and your answers have been reset. Please try again!');
+      Alert.alert('There seems to be an error. Please try again!');
       console.log(error);
     });
   }
@@ -434,8 +441,8 @@ class Suggester extends Component {
         <Text
         style={styles.subtitle}
         >
-          Welcome to the Suggester, {this.props.user.name}! Don{'\''}t know what to do for your hangout? Pom Pom Pudding is here to help!
-          Just answer a few quick questions and we{'\''}ll find something for you! Slide up on the selection boxes to reveal more choices.
+          Welcome to our Suggester! Don{'\''}t know what to do for your hangout? Our friend is here to help!
+          Just answer a few quick questions and we{'\''}ll find something for you!
         </Text>
         <Text
           style={styles.questionText}
@@ -443,6 +450,7 @@ class Suggester extends Component {
           Q1: Where do you want to go?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.location}
           onValueChange={(value) => {
@@ -459,8 +467,8 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Prompt
-          title="Please enter the address of where you want to be"
-          placeholder="ex. 944 Market Street (or) Halal Guys, San Francisco"
+          title="Please enter the name address of the location you want to be near."
+          placeholder="Ex: 944 Market Street (or) Halal Guys, San Francisco"
           visible={this.state.locationVisible}
           onCancel={() => {
             this.setState({ locationVisible: false });
@@ -473,9 +481,10 @@ class Suggester extends Component {
         <Text
           style={styles.questionText}
         >
-          Q2: How far from the that place are you willing to go from the location you selected?
+          Q2: How far from your desired location are you willing to travel?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.radius}
           onValueChange={(value) => {
@@ -493,9 +502,10 @@ class Suggester extends Component {
         <Text
           style={styles.questionText}
         >
-          Q3: What are you willing to spend?
+          Q3: What are you willing to spend per person?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.budget}
           onValueChange={(value) => {
@@ -516,6 +526,7 @@ class Suggester extends Component {
           Q4: Are you looking to spice things up?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.findNew}
           onValueChange={(value) => {
@@ -536,6 +547,7 @@ class Suggester extends Component {
           Q5: Is there anything you don{'\''}t want to do?
         </Text>
         <PickerIOS
+          itemStyle={{color: 'white', textAlign: 'left', marginLeft: 5}}
           style={styles.picker}
           selectedValue={this.state.dislike}
           onValueChange={(value) => {
@@ -552,8 +564,8 @@ class Suggester extends Component {
           ))}
         </PickerIOS>
         <Prompt
-          title="Please list the things you don\'t want to do! Please separate with commas, and no spaces!(that is very important)"
-          placeholder="ex. bars,clubs,etc."
+          title="Please list the things you don\'t want to do (Please separate with commas)!"
+          placeholder="Bars, Clubs, Boring Things, etc."
           visible={this.state.dislikeVisible}
           onCancel={() => {
             this.setState({ dislikeVisible: false });
@@ -564,12 +576,8 @@ class Suggester extends Component {
           }}
         />
         <TouchableOpacity onPress={this.queryYelp} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>GET MY SUGGESTIONS</Text>
+            <Text style={styles.buttonText}>Suggest</Text>
           </TouchableOpacity>
-        <Button
-          title="Test get user Info"
-          onPress={this.getAllUserInfo}
-        />
       </ScrollView>);
     } else if (this.state.yelpLoading === true) {
       return (<View
@@ -587,10 +595,10 @@ class Suggester extends Component {
         <Text
           style={styles.subtitle}
         >
-          Pom Pom Pudding is working hard to come up some recommendations for you!{'\n'}
+          {'\n'}{'\n'}
+          Our friend is working hard to come up some suggestions for you!{'\n'}
           Isn{'\''}t great that someone can make these hard decisions?{'\n'}
-          You should invite him or he{'\''}ll be sad.{'\n'}{'\n'}
-          *Note* Your answers will be reset when results will come in *End Note*
+          You should invite him or he{'\''}ll be sad.
       </Text>
       </View>);
     }

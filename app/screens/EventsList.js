@@ -19,10 +19,19 @@ const propTypes = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 0,
+    paddingTop: 0,
+    flex: 1,
+    backgroundColor: '#2ecc71',
+  },
+  header: {
+    backgroundColor: '#27ae60',
+  },
   title: {
     textAlign: 'center',
     marginTop: 15,
-    color: '#2c3e50',
+    color: 'white',
     fontSize: 15,
     fontWeight: '600',
   },
@@ -73,9 +82,10 @@ class EventsList extends Component {
             <ListItem
               key={i}
               rightTitle='NEW!'
+              rightTitleContainerStyle={{ flex: 0.3 }}
               titleStyle={{ fontWeight: '500' }}
               rightTitleStyle={{ color: 'orange', fontWeight: '600' }}
-              title={item.name === null || item.name === undefined ? `EVENT ${i}` : `${item.name.toUpperCase().substring(0, 24)}`}
+              title={item.name === null || item.name === undefined ? `EVENT ${i}` : `${item.name.toUpperCase().substring(0, 20)}`}
               subtitle={item.eventDate.substring(0, 10)}
               onPress={() => this.onLearnMore(item)}
               containerStyle={{ height: 50 }}
@@ -88,7 +98,7 @@ class EventsList extends Component {
             <ListItem
               key={i}
               titleStyle={{ fontWeight: '500' }}
-              title={item.name === null || item.name === undefined ? `EVENT ${i}` : `${item.name.toUpperCase().substring(0, 30)}`}
+              title={item.name === null || item.name === undefined ? `EVENT ${i}` : `${item.name.toUpperCase().substring(0, 24)}`}
               subtitle={item.eventDate.substring(0, 10)}
               onPress={() => this.onLearnMore(item)}
               containerStyle={{ height: 50 }}
@@ -102,9 +112,9 @@ class EventsList extends Component {
   }
 
   render() {
-    return (<ScrollView>
+    return (<ScrollView style={styles.container}>
       {this.state.activeEventsByCreator ?
-        <ScrollView>
+        <ScrollView style={styles.header}>
           <Text style={styles.title}>Created Events</Text>
           <List>
             {this.createFeed(this.state.activeEventsByCreator)}
@@ -113,7 +123,7 @@ class EventsList extends Component {
       }
 
       {this.state.invitedEventsByParticipantId ?
-        <ScrollView>
+        <ScrollView style={styles.header}>
           <Text style={styles.title}>Invited Events</Text>
           <List>
             {this.createFeed(this.state.invitedEventsByParticipantId)}

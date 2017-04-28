@@ -77,6 +77,9 @@ class MyDatePicker extends Component {
               color: 'white',
               fontWeight: '500',
             },
+            confirmBtnText: {
+              color: 'white',
+            },
             dateIcon: {
               position: 'absolute',
               left: 0,

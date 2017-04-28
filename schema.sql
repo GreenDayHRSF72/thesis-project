@@ -33,11 +33,10 @@ CREATE TABLE IF NOT EXISTS users (
 	UNIQUE KEY (email)
 );
 
-INSERT INTO users (username, email, phone, photourl) VALUES ('Test Person', 'smmakowski@yahoo.com', '9736538792', 'https://s-media-cache-ak0.pinimg.com/736x/dd/03/7e/dd037e42b51536f31171309c73372805.jpg');
-INSERT INTO users (username, email, phone, photourl) VALUES ('Test Friend', 'smmakowski@me.com', '9736538792', 'https://s-media-cache-ak0.pinimg.com/736x/dd/03/7e/dd037e42b51536f31171309c73372805.jpg');
-INSERT INTO users (username, email, phone, photourl) VALUES ('Tayo', 'tayo@me.com', '9736538792', 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRY296dxsFIhtogq1IMHrdNl9oSZckvMUUceiRfWZC9Jbs280dodA');
-INSERT INTO users (username, email, phone, photourl) VALUES ('Huan', 'mogutounew@yahoo.com', '9736538792', 'https://cdn1.recombu.com/media/mobile/Apps/Neko%20Atsume/neko-atsume-rare-cats-guide-frosty_w670_h377.png');
-INSERT INTO users (username, email, phone, photourl) VALUES ('Stephen Makowski', 'makowski.sm@gmail.com', 'sksiwls', 'https://cdn1.recombu.com/media/mobile/Apps/Neko%20Atsume/neko-atsume-rare-cats-guide-frosty_w670_h377.png');
+INSERT INTO users (username, email, phone, photourl) VALUES ('Huan Chen', 'mogutounew@yahoo.com', '9736538792', 'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/17883828_384524251932024_4245789044172981689_n.jpg?oh=d22159f9456cff10538b66ee80e48986&oe=597C4E3D');
+INSERT INTO users (username, email, phone, photourl) VALUES ('Stephen Makowski', 'makowski.sm@gmail.com', 'sksiwls', 'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/17760021_410586059298432_3952926916579260220_n.jpg?oh=8bdf03911dedf2da925c07d4e95af8b4&oe=59775F86');
+INSERT INTO users (username, email, phone, photourl) VALUES ('Raízes Zindzi Tayo', 'o.jolaosho@rutgers.edu', '9736538792', 'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/13043530_10106278233496629_5060055874826651096_n.jpg?oh=ef3525bf0dc6b7012f56cc44634ad228&oe=5992320C');
+INSERT INTO users (username, email, phone, photourl) VALUES ('our cute friend', 'smmakowski@me.com', '9736538792', 'https://s-media-cache-ak0.pinimg.com/736x/dd/03/7e/dd037e42b51536f31171309c73372805.jpg');
 
 CREATE TABLE IF NOT EXISTS interests (
 	id int NOT NULL AUTO_INCREMENT,
@@ -76,13 +75,13 @@ CREATE TABLE IF NOT EXISTS events (
 ALTER TABLE events ADD FOREIGN KEY (creator_id) REFERENCES users(id);
 
 INSERT INTO events (name, creator_id, description, eventDate, location, startTime, endTime)
-VALUES ('BBQ', 1, 'First event use to test out algorithm', '2017-04-27', 'San Francisco', '13:13:12', '16:12:12');
+VALUES ('BBQ', 1, "Let's get a lot of meat", '2017-05-3', 'San Francisco', '13:13:12', '16:12:12');
 INSERT INTO events (name, creator_id, description, eventDate, active, location, startTime, endTime)
-VALUES ('Beers', 3, 'Second event use to test out algorithm', '2017-01-27', 0, 'San Francisco', '13:13:12', '16:12:12');
+VALUES ('Beers', 2, 'relax and have fun', '2017-05-4', 0, 'San Francisco', '13:13:12', '16:12:12');
 INSERT INTO events (name, creator_id, description, eventDate, active, location, startTime, endTime)
-VALUES ('All We Can Eat', 2, 'I\'m n not quite sure event use to test out algorithm', '2017-02-27', 0, 'San Francisco', '13:13:12', '16:12:12');
+VALUES ('All We Can Eat', 3, 'I\'m n not quite sure', '2017-05-27', 0, 'Han Il Kwan', '13:13:12', '16:12:12');
 INSERT INTO events (name, creator_id, description, eventDate, active, location, startTime, endTime)
-VALUES ('Test 4', 1, 'Just testing out the algortithm', '2017-03-27', 0, 'San Francisco', '13:13:12', '16:12:12');
+VALUES ('Ice Cream', 4, 'Bi-Rite Creamery', '2017-05-11', 0, 'Bi-Rite Creamery', '13:13:12', '16:12:12');
 
 CREATE TABLE IF NOT EXISTS participants (
 	id int NOT NULL AUTO_INCREMENT,
@@ -95,21 +94,14 @@ CREATE TABLE IF NOT EXISTS participants (
 ALTER TABLE participants ADD FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE participants ADD FOREIGN KEY (event_id) REFERENCES events(id);
 
-INSERT INTO participants (user_id, event_id) VALUES (1, 1);
 INSERT INTO participants (user_id, event_id) VALUES (2, 1);
+INSERT INTO participants (user_id, event_id) VALUES (3, 1);
 INSERT INTO participants (user_id, event_id, status) VALUES (1, 2, 'yes');
-INSERT INTO participants (user_id, event_id, status) VALUES (2, 2, 'yes');
-INSERT INTO participants (user_id, event_id, status) VALUES (1, 3, 'yes');
 INSERT INTO participants (user_id, event_id, status) VALUES (2, 3, 'yes');
-INSERT INTO participants (user_id, event_id, status) VALUES (1, 1, 'yes');
-INSERT INTO participants (user_id, event_id, status) VALUES (1, 1, 'yes');
-
-INSERT INTO participants (user_id, event_id, status)
-VALUES (4, 1, 'maybe');
-INSERT INTO participants (user_id, event_id, status)
-VALUES (4, 2, 'maybe');
-INSERT INTO participants (user_id, event_id, status)
-VALUES (4, 3, 'maybe');
+INSERT INTO participants (user_id, event_id, status) VALUES (1, 3, 'no');
+INSERT INTO participants (user_id, event_id) VALUES (1, 4);
+INSERT INTO participants (user_id, event_id) VALUES (2, 4);
+INSERT INTO participants (user_id, event_id) VALUES (3, 4);
 
 
 CREATE TABLE IF NOT EXISTS activities (
@@ -133,7 +125,7 @@ VALUES ('Sushiritto', 'Japanese', 'Get burritos before movie', 2, 1);
 INSERT INTO activities (name, category, description, event_id, mainActivity) 
 VALUES ('Gamestop', 'Electronics', 'Pick up video games for home', 3, 1);
 INSERT INTO activities (name, category, description, event_id, mainActivity) 
-VALUES ('Golden Gate Park Archery Field', 'Archery', 'Get beers and eat sausage maybe do some shooting', 4, 1);
+VALUES ('Golden Gate Park Archery Field', 'Archery', 'Get beers and eat sausage maybe do some shooting', 2, 1);
 
 
 

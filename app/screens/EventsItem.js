@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   inviteeContainer: {
-    marginLeft: 20,
     marginTop: 0,
   },
   inviteeTitle: {
@@ -84,6 +83,10 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginLeft: 15,
     marginBottom: 5,
+  },
+  participantText: {
+    color: 'white',
+    marginLeft: 20,
   },
   proposalContainer: {
     marginLeft: 20,
@@ -107,13 +110,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   commentText: {
-    paddingTop: 10,
-    textAlign: 'center',
+    textAlign: 'left',
+    paddingLeft: 20,
+    color: 'white',
   },
   commentButton: {
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: 10,
+    marginBottom: 10,
     borderWidth: 0,
     borderRadius: 4,
     height: 28,
@@ -124,11 +129,20 @@ const styles = StyleSheet.create({
   strong: {
     fontWeight: '600',
   },
+  inviteeContainer: {
+    width: '98%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 3,
+    marginBottom: 3,
+    backgroundColor: '#27ae60',
+    borderRadius: 5,
+  },
 });
 
 const BUTTONS = [
-  'Got an Idea',
-  'Need Suggestions',
+  'Got an idea',
+  'Need suggestions',
   'Cancel',
 ];
 
@@ -176,7 +190,7 @@ class EventsItem extends Component {
       })
       .then(re => re.json())
       .then((resJ) => {
-        processComs(resJ);
+        processComs(resJ.reverse());
       });
     })
     .catch(err => console.log(err));
@@ -242,17 +256,23 @@ class EventsItem extends Component {
     }
   }
 
-  createParticipants() { 
-    return this.state.participants.map((participant, i) => {
+  createParticipants() {
+    if (this.state.participants.length > 0) {
+      return this.state.participants.map((participant, i) => {
+        return (
+          <View style={{ flexDirection: 'row', marginTop: 3, marginBottom: 3, backgroundColor: '#27ae60', padding: 5, borderRadius: 5, width: '98%', marginLeft: 'auto', marginRight: 'auto'}} key={i}>
+            {participant.status === 'yes' && <Icon type="font-awesome" name="check" size={15} color="#e67e22"/>}
+            {participant.status === 'no' && <Icon type="font-awesome" name="close" size={15} color="#e67e22"/>}
+            {participant.status === 'maybe' && <Icon type="font-awesome" name="question" size={20} color="#e67e22"/>}
+            <Text style={styles.participant}>{participant.username}</Text>
+          </View>
+        );
+      });
+    } else {
       return (
-        <View style={{ flexDirection: 'row' }} key={i}>
-          {participant.status === 'yes' && <Icon type="font-awesome" name="check" size={15} color="#7f8c8d"/>}
-          {participant.status === 'no' && <Icon type="font-awesome" name="close" size={15} color="black"/>}
-          {participant.status === 'maybe' && <Icon type="font-awesome" name="question" size={20} color="#7f8c8d"/>}
-          <Text style={styles.participant}>{participant.username}</Text>
-        </View>
-      );
-    });
+        <Text style={styles.participantText}>No one has been invited to this event.</Text>
+      )
+    }
   }
 
   showComments() {
@@ -347,7 +367,7 @@ class EventsItem extends Component {
           {this.createActivities()}
         </ScrollView>
         <Text style={styles.inviteeTitle}>Invitees Status</Text>
-        <ScrollView style={styles.inviteeContainer}>
+        <ScrollView>
           {this.createParticipants()}
         </ScrollView>
         <View>

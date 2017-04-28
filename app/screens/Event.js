@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   formContainer: {
-    marginTop: 10,
     padding: 20,
     flexGrow: 10,
   },
@@ -60,16 +59,18 @@ class Event extends Component {
   }
 
   onPressButton() {
-    if (this.props.event.date === null || this.props.event.date === '') {
-      alert('date is empty, please pick a date');
-    } else if (this.props.event.location === '' || this.props.event.name === '') {
-      alert('event name/location is empty, please enter event name and/or location');
+    if (this.props.event.name === '') {
+      alert('Event Name is empty. Please enter an Event Name!');
+    } else if (this.props.event.location === '') {
+      alert('Event Location is empty. Please enter an Event Location!')
     } else if (this.props.event.description === '') {
-      alert('please enter an event description');
+      alert('Event Description is empty. Please enter an Event Description!');
+    } else if (this.props.event.date === null || this.props.event.date === '') {
+      alert('Event Date has not been selected. Please pick a date!');
     } else if (this.props.event.startTime === null || this.props.event.startTime === '') {
-      alert('please pick event start time');
+      alert('Event Start Time has not been selected. Please pick a Start Time!');
     } else if (this.props.event.endTime === null || this.props.event.endTime === '') {
-      alert('please pick event end time');
+      alert('Event End Time has not been selected. Please pick an End time!');
     } else {
       const event = {
         name: this.props.event.name,
@@ -96,7 +97,7 @@ class Event extends Component {
             source={require('../img/congratulations.png')}
           />
           <Text style={styles.title}>
-            Your Event with Friends Starts from Here! If you are unsurof what to do, Please check out our Suggester, or type "HALP!" in the event name box.
+            Your event with friends starts here! If you are unsure of what to do, Please check out our Suggester page by touching the Suggester icon in the menu or typing "HALP!" in the 'Event Name' box.
           </Text>
         </View>
         <KeyboardAvoidingView behavior="padding" style={styles.formContainer}>
@@ -112,7 +113,7 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.name}
-            placeholder="enter an event name, or... HALP!"
+            placeholder='Enter an event name, or "HALP!"'
             placeholderTextColor="white"
           />
           <TextInput
@@ -121,7 +122,7 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.location}
-            placeholder="enter a location"
+            placeholder="Enter a location"
             placeholderTextColor="white"
           />
           <TextInput
@@ -130,12 +131,12 @@ class Event extends Component {
             style={styles.place}
             autoCorrect={false}
             value={this.props.event.description}
-            placeholder="short description"
+            placeholder="Enter a short description"
             placeholderTextColor="white"
           />
           <MyDatePicker />
           <TouchableOpacity onPress={this.onPressButton} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>SUBMIT</Text>
+            <Text style={styles.buttonText}>Create Event</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>

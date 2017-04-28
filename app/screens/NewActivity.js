@@ -85,23 +85,29 @@ class NewActivity extends Component {
     //name, event_id, location
     // const activityName = this.state.activityName.slice(0);
     // const activityLocation = this.state.activityLocation.slice(0);
-    fetch(`${baseURL}/activities`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: this.props.suggestedActivity.name,
-        event_id: this.props.activeEvent.id,
-        location: this.props.suggestedActivity.location,
-      }),
-    })
-    .then(() => {
-      console.log('successfully save activity to DB');
-      sug.props.navigation.navigate('EventDetails', sug.props.activeEvent);
-    })
-    .catch(err => console.log(err));
+    if (this.props.suggestedActivity.name === '') {
+      alert('Activity Name is empty. Please enter an Activity Name!');
+    } else if (this.props.suggestedActivity.location === ''){
+      alert('Activity Location is empty. Please enter an Activity Location!')
+    } else {
+      fetch(`${baseURL}/activities`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: this.props.suggestedActivity.name,
+          event_id: this.props.activeEvent.id,
+          location: this.props.suggestedActivity.location,
+        }),
+      })
+      .then(() => {
+        console.log('successfully save activity to DB');
+        sug.props.navigation.navigate('EventDetails', sug.props.activeEvent);
+      })
+      .catch(err => console.log(err));
+    }
   }
 
   render() {
@@ -136,7 +142,7 @@ class NewActivity extends Component {
             autoCorrect={false}
             onChangeText={(name) => this.props.saveSuggestedActivityName(name)}
             value={this.props.suggestedActivity.name}
-            placeholder="propose a new activity"
+            placeholder="Enter Activity Name"
           />
           <TextInput
             placeholderTextColor="white"
@@ -145,7 +151,7 @@ class NewActivity extends Component {
             autoCorrect={false}
             onChangeText={(location) => this.props.saveSuggestedActivityLocation(location)}
             value={this.props.suggestedActivity.location}
-            placeholder="new activity's address"
+            placeholder="Enter Activity Location"
           />
           <TouchableOpacity onPress={() => this.handleButtonPress()} style={styles.buttonContainer}>
             <Text style={styles.buttonText}>ADD ACTIVITY TO EVENT</Text>

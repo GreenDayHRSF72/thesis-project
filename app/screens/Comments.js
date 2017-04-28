@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, Text, KeyboardAvoidingView, Image, TouchableOpacity, AlertIOS, ScrollView } from 'react-native';
+import { RefreshControl, View, StyleSheet, TextInput, Text, KeyboardAvoidingView, Image, TouchableOpacity, AlertIOS, ScrollView } from 'react-native';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +11,7 @@ const baseURL = endpoint.baseURL;
 const styles = StyleSheet.create({
   container: {
     marginTop: 0,
+    marginBottom: 10,
     paddingTop: 0,
     flex: 1,
     backgroundColor: '#2ecc71',
@@ -39,21 +40,28 @@ const styles = StyleSheet.create({
   message: {
     marginTop: 15,
     height: 40,
-    backgroundColor: 'white',
+    backgroundColor: '#27ae60',
     marginBottom: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
-    color: 'black',
+    color: 'white',
     paddingLeft: 20,
     borderRadius: 8,
-    width: '99%',
+    width: '98%',
   },
   title: {
     marginLeft: 10,
+    fontSize: 20,
     color: 'white',
-    opacity: 1,
-    fontSize: 15,
     fontWeight: '500',
+    marginBottom: 6,
+  },
+  subtitle: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
@@ -63,12 +71,36 @@ class Comments extends Component {
     this.state = {
       // do not know if I will need yet?
       message: '',
+      refreshing: false,
     };
 
     this.displayComments = this.displayComments.bind(this);
     this.submitComment = this.submitComment.bind(this);
   }
 
+  _onRefresh() {
+    const render = this.render;
+    const processComs = this.props.getComments;
+    const com = this;
+    this.setState({ refreshing: true });
+    // reset the props
+   fetch(`${baseURL}/comments`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: this.props.activeEvent.id,
+      }),
+    })
+    .then(re => re.json())
+    .then((resJ) => {
+      processComs(resJ.reverse());
+      com.setState({ refreshing: false });
+      render();
+    });
+  }
   displayComments() {
     if (this.props.comments.length > 0) {
       return this.props.comments.map((post, i) => {
@@ -84,6 +116,7 @@ class Comments extends Component {
     const body = this.state.message;
     const userId = this.props.user.id;
     const eventId = this.props.activeEvent.id;
+    const processComs = this.props.getComments;
 
     console.log(body, userId, eventId);
 
@@ -99,34 +132,58 @@ class Comments extends Component {
         eventId,
       }),
     })
-    .then(res => res.json())
-    .then((resJson) => {
-      console.log(resJson);
-      com.setState({message: ''});
+    //then get the new messages
+    .then(() => {
+      fetch(`${baseURL}/comments`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: this.props.activeEvent.id,
+        }),
+      })
+      .then(res => res.json())
+      .then((resJson) => {
+        processComs(resJson.reverse());
+        com.setState({message: ''});
+      });
     })
     .catch((err) => { console.log(err) });
   }
 
   render() {
-    return (<ScrollView style={styles.container}>
+    return (<ScrollView 
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh.bind(this)}
+        />
+      }
+      style={styles.container}
+      >
       <TextInput
         style={styles.message}
-        placeholder='comment here...'
+        placeholder='This event is going to be fun!'
         onChangeText={(text) => { this.setState({message: text}); }}
         value={this.state.message}
         clearTextOnFocus={false}
         autoCorrect={false}
         placeholderColor='gray'
       />
+      <Text style={styles.subtitle}>
+        Enter you comment above. Scroll beyond the top of the screen to refresh the comments.
+      </Text>
       <TouchableOpacity onPress={this.submitComment} style={styles.buttonContainer}>
         <Text style={styles.buttonText}>Comment</Text>
       </TouchableOpacity>
       <Text style={styles.title}>
-        Comments:
+        Comments
       </Text>
       <View>
         {this.displayComments()}
-      </View> 
+      </View>
     </ScrollView>);
   }
 }

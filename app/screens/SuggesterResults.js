@@ -32,14 +32,32 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 10,
     color: 'white',
-    fontWeight: '700',
+  },
+  headerContainer: {
+    marginTop: 10,
+    marginBottom: -30,
+    height: 75,
+    backgroundColor: '#27ae60',
+    borderWidth: 1,
+    borderColor: '#D3D3D3',
+    borderStyle: 'solid',
+    width: '120%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  headerText: {
+    color: 'white',
+    paddingTop: 25,
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 
 const BUTTONS = [
-  'Get More Info',
-  'Setup Event (Redirect to Event Creattion)',
-  'Setup Proposed Activity',
+  'Get more info',
+  'Set up as New Event',
+  'Set up as Alternative Activity',
   'Cancel',
 ];
 
@@ -63,7 +81,7 @@ class SuggesterResults extends Component {
 
   highRecommend(i) {
     if (i <= 4) {
-      return '\nHIGHLY RECOMMENDED!';
+      return '\nHighly Recommended';
     }
     return '';
   }
@@ -116,7 +134,7 @@ class SuggesterResults extends Component {
       <Text
         style={styles.subtitle}
       >
-        We found {this.props.yelpResults.length} things that you may be interested in doing!
+        Our Suggester found <Text style={{fontWeight: 'bold'}}>{this.props.yelpResults.length}</Text> things that you may be interested in doing!
       </Text>
       <Image
         style={styles.image}
@@ -125,12 +143,16 @@ class SuggesterResults extends Component {
       <Text
         style={styles.subtitle}
       >
-        Click on any of the options to see more information about them, or auto fill an event with the venue's information!
+        Click on any of the results to see more information, or create a New Event or Alternative Activity with the result's information!
       </Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Results</Text>
+      </View>
       <List>
         {
         this.props.yelpResults.map((result, i) => (
           <ListItem
+            style={styles.listItem}
             roundAvatar
             key={i}
             title={result.name}
