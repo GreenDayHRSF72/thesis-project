@@ -84,9 +84,13 @@ class ActivityVote extends Component {
   }
  
   vote() {
+    const act = this;
+    const addVote = this.props.addVote;
     const actId = this.props.activity.id;
     const userId = this.props.user.id;
     const eventId = this.props.activeEvent.id;
+    const processActs = this.props.getActivities;
+    let voted = '';
 
     fetch(`${baseURL}/vote`, {
       method: 'POST',
@@ -102,10 +106,27 @@ class ActivityVote extends Component {
     })
     .then(res => res.json())
     .then((resJson) => {
-      if (resJson === 'voted') {
-        Alert.alert('You have already voted for this event!');
-      } else {
+      voted = resJson;
+    })
+    .then(()=> {
+      if (voted !== 'voted') {
         Alert.alert('Thanks for voting!');
+        fetch(`${baseURL}/altActs`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: this.props.activeEvent.id,
+          }),
+        })
+        .then(res => res.json())
+        .then((resJson) => {
+          processActs(resJson);
+        });
+      } else {
+        Alert.alert('You have already voted!');
       }
     })
     .catch(err => console.log(err));
